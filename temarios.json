@@ -1,9 +1,9 @@
 {
   "_instrucciones": "Para AÑADIR un nuevo temario, copia un bloque y crea una nueva clave con el nombre del temario y su lista de temas. La app lo cargará automáticamente en los modos 'Desarrollar Temario' y 'Hacer Test'. El orden de las claves se respeta.",
   "temarios": {
-    "Materias Comunes (Anexo III - BORM 2016)": {
-      "etiqueta": "Comunes",
-      "fuente": "Orden de 27 de abril de 2016 (BORM nº 113). Cuerpo de Técnicos Especialistas.",
+    "Materias Comunes (Téc. Especialistas - BORM 2016)": {
+      "etiqueta": "Comunes T.Esp.",
+      "fuente": "Orden de 27 de abril de 2016 (BORM nº 113), Anexo III. Cuerpo de Técnicos Especialistas.",
       "temas": [
         "Tema 1. La Constitución española de 1978: estructura y contenido. Derechos y deberes fundamentales: garantía y suspensión. Instituciones básicas del Estado. Estatuto de Autonomía de la Región de Murcia: estructuración y contenido.",
         "Tema 2. Concepto de Administración Pública. Diferentes niveles de la Administración Pública: Administración Estatal, Autonómica, Local e Institucional: ideas básicas. La Administración Pública de la Comunidad Autónoma de Murcia: organización y régimen jurídico.",
@@ -20,7 +20,7 @@
       ]
     },
     "Materias Específicas (Opción Terapeuta - BORM 2014)": {
-      "etiqueta": "Específicas",
+      "etiqueta": "Terapeuta",
       "fuente": "Orden de 5 de mayo de 2014 (BORM nº 119). Cuerpo de Técnicos Especialistas, opción Terapeuta.",
       "temas": [
         "Tema 1. Salud y enfermedad. Principios y orientaciones de la educación para la Salud. Salud y desarrollo comunitario. Concepto de pluripatología. Ergoterapia, laborterapia y terapia ocupacional. El papel de la terapia ocupacional en la salud.",
@@ -58,6 +58,119 @@
         "Tema 33. Las organizaciones no gubernamentales y su relación con los servicios sociales. Cooperación con la Administración. El voluntariado social. Plan Estatal del Voluntariado. Ley 6/1996, de 15 de enero del Voluntariado. Ley 5/2004, de 22 de octubre, del Voluntariado en la Región de Murcia.",
         "Tema 34. Competencias de la Comunidad Autónoma de la Región de Murcia en materia de servicios sociales. Ley de Servicios Sociales de la Región de Murcia.",
         "Tema 35. La Consejería de Sanidad y Política Social: estructura y competencias. Ley de creación del IMAS: competencias, funciones y estructura. Los servicios sociales en la Administración del Estado. Los servicios sociales en la Administración Local."
+      ]
+    },
+    "Materias Específicas (Educación e Intervención Social - BORM 2014)": {
+      "etiqueta": "Interv. Social",
+      "fuente": "Orden de 3 de febrero de 2014 (BORM nº 33). Cuerpo de Técnicos Especialistas, opción Educación e Intervención Social.",
+      "temas": [
+        "Tema 1. Desarrollo evolutivo del niño. Desarrollo social, afectivo, motor, cognitivo, del lenguaje y la comunicación. Desarrollo moral.",
+        "Tema 2. La adolescencia. Cambios que acompañan a la pubertad. Desarrollo social: el grupo de iguales y la pareja. Implicaciones para la intervención educativa.",
+        "Tema 3. La socialización. Orígenes. El proceso de socialización: concepto y naturaleza. Socialización primaria: la familia (apego, papel de la madre y del padre en el desarrollo social). Socialización secundaria: la escuela, los otros.",
+        "Tema 4. Marginación e inadaptación social. Factores causales. Las nuevas formas de marginación: la exclusión social. Intervención socioeducativa desde los servicios sociales. Programas de prevención desde los servicios sociales para los colectivos socialmente discriminados. Conceptos y teorías sobre los procesos de integración y marginación social.",
+        "Tema 5. Conceptos de educación, educación social e integración social. Características del fenómeno educativo. Funciones básicas de la educación en el campo de la intervención social.",
+        "Tema 6. Los valores en educación. Desarrollo y aprendizaje de valores. La adquisición, aprendizaje y cambio de actitudes.",
+        "Tema 7. Educación para la paz, la tolerancia y la convivencia. La educación y el desarrollo de actitudes cooperativas, democráticas y cívicas.",
+        "Tema 8. Educación para la igualdad. Principios no discriminatorios. Eliminación de prejuicios racistas y sexistas.",
+        "Tema 9. Educación para la salud. Actitudes y hábitos referidos al descanso, higiene y actividad. Prevención de accidentes y primeros auxilios.",
+        "Tema 10. Los medios de comunicación. Su importancia en la sociedad actual y en la formación de valores, actitudes y hábitos de convivencia. Educación para el uso crítico de los medios de comunicación y las nuevas tecnologías.",
+        "Tema 11. Principios de intervención educativa en la educación social. Enfoques metodológicos. La acción educativa en medio abierto y la acción educativa tradicional. La educación de adultos. La animación sociocultural.",
+        "Tema 12. Programación y evaluación de intervenciones sociales. El proyecto como eje de la intervención. Técnicas e instrumentos de evaluación.",
+        "Tema 13. La función del técnico especialista-educador. Su papel en el Sistema de Servicios Sociales. El técnico especialista-educador en el equipo interdisciplinar.",
+        "Tema 14. Ley Orgánica 1/1996, de 15 de Enero, de Protección Jurídica del Menor, de Modificación Parcial del Código Civil y de la Ley de Enjuiciamiento Civil. La Ley 3/95, de la Infancia de la Región de Murcia.",
+        "Tema 15. Desamparo, tutela y guarda de menores. El acogimiento familiar: concepto y clases. La práctica de la adopción. Programas de intervención. La Ley 21/1987, de 11 de noviembre, por la que se modifican determinados artículos del Código Civil y de la Ley de Enjuiciamiento Civil en materia de adopción. Decreto 372/2007, de 30 de noviembre, por el que se regulan los procedimientos administrativos en materia de adopción de menores en la Región de Murcia.",
+        "Tema 16. El maltrato y el abandono infantil. Factores de riesgo. Familias multiproblemáticas. Desestructuración familiar y maltrato. Indicadores. La mendicidad infantil. Prevención. Estrategias de intervención. Papel del educador social.",
+        "Tema 17. El acogimiento residencial: Centros de acogida y observación. Residencias infantiles. Hogares funcionales. Centros de día. El apoyo familiar: prestaciones económicas y en especie.",
+        "Tema 18. El menor infractor. Características. La delincuencia juvenil. La Ley Orgánica reguladora de la competencia y el Procedimiento de los juzgados de Menores.",
+        "Tema 19. Medidas en medio abierto. La libertad vigilada. La prestación de servicios en beneficio de la comunidad. Realización de tareas socioeducativas. El acogimiento.",
+        "Tema 20. El internamiento. Internamiento en régimen abierto. Internamiento en régimen semiabierto. Internamiento en régimen cerrado. Permanencia de fin de semana. Asistencia a Centro de Día. Tratamiento ambulatorio.",
+        "Tema 21. Medidas alternativas al internamiento. La mediación y la conciliación en menores en conflicto social.",
+        "Tema 22. La educación especial en el marco de la LOMCE. Su desarrollo normativo. El concepto de alumnos con necesidades educativas especiales. La integración de niños y niñas con necesidades educativas especiales en la escuela. Principios de integración, normalización y sectorización.",
+        "Tema 23. Real Decreto Legislativo 1/2013, de 29 de Noviembre, por el que se aprueba el Texto Refundido de la Ley General de Derechos de las Personas con Discapacidad y de su Inclusión Social.",
+        "Tema 24. La integración social y laboral de las personas con discapacidad. La inserción ocupacional. Centros Ocupacionales. Centros Especiales de Empleo. El trabajo diario del educador social.",
+        "Tema 25. La discapacidad intelectual. Concepto, etiología y clasificación. Desarrollo de habilidades: cognitivas, psicomotrices, del lenguaje, profesionales y del comportamiento. Programas de intervención.",
+        "Tema 26. Las discapacidades sensoriales. Personas ciegas o amblíopes. Personas con deficiencia auditiva. Programas de intervención.",
+        "Tema 27. Las deficiencias motóricas. Tipos y clasificación. Características principales de cada una de ellas. Personas con deficiencias motóricas y otras deficiencias asociadas. Programas de intervención.",
+        "Tema 28. El Autismo y otras alteraciones graves del desarrollo. Identificación de las necesidades e intervención educativa. Programas de comunicación. Abordaje de los trastornos de conducta.",
+        "Tema 29. Entrenamiento en habilidades comunicativas y sociales. Entrenamiento asertivo. Habilidades de autonomía personal. Adquisición de las competencias básicas. Habilidades de autocuidado. Habilidades de organización de la vida diaria.",
+        "Tema 30. Enfermedad mental crónica. Rehabilitación psicosocial. Intervención socioeducativa en la enfermedad mental crónica. Las personas mayores. Cambios característicos. Problemáticas específicas del envejecimiento. Percepción social de la persona mayor. Intervención socioeducativa con personas mayores.",
+        "Tema 31. Ley 39/2006, de 14 de Diciembre, de Promoción de la Autonomía Personal y Atención a las personas en Situación de Dependencia. Procedimiento para la valoración y el reconocimiento de la Situación de Dependencia y del derecho al catálogo de servicios y prestaciones económicas del SAAD en la Comunidad Autónoma de Murcia.",
+        "Tema 32. Recursos de ocio y tiempo libre. Fiestas y juegos. Ludoterapia. El cuento. Dramatización infantil. La expresión plástica. Actividades deportivas. Actividades en la naturaleza.",
+        "Tema 33. Las organizaciones no gubernamentales y su relación con los servicios sociales. Cooperación con la Administración. El voluntariado social. Plan Estatal del Voluntariado. Ley 6/1996, de 15 de enero del Voluntariado. Ley 5/2004, de 22 de octubre, del Voluntariado en la Región de Murcia.",
+        "Tema 34. Competencias de la Comunidad Autónoma de la Región de Murcia en materia de servicios sociales. Ley de Servicios Sociales de la Región de Murcia.",
+        "Tema 35. La Consejería de Sanidad y Política Social: estructura y competencias. Ley de creación del IMAS: competencias, funciones y estructura. Los servicios sociales en la Administración del Estado. Los servicios sociales en la Administración Local."
+      ]
+    },
+    "Materias Comunes (Téc. Auxiliares / Auxiliar Educativo - Anexo IV BORM 2016)": {
+      "etiqueta": "Comunes T.Aux.",
+      "fuente": "Orden de 27 de abril de 2016 (BORM nº 113), Anexo IV. Cuerpo de Técnicos Auxiliares.",
+      "temas": [
+        "Tema 1. La Constitución española de 1978: estructura y contenido. Derechos y deberes fundamentales: garantía y suspensión. Instituciones básicas del Estado. Estatuto de Autonomía de la Región de Murcia: estructuración y contenido.",
+        "Tema 2. La Administración Pública de la Comunidad Autónoma de Murcia: organización y régimen jurídico.",
+        "Tema 3. Ordenación de la Función Pública Regional. Principios informadores. Clases de personal: su régimen jurídico. Derechos y Deberes: derechos de negociación colectiva y huelga. Régimen disciplinario. Régimen de incompatibilidades. Retribuciones. La responsabilidad de las Administraciones y de los funcionarios. La protección de datos de carácter personal y el secreto profesional.",
+        "Tema 4. El procedimiento administrativo común: concepto. Fases del procedimiento administrativo común. Audiencia al interesado. Cómputo de plazos. La revisión de los actos en vía administrativa. Los derechos de los ciudadanos.",
+        "Tema 5. Los recursos humanos y la calidad en los servicios. Los servicios de información administrativa y de atención al ciudadano.",
+        "Tema 6. Los sistemas informáticos: concepto, componentes y funcionamiento general. Redes de ordenadores e Internet. La red corporativa de la Comunidad Autónoma de la Región de Murcia.",
+        "Tema 7. Prevención de riesgos laborales: derechos y obligaciones de los trabajadores en materia de prevención de riesgos laborales. La organización de la Prevención de Riesgos Laborales en la Administración Regional.",
+        "Tema 8. La sede electrónica. La identificación y autenticación de las personas físicas y jurídicas para las diferentes actuaciones en la gestión electrónica. El documento electrónico. El expediente electrónico. La Plataforma de Interoperabilidad.",
+        "Tema 9. Igualdad: Disposiciones generales. Transparencia y acceso a la información pública: conceptos fundamentales."
+      ]
+    },
+    "Materias Específicas (Auxiliar Educativo / ATE - BORM 2014)": {
+      "etiqueta": "Aux. Educativo",
+      "fuente": "Orden de 3 de febrero de 2014 (BORM nº 33). Cuerpo de Técnicos Auxiliares, opción Auxiliar Educativo.",
+      "temas": [
+        "Tema 1. Desarrollo evolutivo del niño y el adolescente. Desarrollo social, afectivo, motor, cognitivo, del lenguaje y la comunicación. Desarrollo moral. Principales trastornos de la comunicación y el lenguaje.",
+        "Tema 2. Las personas con discapacidad intelectual. Elementos clave: capacidades y competencias básicas, entornos y habilidades funcionales. Habilidades adaptativas. Intervención en alteraciones de conducta. Relación del Auxiliar Educativo con las familias de las personas con discapacidad.",
+        "Tema 3. Las personas con discapacidad sensorial y motórica. Principales características e intervención en cada una de ellas. Los trastornos generalizados del desarrollo: el autismo.",
+        "Tema 4. La educación especial en el marco de la LOMCE (Ley Orgánica de Mejora de la Calidad Educativa). Su desarrollo normativo. El concepto de alumnos con necesidades educativas especiales. La integración de niños y niñas con necesidades educativas especiales en la escuela. Principios de integración, normalización y sectorización.",
+        "Tema 5. La función del Auxiliar Educativo en centros educativos: escuelas infantiles, centros de educación especial y centros educativos ordinarios. Coordinación con otros profesionales del centro.",
+        "Tema 6. La Ley de Servicios Sociales de la Región de Murcia. Estructura y contenido.",
+        "Tema 7. La Ley de la Infancia de la Región de Murcia. Estructura y contenido.",
+        "Tema 8. Competencias de la Administración Regional en materia de Familia, Menor y Acción Social. El Instituto Murciano de Acción Social (IMAS). Estructura y funciones.",
+        "Tema 9. Protección a la infancia. Maltrato y abandono infantil. El abuso sexual infantil. Indicadores. Los derechos de los niños y niñas. Relación del Auxiliar Educativo con las familias de los menores.",
+        "Tema 10. Marginación e inadaptación social. Nuevas formas de exclusión social. Prevención desde el ámbito de la educación. El Auxiliar Educativo en los Centros de Acogida de Menores.",
+        "Tema 11. Las personas con discapacidad psíquica adultas. Características y necesidades. Los Centros de Atención a Discapacitados en el ámbito de la Región de Murcia: funciones del Auxiliar Educativo en estos Centros y la coordinación con otros profesionales.",
+        "Tema 12. Habilidades de autonomía personal. Adquisición de las competencias básicas. Habilidades de autocuidado. El aseo personal. Habilidades de organización de la vida cotidiana.",
+        "Tema 13. La Ley de Dependencia y su aplicación en la Comunidad Autónoma de la Región de Murcia.",
+        "Tema 14. Educación para la salud. Actitudes y hábitos referidos al descanso, actividad, higiene y alimentación.",
+        "Tema 15. La manipulación de alimentos: conceptos generales de alimentación y nutrición. El papel del Auxiliar Educativo en la atención a la alimentación.",
+        "Tema 16. Principios generales de socorrismo y primeros auxilios. La coordinación del Auxiliar Educativo con otros profesionales sanitarios: médico, enfermero, auxiliar de clínica.",
+        "Tema 17. El juego. El juego adaptado. Aplicaciones educativas. Importancia del juego en el desarrollo. Educación para el ocio y el tiempo libre. Actividades de expresión artística.",
+        "Tema 18. La expresión plástica. Elementos básicos del lenguaje plástico. Actividades de expresión plástica."
+      ]
+    },
+    "Materias Comunes (Auxiliar Administrativo - BORM 2016)": {
+      "etiqueta": "Comunes Aux.Adm",
+      "fuente": "Orden de 27 de septiembre de 2016 (BORM nº 241). Cuerpo de Auxiliares Administrativos, acceso libre.",
+      "temas": [
+        "Tema 1. Constitución Española de 1978: Título Preliminar. Derechos y deberes fundamentales: Derechos y libertades; Garantías y suspensión de derechos y libertades. Control judicial de la Administración.",
+        "Tema 2. Estatuto de Autonomía de la Región de Murcia: Órganos institucionales. Régimen Jurídico. Reforma del Estatuto.",
+        "Tema 3. El Presidente. El Consejo de Gobierno de la Región de Murcia. Los Consejeros. La Administración Pública de la Región de Murcia; Régimen jurídico, organización y funcionamiento. Administración institucional.",
+        "Tema 4. Régimen Jurídico del Sector Público: Ámbito de aplicación y principios generales. Derechos de los ciudadanos.",
+        "Tema 5. Disposiciones y actos administrativos: Disposiciones administrativas; Requisitos de los actos administrativos; Eficacia de los actos; Nulidad y anulabilidad.",
+        "Tema 6. Iniciación, ordenación, instrucción y finalización del procedimiento administrativo.",
+        "Tema 7. Revisión de los actos en vía administrativa. Responsabilidad de las autoridades y personal al servicio de las Administraciones Públicas.",
+        "Tema 8. Estatuto Básico del Empleado Público: Objeto, ámbito de aplicación y tipos de personal. Ley de Función Pública de la Región de Murcia: Objeto y ámbito de la Ley. Adquisición y pérdida de la condición de funcionario. Situaciones administrativas. Derechos, deberes, incompatibilidades y responsabilidades de los funcionarios.",
+        "Tema 9. Ley de Contratos del Sector Público: Ámbito de aplicación subjetiva. Concepto y disposiciones comunes a todos los contratos. Objeto y requisitos de los contratos.",
+        "Tema 10. Ley de Hacienda de la Región de Murcia: Principios generales. Concepto, elaboración y aprobación de los Presupuestos Generales de la Comunidad Autónoma.",
+        "Tema 11. La sede electrónica. La identificación y autenticación de las personas físicas y jurídicas para las diferentes actuaciones en la gestión electrónica. El documento electrónico. El expediente electrónico. La Plataforma de Interoperabilidad.",
+        "Tema 12. Información administrativa y atención al ciudadano en los canales presencial, electrónico y telefónico.",
+        "Tema 13. Los Archivos y el Patrimonio Documental en la Región de Murcia. Concepto de documento y archivo. Sistema de archivos de la Región de Murcia. Ordenación de documentos.",
+        "Tema 14. Los documentos administrativos: Concepto, funciones y características. Clasificación y características de los documentos administrativos emitidos por la Administración. Estilo administrativo en la redacción de documentos.",
+        "Tema 15. Ley de Prevención de Riesgos Laborales: Derechos y obligaciones. Servicios de prevención.",
+        "Tema 16. Igualdad: Disposiciones generales. Transparencia y acceso a la información pública: conceptos fundamentales. La protección de datos de carácter personal: principios reguladores y derechos de las personas."
+      ]
+    },
+    "Materias Específicas (Auxiliar Administrativo - Ofimática, BORM 2025)": {
+      "etiqueta": "Ofimática Aux.Adm",
+      "fuente": "Orden de 4 de noviembre de 2025 (BORM nº 262), Anexo. Segunda parte del ejercicio único, Cuerpo de Auxiliares Administrativos.",
+      "temas": [
+        "Tema 1. Presentaciones con PowerPoint 2016: acceso al programa y elementos de la pantalla; introducción a las presentaciones; vistas (normal, clasificador de diapositivas, lectura, presentación); edición básica (textos, tablas, portapapeles); organizar una presentación; diseño (dibujos e imágenes, formas, imágenes prediseñadas, gráficos, WordArt, SmartArt, audios y vídeos, animaciones y transiciones, fondo, encabezado y pie, plantillas de diapositivas, hipervínculos).",
+        "Tema 2. Hoja de cálculo Excel 2016: acceso y elementos de la pantalla; crear, guardar y abrir libros; formato de celdas; manejo de datos en hojas y grandes hojas; importar datos; formato de hojas y libros; vistas, revisión e impresión; tablas de datos y tablas dinámicas; creación, edición e impresión de gráficos; objetos; fórmulas y funciones (SUMA, MIN, MAX, PROMEDIO, CONTAR, SI, SUMAR.SI, CONTAR.SI, PROMEDIO.SI, funciones de texto y macros).",
+        "Tema 3. Firma electrónica y certificados digitales: criptografía y cifrado; firma electrónica; certificado digital; DNI electrónico; sistema Cl@ve; obtención, instalación y usos del certificado (certificados de la FNMT, DNI electrónico, buenas prácticas, uso del certificado en empresa, firmar documentos con Autofirma y Portafirmas).",
+        "Tema 4. Procesador de textos Word 2016: acceso y elementos de la pantalla; crear, guardar y abrir documentos; edición básica; formato de texto y de párrafo; administrar documentos (vistas, diseño de páginas, encabezados y pies, navegación, revisión, impresión); diseño y formatos avanzados (tabuladores y columnas, saltos de página y sección, listas, tablas, cuadros de texto, campos, símbolos y ecuaciones, elementos gráficos e imágenes, referencias: notas al pie, citas, bibliografía, índices y tabla de contenidos).",
+        "Tema 5. Outlook 365: componentes (correo, calendario, contactos, tareas); lista de contactos (crear, editar, vistas, buscar, categorías, importar/exportar); operaciones con contactos y grupos; correo electrónico (redactar y enviar, adjuntar archivos, firmas y temas, opciones de envío); gestión del correo (carpetas, responder y reenviar, reglas y filtros, spam, respuestas automáticas); el calendario (eventos, reuniones, eventos periódicos, avisos, compartir); tareas (crear, seguir, categorizar, recuperar elementos eliminados)."
       ]
     }
   }

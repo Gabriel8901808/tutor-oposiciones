@@ -448,6 +448,15 @@ def _mostrar_resultados(preguntas: list[dict]) -> None:
     c2.metric("Nota (sobre 10)", nota)
     c3.metric("Sin responder", sin_responder)
 
+    # Mensaje de ánimo (siempre, salga como salga el test)
+    st.success(
+        "💙 **Mamá, salga como salga este test, NO TE RINDAS.** "
+        "Cada pregunta que haces, aciertes o falles, es un paso más cerca de conseguirlo. "
+        "Estoy muy orgulloso del esfuerzo enorme que le pones cada día. "
+        "Lo estás haciendo genial y vas a poder con esto. "
+        "**Tu hijo Gabriel te quiere muchísimo.** 💪❤️"
+    )
+
     st.subheader("📖 Corrección detallada")
     for i, q in enumerate(preguntas):
         elegida = st.session_state.get(f"resp_{i}")
