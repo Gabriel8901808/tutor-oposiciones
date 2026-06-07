@@ -1,0 +1,64 @@
+{
+  "_instrucciones": "Para AÑADIR un nuevo temario, copia un bloque y crea una nueva clave con el nombre del temario y su lista de temas. La app lo cargará automáticamente en los modos 'Desarrollar Temario' y 'Hacer Test'. El orden de las claves se respeta.",
+  "temarios": {
+    "Materias Comunes (Anexo III - BORM 2016)": {
+      "etiqueta": "Comunes",
+      "fuente": "Orden de 27 de abril de 2016 (BORM nº 113). Cuerpo de Técnicos Especialistas.",
+      "temas": [
+        "Tema 1. La Constitución española de 1978: estructura y contenido. Derechos y deberes fundamentales: garantía y suspensión. Instituciones básicas del Estado. Estatuto de Autonomía de la Región de Murcia: estructuración y contenido.",
+        "Tema 2. Concepto de Administración Pública. Diferentes niveles de la Administración Pública: Administración Estatal, Autonómica, Local e Institucional: ideas básicas. La Administración Pública de la Comunidad Autónoma de Murcia: organización y régimen jurídico.",
+        "Tema 3. Ordenación de la Función Pública Regional. Principios informadores. Clases de personal: su régimen jurídico. Derechos y Deberes: derechos de negociación colectiva y huelga. Régimen disciplinario. Régimen de incompatibilidades. Retribuciones. La responsabilidad de las administraciones y de los funcionarios. La protección de datos de carácter personal y el secreto profesional.",
+        "Tema 4. El presupuesto de la Comunidad Autónoma. Principios presupuestarios. Elaboración y aprobación del presupuesto. La ejecución del presupuesto: operaciones necesarias. Gestión de los diferentes gastos. Modificaciones presupuestarias.",
+        "Tema 5. Los principios informadores de la actividad administrativa: eficacia, jerarquía, descentralización, desconcentración, coordinación y legalidad.",
+        "Tema 6. El procedimiento administrativo común: concepto. Fases del procedimiento administrativo común. Audiencia al interesado. Cómputo de plazos. La revisión de los actos en vía administrativa. Los derechos de los ciudadanos.",
+        "Tema 7. Los procedimientos de contratación.",
+        "Tema 8. Los recursos humanos y la calidad en los servicios. Los servicios de información administrativa y de atención al ciudadano.",
+        "Tema 9. Los sistemas informáticos: concepto, componentes y funcionamiento general. Redes de ordenadores e Internet. La red corporativa de la Comunidad Autónoma de la Región de Murcia.",
+        "Tema 10. Prevención de riesgos laborales: derechos y obligaciones de los trabajadores en materia de prevención de riesgos laborales. La organización de la Prevención de Riesgos Laborales en la Administración Regional.",
+        "Tema 11. La sede electrónica. La identificación y autenticación de las personas físicas y jurídicas para las diferentes actuaciones en la gestión electrónica. El documento electrónico. El expediente electrónico. La Plataforma de Interoperabilidad.",
+        "Tema 12. Igualdad: Disposiciones generales. Transparencia y acceso a la información pública: conceptos fundamentales."
+      ]
+    },
+    "Materias Específicas (Opción Terapeuta - BORM 2014)": {
+      "etiqueta": "Específicas",
+      "fuente": "Orden de 5 de mayo de 2014 (BORM nº 119). Cuerpo de Técnicos Especialistas, opción Terapeuta.",
+      "temas": [
+        "Tema 1. Salud y enfermedad. Principios y orientaciones de la educación para la Salud. Salud y desarrollo comunitario. Concepto de pluripatología. Ergoterapia, laborterapia y terapia ocupacional. El papel de la terapia ocupacional en la salud.",
+        "Tema 2. Salud laboral. Prevención de accidentes laborales. Vigilancia de factores de riesgo: técnicas de prevención. Trabajo con máquinas. Lesiones de tipo acumulativo profesional.",
+        "Tema 3. Clasificación Internacional de Deficiencia, Discapacidad y Minusvalía. Definición y características. Ley 39/2006, de 14 de Diciembre, de Promoción de la Autonomía Personal y Atención a las personas en Situación de Dependencia. Procedimiento para la valoración y el reconocimiento de la Situación de Dependencia.",
+        "Tema 4. La integración social y laboral de las personas con discapacidad. La inserción ocupacional. Programas de empleo con apoyo. Centros Ocupacionales. Centros Especiales de Empleo.",
+        "Tema 5. Ergonomía y Discapacidad. Contribución de la ergonomía en el área de la discapacidad. Ayudas técnicas en terapia ocupacional. Análisis del trabajo. Medidas de intervención para adaptar el trabajo a personas con discapacidad.",
+        "Tema 6. Accesibilidad para personas con movilidad reducida. Barreras arquitectónicas. Parámetros antropométricos. La Ley de Condiciones de Habitabilidad y Promoción de la Accesibilidad General.",
+        "Tema 7. La discapacidad intelectual. Concepto, etiología y clasificación.",
+        "Tema 8. Las discapacidades sensoriales. Personas ciegas o ambliopes. Personas con deficiencia auditiva.",
+        "Tema 9. Las discapacidades motóricas. Tipos y clasificación. Características principales de cada una de ellas. Biomecánica.",
+        "Tema 10. El autismo y otras alteraciones graves del desarrollo. Programas de comunicación alternativos. Abordaje de los problemas de conducta.",
+        "Tema 11. Diagnóstico y clasificación de las enfermedades mentales. Características generales del enfermo mental crónico. La reinserción social y laboral del enfermo mental crónico. Entrenamiento en actividades para la búsqueda activa de empleo.",
+        "Tema 12. Las drogodependencias: conceptos fundamentales. La reinserción social y laboral del toxicómano. Ley 6/1997, de 22 de octubre, sobre drogas, para la prevención, asistencia e integración social.",
+        "Tema 13. El envejecimiento: aspectos biológicos, psicológicos y sociales de la vejez. La rehabilitación terapéutica de personas mayores. Plan de Acción Social para las Personas Mayores de la Región de Murcia. La Coordinación socio-sanitaria como base del tratamiento de atención integral a las personas mayores.",
+        "Tema 14. La función del terapeuta. Su papel en el Sistema de Servicios Sociales. El terapeuta en el equipo multiprofesional. Competencias profesionales del terapeuta.",
+        "Tema 15. Importancia de la relación del terapeuta con la familia del discapacitado, del enfermo mental crónico, del toxicómano y de la persona mayor.",
+        "Tema 16. Real Decreto Legislativo 1/2013, de 29 de Noviembre, por el que se aprueba el Texto Refundido de la Ley General de Derechos de las Personas con Discapacidad y de su Inclusión Social.",
+        "Tema 17. La formación para el empleo. La formación ocupacional. Los programas de garantía social. Empleo y discapacidad. Itinerario laboral.",
+        "Tema 18. La formación profesional. Evolución de la concepción de la formación profesional. Tipos de programas y características de la formación profesional para personas con discapacidad.",
+        "Tema 19. Diseño y Análisis de Tareas. Desarrollo de un curso sistemático. Destinatarios del curso. Planificación de la práctica.",
+        "Tema 20. Talleres ocupacionales. Adaptación a través de la ocupación humana. Exploración prevocacional. Plan de trabajo. Talleres artísticos.",
+        "Tema 21. Dinámica de un taller. Adecuación de contenidos y actividades.",
+        "Tema 22. Conductas preelaborales. Conductas laborales. Seguridad. Adaptación y entrenamiento en el puesto de trabajo. Seguimiento y apoyo continuado.",
+        "Tema 23. Organización de un taller. Organización del material. Maquinaria. Herramientas. Espacio y almacenaje.",
+        "Tema 24. Diseño de actividades programadas y de espacios terapéuticos. Presentación de la actividad y realización del ensayo. Configuración individual de actividades. Práctica de la actividad.",
+        "Tema 25. La evaluación de la formación. Clases de evaluación. Técnicas e instrumentos de evaluación. Pruebas objetivas. Evaluación de las prácticas: lista de cotejo y escala de evaluación. Valoración de programas. Diagnóstico ocupacional.",
+        "Tema 26. Dinámica de grupos en la formación. La dinámica de grupos como técnica central del abordaje terapéutico. Habilidades para participar en grupos: grupos paralelos, grupos cooperativos, proyecto grupal, grupos maduros.",
+        "Tema 27. Artes aplicadas, artes decorativas e industriales. Nuevas tecnologías y terapia ocupacional. La creación artística.",
+        "Tema 28. Actividades manuales diversas. Actividades artesanales y artísticas.",
+        "Tema 29. Desarrollo de habilidades sociales y de autonomía personal: aseo personal, atención a la alimentación, ocio y tiempo libre. Habilidades de autocuidado.",
+        "Tema 30. Incremento de la productividad en el desempeño de tareas. Incremento gradual del período de trabajo.",
+        "Tema 31. Retraso mental y envejecimiento. Programa de recreo, terapia expresiva y arteterapia. Dinámicas entre creación y procesos terapéuticos. Desarrollo del proceso creativo.",
+        "Tema 32. El terapeuta en las actividades de la vida diaria: alimentación, higiene, cuidado personal, medicación, socialización, comunicación, movilidad funcional, respuesta a emergencias, expresión sexual y arreglo. Terapias individuales, grupales y a domicilio.",
+        "Tema 33. Las organizaciones no gubernamentales y su relación con los servicios sociales. Cooperación con la Administración. El voluntariado social. Plan Estatal del Voluntariado. Ley 6/1996, de 15 de enero del Voluntariado. Ley 5/2004, de 22 de octubre, del Voluntariado en la Región de Murcia.",
+        "Tema 34. Competencias de la Comunidad Autónoma de la Región de Murcia en materia de servicios sociales. Ley de Servicios Sociales de la Región de Murcia.",
+        "Tema 35. La Consejería de Sanidad y Política Social: estructura y competencias. Ley de creación del IMAS: competencias, funciones y estructura. Los servicios sociales en la Administración del Estado. Los servicios sociales en la Administración Local."
+      ]
+    }
+  }
+}

@@ -1,40 +1,1011 @@
 {
   "metadata": {
-    "titulo": "Examen Técnico Especialista - Opción Terapeuta (Turno Libre/Consolidación)",
-    "convocatoria": "CARM - Ejercicio único celebrado el 23 de octubre de 2021",
+    "titulo": "Examen Técnico Especialista - Opción Terapeuta (Estabilización de Empleo Temporal)",
+    "convocatoria": "CARM - Ejercicio único 23 de octubre de 2021 (Orden 28 marzo 2019, código CFX17C18-6)",
     "total_preguntas": 100,
-    "nota": "Las preguntas y opciones deben rellenarse con el texto literal del cuadernillo. Las respuestas oficiales se han mapeado según la plantilla del tribunal facilitada por el usuario. Cuando una pregunta no tenga el enunciado cargado, la app pedirá al modelo que trabaje sólo con la solución oficial."
+    "nota_supuestos": "Las preguntas 71-85 corresponden al Supuesto Práctico 1 (Arturo, 46 años, esquizofrenia, taller de habilidades sociales en residencia de enfermos mentales). Las preguntas 86-100 corresponden al Supuesto Práctico 2 (centro público para personas con discapacidad con problemas de conducta)."
   },
   "respuestas_oficiales": {
-    "1": "B", "2": "D", "3": "B", "4": "B", "5": "C",
-    "6": "C", "7": "B", "8": "D", "9": null, "10": null,
-    "11": null, "12": null, "13": null, "14": null, "15": null,
-    "16": null, "17": null, "18": null, "19": null, "20": null,
-    "21": null, "22": null, "23": null, "24": null, "25": null,
-    "26": null, "27": null, "28": null, "29": null, "30": null,
-    "31": null, "32": null, "33": null, "34": null, "35": null,
-    "36": null, "37": null, "38": null, "39": null, "40": null,
-    "41": null, "42": null, "43": null, "44": "B", "45": "D",
-    "46": null, "47": null, "48": null, "49": null, "50": null,
-    "51": null, "52": null, "53": null, "54": null, "55": null,
-    "56": null, "57": null, "58": null, "59": null, "60": null,
-    "61": null, "62": null, "63": null, "64": null, "65": null,
-    "66": null, "67": null, "68": null, "69": null, "70": null,
-    "71": "D", "72": null, "73": null, "74": null, "75": null,
-    "76": null, "77": null, "78": null, "79": null, "80": null,
-    "81": null, "82": null, "83": null, "84": null, "85": "C",
-    "86": null, "87": null, "88": null, "89": null, "90": null,
-    "91": null, "92": null, "93": null, "94": null, "95": null,
-    "96": null, "97": null, "98": null, "99": null, "100": "B"
+    "1": "B",
+    "2": "D",
+    "3": "B",
+    "4": "B",
+    "5": "C",
+    "6": "C",
+    "7": "B",
+    "8": "D",
+    "9": "C",
+    "10": "B",
+    "11": "C",
+    "12": "C",
+    "13": "A",
+    "14": "D",
+    "15": "A",
+    "16": "B",
+    "17": "C",
+    "18": "A",
+    "19": "C",
+    "20": "D",
+    "21": "A",
+    "22": "B",
+    "23": "B",
+    "24": "A",
+    "25": "D",
+    "26": "C",
+    "27": "D",
+    "28": "A",
+    "29": "B",
+    "30": "B",
+    "31": "D",
+    "32": "A",
+    "33": "D",
+    "34": "C",
+    "35": "B",
+    "36": "A",
+    "37": "B",
+    "38": "C",
+    "39": "A",
+    "40": "A",
+    "41": "C",
+    "42": "A",
+    "43": "B",
+    "44": "B",
+    "45": "D",
+    "46": "C",
+    "47": "D",
+    "48": "C",
+    "49": "C",
+    "50": "A",
+    "51": "D",
+    "52": "C",
+    "53": "A",
+    "54": "B",
+    "55": "D",
+    "56": "D",
+    "57": "D",
+    "58": "B",
+    "59": "B",
+    "60": "A",
+    "61": "C",
+    "62": "B",
+    "63": "B",
+    "64": "D",
+    "65": "D",
+    "66": "B",
+    "67": "A",
+    "68": "A",
+    "69": "C",
+    "70": "B",
+    "71": "D",
+    "72": "B",
+    "73": "B",
+    "74": "D",
+    "75": "A",
+    "76": "B",
+    "77": "C",
+    "78": "C",
+    "79": "B",
+    "80": "A",
+    "81": "C",
+    "82": "D",
+    "83": "B",
+    "84": "C",
+    "85": "C",
+    "86": "D",
+    "87": "D",
+    "88": "A",
+    "89": "D",
+    "90": "A",
+    "91": "D",
+    "92": "C",
+    "93": "B",
+    "94": "A",
+    "95": "A",
+    "96": "C",
+    "97": "D",
+    "98": "B",
+    "99": "B",
+    "100": "B"
   },
   "preguntas": {
     "1": {
-      "enunciado": "(Pendiente de transcribir el enunciado literal del cuadernillo de 23/10/2021)",
+      "enunciado": "¿Cuál de los siguientes NO es un órgano institucional de la Región de Murcia?",
       "opciones": {
-        "A": "Opción A (pendiente)",
-        "B": "Opción B (pendiente)",
-        "C": "Opción C (pendiente)",
-        "D": "Opción D (pendiente)"
+        "A": "La Asamblea Regional.",
+        "B": "El Tribunal Superior de Justicia.",
+        "C": "El Presidente.",
+        "D": "El Consejo de Gobierno."
+      }
+    },
+    "2": {
+      "enunciado": "Señala cuál de los siguientes NO es un órgano superior de la Administración General de la Comunidad Autónoma de la Región de Murcia:",
+      "opciones": {
+        "A": "Los Consejeros.",
+        "B": "El Consejo de Gobierno.",
+        "C": "El Vicepresidente de la Comunidad Autónoma.",
+        "D": "Los Secretarios Generales."
+      }
+    },
+    "3": {
+      "enunciado": "¿A quién corresponde el desarrollo por vía reglamentaria del régimen de incompatibilidades del personal al servicio de la Administración Pública de la Región de Murcia?",
+      "opciones": {
+        "A": "Al Tribunal Superior de Justicia de la Región de Murcia.",
+        "B": "Al Consejo de Gobierno.",
+        "C": "A la Dirección General de la Función Pública Regional.",
+        "D": "Al Presidente de la Región."
+      }
+    },
+    "4": {
+      "enunciado": "De acuerdo con el artículo 8 del Texto Refundido de la Ley de Hacienda de la Región de Murcia, la competencia de elaborar y aprobar el Proyecto de Ley de Presupuestos Generales de la Comunidad Autónoma y presentarlo para su examen, enmienda y aprobación por la Asamblea Regional corresponde al:",
+      "opciones": {
+        "A": "Consejero competente en materia de Economía y Hacienda.",
+        "B": "Consejo de Gobierno.",
+        "C": "Consejero competente en cada materia.",
+        "D": "Director General de Presupuestos."
+      }
+    },
+    "5": {
+      "enunciado": "De acuerdo con el artículo 48 del Texto Refundido de la Ley de Hacienda de la Región de Murcia, la fase de gestión de los créditos del estado de gastos, que consiste en la aceptación, por parte de la Administración deudora, de que una prestación ha sido realizada y se ajusta a lo previsto, y que supone la contracción en cuenta de los créditos exigibles contra la Comunidad Autónoma, es la fase de:",
+      "opciones": {
+        "A": "Autorización del gasto.",
+        "B": "Disposición o compromiso del gasto.",
+        "C": "Reconocimiento de la obligación.",
+        "D": "Propuesta de pago"
+      }
+    },
+    "6": {
+      "enunciado": "A tenor del artículo 3 de la Ley 40/2015 de Régimen Jurídico del Sector Público, las Administraciones Públicas sirven con objetividad los intereses generales y actúan de acuerdo a los principios de (MARQUE LA RESPUESTA CORRECTA):",
+      "opciones": {
+        "A": "Eficacia, jerarquía, descentralización, concentración y coordinación, con sometimiento pleno a la Constitución, a la Ley y al Derecho.",
+        "B": "Eficacia, jerarquía, centralización, desconcentración y coordinación, con sometimiento pleno a la Constitución, a la Ley y al Derecho.",
+        "C": "Eficacia, jerarquía, descentralización, desconcentración y coordinación, con sometimiento pleno a la Constitución, a la Ley y al Derecho.",
+        "D": "Eficacia, jerarquía, centralización, concentración y coordinación, con sometimiento pleno a la Constitución, a la Ley y al Derecho"
+      }
+    },
+    "7": {
+      "enunciado": "De acuerdo con lo previsto en el artículo 80.2 de la Ley 39/2015 del Procedimiento Administrativo Común de las Administraciones Públicas, los informes serán emitidos:",
+      "opciones": {
+        "A": "En el plazo de cinco días, salvo que una disposición o el cumplimiento del resto de los plazos del procedimiento permita o exija otro plazo mayor o menor.",
+        "B": "En el plazo de diez días, salvo que una disposición o el cumplimiento del resto de los plazos del procedimiento permita o exija otro plazo mayor o menor.",
+        "C": "En el plazo de quince días, salvo que una disposición o el cumplimiento del resto de los plazos del procedimiento permita o exija otro plazo mayor o menor.",
+        "D": "En el plazo de veinte días, salvo que una disposición o el cumplimiento del resto de los plazos del procedimiento permita o exija otro plazo mayor o menor."
+      }
+    },
+    "8": {
+      "enunciado": "Según lo previsto en el artículo 123 de la Ley 39/2015 del Procedimiento Administrativo Común de las Administraciones Públicas, contra un acto administrativo que ponga fin a la vía administrativa podrá interponerse:",
+      "opciones": {
+        "A": "Recurso de alzada ante el mismo órgano que lo dictó.",
+        "B": "Recurso de alzada ante el órgano superior jerárquico que lo dictó.",
+        "C": "Recurso extraordinario de revisión ante el superior jerárquico que lo dictó.",
+        "D": "Recurso de reposición ante el mismo órgano que lo hubiera dictado o ser impugnado directamente ante el orden jurisdiccional contencioso-administrativo."
+      }
+    },
+    "9": {
+      "enunciado": "Según lo previsto en el artículo 160 de la Ley 9/2017 de Contratos del Sector Público, el procedimiento de contratación que permite a cualquier empresa interesada presentar una solicitud de participación en respuesta a una convocatoria de licitación, pero sólo presentar ofertas a aquellas que sean seleccionadas por el órgano de contratación en atención a su solvencia es el:",
+      "opciones": {
+        "A": "Procedimiento abierto.",
+        "B": "Procedimiento negociado.",
+        "C": "Procedimiento restringido.",
+        "D": "Diálogo competitivo."
+      }
+    },
+    "10": {
+      "enunciado": "De acuerdo con el artículo 9 del Decreto 236/2010 de Atención al Ciudadano en la Administración Pública de la Región de Murcia, la información administrativa destinada a orientar, en sus relaciones con la Administración Regional, sobre la identificación, fines, competencias, estructura, funcionamiento y localización de los distintos Órganos, Centros directivos y Unidades administrativas se considera:",
+      "opciones": {
+        "A": "Información especializada.",
+        "B": "Información general.",
+        "C": "Información particular.",
+        "D": "Información específica."
+      }
+    },
+    "11": {
+      "enunciado": "De acuerdo con el artículo 17 del Decreto 236/2010 de Atención al Ciudadano en la Administración Pública de la Región de Murcia, el sistema de información que contiene el catálogo de procedimientos de la Administración Regional, sus trámites y los modelos de documentos asociados a cada uno de ellos, así como la información administrativa de los mismos se denomina:",
+      "opciones": {
+        "A": "Registro electrónico.",
+        "B": "Plataforma de interoperabilidad.",
+        "C": "Guía de Procedimientos y Servicios.",
+        "D": "Sede electrónica."
+      }
+    },
+    "12": {
+      "enunciado": "Al programa o conjunto de programas de control, que tiene por objeto facilitar el uso de un ordenador y conseguir que éste se utilice eficientemente se le denomina:",
+      "opciones": {
+        "A": "Memoria ROM.",
+        "B": "Memoria RAM.",
+        "C": "Sistema operativo.",
+        "D": "Procesador."
+      }
+    },
+    "13": {
+      "enunciado": "La Administración Pública Regional organiza su actividad en materia de Prevención de Riesgos Laborales a través de la siguiente modalidad:",
+      "opciones": {
+        "A": "Servicio de Prevención Propio.",
+        "B": "Servicio de Prevención Ajeno.",
+        "C": "Servicio de Prevención Mancomunado.",
+        "D": "Servicio de Prevención Privado."
+      }
+    },
+    "14": {
+      "enunciado": "De acuerdo con el artículo 15 de la Ley 31/1995 de Prevención de Riesgos Laborales, el empresario aplicará las medidas que integran el deber general de prevención, con arreglo a los siguientes principios generales (MARQUE LA RESPUESTA INCORRECTA):",
+      "opciones": {
+        "A": "Sustituir lo peligroso por lo que entrañe poco o ningún peligro.",
+        "B": "Evaluar los riesgos que no se puedan evitar.",
+        "C": "Adaptar el trabajo a la persona.",
+        "D": "Adoptar medidas que antepongan la protección individual a la colectiva."
+      }
+    },
+    "15": {
+      "enunciado": "De acuerdo con el artículo 10.5 de la Ley 39/2015 del Procedimiento Administrativo Común de las Administraciones Públicas, cuando los ciudadanos utilicen un sistema de firma electrónica de los considerados válidos por dicho artículo:",
+      "opciones": {
+        "A": "Su identidad se entenderá ya acreditada mediante el propio acto de la firma.",
+        "B": "Deberán acreditar posteriormente su identidad ante el órgano competente en el plazo de 5 días.",
+        "C": "Deberán acreditar posteriormente su identidad ante el órgano competente en el plazo de 10 días",
+        "D": "Deberán acreditar posteriormente su identidad ante el órgano competente en el plazo de 15 días"
+      }
+    },
+    "16": {
+      "enunciado": "De acuerdo con el artículo 3 de la Ley 7/2007 para la Igualdad entre Mujeres y Hombres, y de Protección contra la Violencia de Género en la Región de Murcia, el principio general que comporta aplicar la perspectiva de género en las fases de planificación, ejecución y evaluación de todas las políticas llevadas a cabo por las distintas administraciones públicas se denomina:",
+      "opciones": {
+        "A": "Corresponsabilidad.",
+        "B": "Transversalidad.",
+        "C": "Responsabilidad.",
+        "D": "Coordinación."
+      }
+    },
+    "17": {
+      "enunciado": "De acuerdo con el artículo 3 de la Ley 12/2014, de 16 de diciembre, de Transparencia y Participación Ciudadana de la Comunidad Autónoma de la Región de Murcia, se define transparencia como:",
+      "opciones": {
+        "A": "La puesta a disposición de datos en formato digital, estandarizado y abierto, siguiendo una estructura que permita su comprensión y reutilización de forma que generen valor y riqueza a través de productos derivados de dichos datos realizados por terceros.",
+        "B": "La intervención individual o colectiva por parte de los ciudadanos en el diseño, ejecución y evaluación de las políticas y actuaciones públicas mediante instrumentos y procesos que permitan su comunicación con las entidades públicas.",
+        "C": "La acción proactiva de la Administración de dar a conocer la información relativa a sus ámbitos de actuación y sus obligaciones, con carácter permanente y actualizado, de la forma que resulte más comprensible para las personas y mediante los instrumentos de difusión que les permitan un amplio y fácil acceso a los datos y faciliten su participación en los asuntos públicos.",
+        "D": "La obligación por parte de la Administración de publicar de manera permanente la información pública que sea relevante para garantizar la transparencia de su actividad pública."
+      }
+    },
+    "18": {
+      "enunciado": "¿Cuál de las siguientes opciones NO es un órgano consultivo de participación institucional del Sistema para la Autonomía y Atención a la Dependencia Según la Ley 39/2006, de 14 de diciembre, de Promoción de la Autonomía Personal y Atención a las personas en situación de dependencia?",
+      "opciones": {
+        "A": "El Comité Interterritorial de Atención a la Dependencia.",
+        "B": "El Comité Consultivo del Sistema para la Autonomía y Atención a la Dependencia.",
+        "C": "El Consejo Estatal de Personas Mayores.",
+        "D": "El Consejo Nacional de la Discapacidad."
+      }
+    },
+    "19": {
+      "enunciado": "¿A quién compete la aprobación del Plan Regional sobre Drogas?",
+      "opciones": {
+        "A": "A la Gerencia del Servicio Murciano de Salud.",
+        "B": "Al Consejero de Salud.",
+        "C": "Al Consejo de Gobierno de la Comunidad de la Región de Murcia.",
+        "D": "A la Dirección General de Asistencia Sanitaria."
+      }
+    },
+    "20": {
+      "enunciado": "¿Qué se entiende por deshabituación con respecto a las drogas según la Ley 6/1997, de 22 de octubre?",
+      "opciones": {
+        "A": "Estado psicofisiológico caracterizado por la necesidad del individuo de consumir droga para suprimir un malestar psíquico o somático.",
+        "B": "Proceso terapéutico dirigido a superar el estado de dependencia física.",
+        "C": "Proceso dirigido a lograr la incorporación o reincorporación del individuo a la sociedad como ciudadano responsable.",
+        "D": "Proceso terapéutico dirigido a superar el estado de dependencia psicológica."
+      }
+    },
+    "21": {
+      "enunciado": "Según el R.D. legislativo 1/2013 de 29 de noviembre toda conducta no deseada relacionada con la discapacidad de una persona, que tenga como objetivo o consecuencia atentar contra su dignidad o crear un entorno intimidatorio, hostil, degradante, humillante u ofensivo se considera:",
+      "opciones": {
+        "A": "Acoso.",
+        "B": "Discriminación directa.",
+        "C": "Discriminación indirecta.",
+        "D": "Discriminación por asociación."
+      }
+    },
+    "22": {
+      "enunciado": "¿Según el R.D. legislativo 1/2013 de 29 de noviembre cuál es el órgano encargado de promover la igualdad de oportunidades, no discriminación y accesibilidad universal de las personas con discapacidad?",
+      "opciones": {
+        "A": "El Centro Nacional de Discapacidad, Igualdad y Derechos Sociales.",
+        "B": "La Oficina de Atención a la Discapacidad.",
+        "C": "El Comité Nacional de Discapacidad.",
+        "D": "La Oficina Central de Asistencia y Protección a las Personas con Discapacidad."
+      }
+    },
+    "23": {
+      "enunciado": "Según la Ley de Prevención de Riesgos Laborales el órgano científico técnico especializado de la Administración General del Estado cuya misión es el análisis, estudio, promoción, apoyo y mejora de las condiciones de seguridad y salud en el trabajo es:",
+      "opciones": {
+        "A": "El Instituto de Prevención de Riesgos Laborales.",
+        "B": "El Instituto Nacional de Seguridad e Higiene en el Trabajo.",
+        "C": "El Instituto de Protección Laboral.",
+        "D": "El Instituto de Salud Laboral."
+      }
+    },
+    "24": {
+      "enunciado": "Según la Ley 31/1995, de 8 de noviembre, de prevención de Riesgos Laborales, el órgano destinado a la consulta regular y periódica de las actuaciones de la empresa o centro de trabajo en materia de prevención de riesgos laborales se denomina:",
+      "opciones": {
+        "A": "Comité de seguridad y salud.",
+        "B": "Comité de prevención y protección de la salud.",
+        "C": "Departamento de seguridad laboral.",
+        "D": "Departamento de prevención de riesgos laborales."
+      }
+    },
+    "25": {
+      "enunciado": "Señala la respuesta INCORRECTA. En los centros ocupacionales de la Administración Regional para personas con deficiencia intelectual se prestan los siguientes servicios especializados:",
+      "opciones": {
+        "A": "Ocupacional.",
+        "B": "De desarrollo personal y social.",
+        "C": "Atención especializada.",
+        "D": "Atención individualizada."
+      }
+    },
+    "26": {
+      "enunciado": "¿Qué servicios complementarios se prestan en los Centros Ocupacionales de la Administración Regional para personas con deficiencia intelectual?",
+      "opciones": {
+        "A": "Servicios de información y orientación general.",
+        "B": "Servicio de apoyo para la adquisición de habilidades de la vida diaria.",
+        "C": "Comedor, residencia, transporte.",
+        "D": "Servicios de estimulación, rehabilitación educativa ocupacional y apoyo psicológico."
+      }
+    },
+    "27": {
+      "enunciado": "Señala la respuesta CORRECTA. El Síndrome de Edward se produce a consecuencia de:",
+      "opciones": {
+        "A": "Una deleción al final del cromosoma 5.",
+        "B": "La presencia de uno o más cromosomas X adicionales.",
+        "C": "Anómala presencia de un cromosoma 12 extra en algunas células del organismo.",
+        "D": "Existencia de tres cromosomas 18."
+      }
+    },
+    "28": {
+      "enunciado": "Señala la respuesta CORRECTA. El Síndrome de William se caracteriza por:",
+      "opciones": {
+        "A": "La pérdida de material genético en el cromosoma 7.",
+        "B": "Anomalía genética en el cromosoma 13.",
+        "C": "Ausencia total o parcial de un cromosoma X.",
+        "D": "Existencia de dos cromosomas Y."
+      }
+    },
+    "29": {
+      "enunciado": "Según el R.D. 870/2007, de 2 de julio, los destinatarios finales del programa de empleo con apoyo, serán trabajadores con discapacidad inscritos en los Servicios Públicos de Empleo como demandantes de empleo no ocupados, así como trabajadores con discapacidad contratados por centros especiales de empleo, siempre que, en ambos casos, se encuentren en alguno de los supuestos que se describen a continuación:",
+      "opciones": {
+        "A": "Personas con parálisis cerebral, personas con enfermedad mental o personas con discapacidad intelectual con un grado de minusvalía reconocido igual o superior al 50%.",
+        "B": "Personas con parálisis cerebral, personas con enfermedad mental o personas con discapacidad intelectual con un grado de minusvalía reconocido igual o superior al 33%.",
+        "C": "Personas con parálisis cerebral, personas con enfermedad mental o personas con discapacidad intelectual con un grado de minusvalía reconocido igual o superior al 10%.",
+        "D": "Personas con parálisis cerebral, personas con enfermedad mental o personas con discapacidad intelectual con un grado de minusvalía reconocido igual o superior al 40%."
+      }
+    },
+    "30": {
+      "enunciado": "Según F. Fantova Azkoaga una actitud básica para el trabajo con padres y familiares de personas con discapacidad es:",
+      "opciones": {
+        "A": "Combinar la empatía, la capacidad de ponerse en el lugar del otro, de tal forma que haga que nos impliquemos emocionalmente en los problemas ante los que nos encontremos, hasta el punto de engancharnos afectivamente.",
+        "B": "Procurar que siempre, en la relación con padres y familiares, se resalte y se viva, por encima de todo la meta común que tenemos, que es el bienestar de sus hijas e hijos y de las personas con discapacidad en general.",
+        "C": "Hacer propuestas, planteamientos o retos que nos lleven rápidamente a la solución del problema.",
+        "D": "Hablar de lo que tenemos que hablar con franqueza, aunque ello signifique menoscabar el respeto y el tacto."
+      }
+    },
+    "31": {
+      "enunciado": "En el ámbito de la formación laboral para personas con discapacidad se podrán incluir, con carácter optativo, una formación práctica en centros de trabajo que tendrá entre otras las siguientes finalidades:",
+      "opciones": {
+        "A": "Proporcionar al alumno una primera experiencia de trabajo en un entorno productivo, que facilite su inclusión laboral.",
+        "B": "Permitirle la adquisición de aquellos conocimientos o destrezas que, por su naturaleza o características, requieran de medios, organización o estructuras propias de un centro de trabajo.",
+        "C": "Adquirir en entornos reales hábitos de comportamiento, de seguridad en el empleo y relaciones laborales adecuados.",
+        "D": "Todas las respuestas anteriores son correctas."
+      }
+    },
+    "32": {
+      "enunciado": "Para acceder a los ciclos formativos de Formación Profesional Básica. Los alumnos deben:",
+      "opciones": {
+        "A": "Tener cumplidos quince años, o cumplirlos durante el año natural en curso, y no superar los diecisiete años de edad en el momento del acceso ni durante el año natural en curso.",
+        "B": "Tener cumplidos dieciséis, o cumplirlos durante el año natural en curso, y no superar los diecisiete años de edad en el momento del acceso ni durante el año natural en curso.",
+        "C": "Tener cumplidos quince años, o cumplirlos durante el año natural en curso, y no superar los dieciocho años de edad en el momento del acceso ni durante el año natural en curso.",
+        "D": "Tener cumplidos quince años, o cumplirlos durante el año natural en curso, y no superar los veinte años de edad en el momento del acceso ni durante el año natural en curso."
+      }
+    },
+    "33": {
+      "enunciado": "A efecto de dar continuidad a los alumnos y las alumnas con necesidades educativas especiales, y responder a colectivos con necesidades específicas, las Administraciones educativas podrán: (SEÑALE LA RESPUESTA INCORRECTA)",
+      "opciones": {
+        "A": "Establecer y autorizar otras ofertas formativas de formación profesional adaptadas a sus necesidades.",
+        "B": "Estos programas podrán incluir módulos profesionales de un título profesional básico y otros módulos de formación apropiados para la adaptación a sus necesidades.",
+        "C": "Esta formación complementaria seguirá la estructura modular y sus objetivos estarán definidos en resultados de aprendizaje, criterios de evaluación y contenidos.",
+        "D": "Cuando se oferten módulos incluidos en un título profesional básico, su superación no tendrá carácter acumulable para la obtención de dicho título."
+      }
+    },
+    "34": {
+      "enunciado": "En el análisis de tareas:",
+      "opciones": {
+        "A": "Se agrupan las tareas en otra mayor.",
+        "B": "Se busca reducir el tiempo de la tarea.",
+        "C": "Se dividen las tareas en otras más pequeñas.",
+        "D": "Las tareas más pequeñas se desechan."
+      }
+    },
+    "35": {
+      "enunciado": "Los talleres artísticos para personas mayores: (SEÑALE LA RESPUESTA INCORRECTA)",
+      "opciones": {
+        "A": "Mejoran las relaciones sociales.",
+        "B": "Favorecen el sedentarismo y la dependencia.",
+        "C": "Aumenta la autoestima.",
+        "D": "Estimula áreas como la memoria, creatividad e imaginación."
+      }
+    },
+    "36": {
+      "enunciado": "El modelo de ocupación humana de Gary Kielhofner, conceptualiza a la persona como un sistema compuesto por tres subsistemas:",
+      "opciones": {
+        "A": "Volición, habituación y ejecución.",
+        "B": "Volición, habituación y potencial.",
+        "C": "Necesidad, habituación y ejecución.",
+        "D": "Volición, dinamismo y ejecución."
+      }
+    },
+    "37": {
+      "enunciado": "Según la Federación Española de Daño Cerebral, entre los principales aspectos positivos que identifican los profesionales sobre la metodología y dinámica empleada en los talleres para las personas con daño cerebral adquirido encontramos: (SEÑALE LA RESPUESTA INCORRECTA)",
+      "opciones": {
+        "A": "Facilita la socialización y el trabajo grupal.",
+        "B": "La dinámica de los talleres crea apatía en los usuarios.",
+        "C": "Optimiza los recursos.",
+        "D": "Consigue la generalización de los logros alcanzados en las terapias individuales."
+      }
+    },
+    "38": {
+      "enunciado": "El acompañamiento en el puesto de trabajo, realizado por preparadores laborales, para facilitar la adaptación socio laboral a personas con discapacidad con especiales dificultades de inserción laboral se denomina:",
+      "opciones": {
+        "A": "Programa de acompañamiento.",
+        "B": "Empleo protegido.",
+        "C": "Empleo con apoyo.",
+        "D": "Enclave laboral."
+      }
+    },
+    "39": {
+      "enunciado": "Según el R.D. 870/2007, de 2 de julio, los preparadores laborales:",
+      "opciones": {
+        "A": "Deberán estar en posesión de una titulación mínima de formación profesional de grado medio o equivalente y acreditar una experiencia previa de al menos un año en actividades de integración laboral de personas con discapacidad que les capacite para la realización de las funciones propias de su puesto.",
+        "B": "Podrá ser personal del mismo centro de trabajo con experiencia, en el puesto que ha de ocupar el trabajador con discapacidad, mínima de un año.",
+        "C": "Deberán estar en posesión de una titulación Universitaria y acreditar una experiencia previa de al menos dos años en actividades de integración laboral de personas con discapacidad que les capacite para la realización de las funciones propias de su puesto.",
+        "D": "Deberán estar en posesión de una titulación Universitaria y acreditar una experiencia previa de al menos un año en actividades iguales o similares al puesto que ha de ocupar el trabajador con discapacidad."
+      }
+    },
+    "40": {
+      "enunciado": "¿Qué es un calibre o pie de rey?",
+      "opciones": {
+        "A": "Es una herramienta de medición que nos permite medir piezas, tanto desde su cara interna como externa.",
+        "B": "Es una herramienta que ayuda a calibrar la temperatura de un horno para cerámica.",
+        "C": "Es una herramienta que permite calibrar la temperatura de un pirógrafo.",
+        "D": "Es una herramienta que permite medir el nivel de ruido."
+      }
+    },
+    "41": {
+      "enunciado": "En cerámica se llama bizcochado a:",
+      "opciones": {
+        "A": "Barro muy líquido que se usa para unir las partes de una pieza en estado crudo y tierno.",
+        "B": "Técnica de decoración donde se aplica un barniz, engobe o tinta con un pincel, mientras se hace girar la pieza sobre un torno o torneta.",
+        "C": "Primera cocción de la pieza en la que ya ha adquirido su dureza y según el caso, está lista para decorar.",
+        "D": "Resultado de la aplicación de varios colores, o técnicas decorativas combinados de manera irregular, sin ningún orden."
+      }
+    },
+    "42": {
+      "enunciado": "Con relación al nivel de definición de las actividades que conformarán un taller, podemos decir que son actividades estructuradas:",
+      "opciones": {
+        "A": "Aquellas que tienen definidos los contenidos, la duración de los mismos, los responsables de su impartición, y que cuentan con un guión explícito que debe seguirse en su desarrollo.",
+        "B": "Aquellas que a pesar de tener definidos los contenidos, no tiene definido el tiempo que se destina a cada uno de ellos, improvisando en función del propio desarrollo de la sesión.",
+        "C": "Aquellas que parten de un planteamiento semidefinido, y que posteriormente se van desarrollando en virtud de cómo van evolucionando los acontecimientos.",
+        "D": "Aquellas que no tienen definidos los contenidos, la duración en el tiempo y permiten improvisar según se van desarrollando los acontecimientos."
+      }
+    },
+    "43": {
+      "enunciado": "Según la Ley 5/1995 de 7 de abril, de condiciones de habitabilidad en edificios de viviendas y promoción de la accesibilidad general, respecto al transporte público urbano y suburbano:",
+      "opciones": {
+        "A": "Se reservará, al menos, el 20 por 100 de los asientos para las personas de movilidad reducida.",
+        "B": "Se reservará, al menos, el 10 por 100 de los asientos para las personas de movilidad reducida.",
+        "C": "Se reservará, al menos, el 30 por 100 de los asientos para las personas de movilidad reducida.",
+        "D": "Se reservará, al menos, el 25 por 100 de los asientos para las personas de movilidad reducida."
+      }
+    },
+    "44": {
+      "enunciado": "Según la Organización Nacional de ciegos de España, las personas con ceguera:",
+      "opciones": {
+        "A": "Pueden ver la forma de los objetos, pero no son capaces de distinguir entre luz y oscuridad.",
+        "B": "No ven nada en absoluto o solamente tienen una ligera percepción de luz (pueden ser capaces de distinguir entre luz y oscuridad, pero no la forma de los objetos).",
+        "C": "Podrían distinguir, aunque con gran dificultad, algunos objetos a una distancia muy corta.",
+        "D": "Ninguna es correcta."
+      }
+    },
+    "45": {
+      "enunciado": "En la sordera conductiva o de transmisión:",
+      "opciones": {
+        "A": "Está afectado el oído interno y la lesión está en la cóclea, el nervio coclear o ambos.",
+        "B": "Las células que perciben las frecuencias graves se lesionan antes que las que reaccionan ante frecuencias agudas.",
+        "C": "La lesión está situada a nivel del nervio auditivo o a nivel del sistema nervioso central.",
+        "D": "La lesión está situada a nivel del oído externo o medio."
+      }
+    },
+    "46": {
+      "enunciado": "La parálisis cerebral atáxica:",
+      "opciones": {
+        "A": "La lesión está localizada en el haz extrapiramidal. Los síntomas más frecuentes son: hipertonía, hiperreflexión e hiperextensión.",
+        "B": "La lesión está localizada en el haz piramidal.",
+        "C": "La lesión está localizada en el cerebelo.",
+        "D": "Ninguna es correcta."
+      }
+    },
+    "47": {
+      "enunciado": "La miopatía es:",
+      "opciones": {
+        "A": "Una anormalidad congénita de la columna vertebral.",
+        "B": "Un segmento de médula mal formado.",
+        "C": "Una enfermedad poco contagiosa que se localiza en la base del cerebro.",
+        "D": "Una enfermedad de la musculatura esquelética."
+      }
+    },
+    "48": {
+      "enunciado": "¿En qué consiste la inversión pronominal en un autista?",
+      "opciones": {
+        "A": "Entonación anormal, balanceos y repeticiones.",
+        "B": "Dificultad para la imitación.",
+        "C": "La no utilización del pronombre personal de la primera persona yo o me y su sustitución por el pronombre personal de la tercera persona él o le.",
+        "D": "Utilizar un tono alto y monótono."
+      }
+    },
+    "49": {
+      "enunciado": "Se consideran centros residenciales para personas mayores en la Región de Murcia:",
+      "opciones": {
+        "A": "Apartamentos de mayores, vivienda colectiva, pisos tutelados y residencia.",
+        "B": "Apartamento de mayores, vivienda colectiva, conjunto residencial y apartahotel.",
+        "C": "Apartamento de mayores, vivienda colectiva, residencia y conjunto residencial.",
+        "D": "Ninguna es correcta."
+      }
+    },
+    "50": {
+      "enunciado": "Elija la opción CORRECTA para definir la metaevaluación:",
+      "opciones": {
+        "A": "Es la evaluación de las evaluaciones.",
+        "B": "Es la evaluación que se dirige a apreciar la adecuación entre el programa y los problemas a resolver.",
+        "C": "Es la evaluación que analiza el grado en que el programa consigue los resultados.",
+        "D": "Es la evaluación que trata de analizar si existe sesgo en la cobertura."
+      }
+    },
+    "51": {
+      "enunciado": "A la hora de evaluar en servicios sociales, ¿Cuál de las siguientes opciones NO es una técnica sociométrica?",
+      "opciones": {
+        "A": "Role-playing.",
+        "B": "Test sociométrico.",
+        "C": "Sociodrama.",
+        "D": "Economía de fichas."
+      }
+    },
+    "52": {
+      "enunciado": "Según la Ley del Voluntariado, los menores de edad, podrán tener la condición de voluntarios, siempre que se respete su interés superior de acuerdo con lo previsto en la legislación de aplicación y cumplan los siguientes requisitos:",
+      "opciones": {
+        "A": "Los mayores de 14 y menores de 16 años, no deberán contar con el consentimiento de sus progenitores, tutores o representantes legales.",
+        "B": "Los menores de 12 deberán contar con el consentimiento de sus progenitores, tutores o representantes legales.",
+        "C": "Los mayores de 16 y menores de 18 años deberán contar con el consentimiento de sus progenitores, tutores o representantes legales.",
+        "D": "Ninguna de las anteriores es correcta."
+      }
+    },
+    "53": {
+      "enunciado": "Es un derecho de los voluntarios según la Ley 45/2015, de 14 de octubre:",
+      "opciones": {
+        "A": "Cesar en la realización de sus actividades como voluntario en los términos establecidos en el acuerdo de incorporación.",
+        "B": "Respetar los derechos de las personas destinatarias de la acción voluntaria en los términos previstos en el artículo 16.",
+        "C": "Actuar con la diligencia debida y de forma solidaria.",
+        "D": "Cumplir las medidas de seguridad y salud existentes en la entidad de voluntariado."
+      }
+    },
+    "54": {
+      "enunciado": "El Sistema de Servicios Sociales de la Región de Murcia constituye una red pública y comprende el conjunto de servicios, prestaciones, recursos y actuaciones ofrecidos por: (SEÑALE LA OPCIÓN INCORRECTA):",
+      "opciones": {
+        "A": "La Administración Regional.",
+        "B": "Las entidades comarcales.",
+        "C": "Otras entidades públicas.",
+        "D": "Las entidades de iniciativa social, las entidades de iniciativa privada mercantil y las personas físicas, financiadas total o parcialmente con fondos públicos."
+      }
+    },
+    "55": {
+      "enunciado": "Respecto a las prestaciones del Sistema de Servicios Sociales:",
+      "opciones": {
+        "A": "Son prestaciones económicas las aportaciones dinerarias de carácter no periódico, destinadas a personas en situación de necesidad personal y/o social.",
+        "B": "Las prestaciones no se podrán combinar entre sí.",
+        "C": "El disfrute de las prestaciones no se podrá condicionar a la colaboración activa de la persona usuaria en la intervención.",
+        "D": "Las prestaciones del Sistema de Servicios Sociales pueden ser de servicio y económicas."
+      }
+    },
+    "56": {
+      "enunciado": "Respecto al Instituto de Servicios Sociales de la Región de Murcia, para el cumplimiento de sus funciones, el Servicio de Valoración y Diagnóstico se estructura en las siguientes unidades:",
+      "opciones": {
+        "A": "Unidad de Valoración y Diagnóstico de Alhama, Caravaca, y Murcia.",
+        "B": "Unidad de Valoración y Diagnóstico de Yecla, Cartagena y Murcia.",
+        "C": "Unidad de Valoración y Diagnóstico de Águilas, Cartagena y Murcia",
+        "D": "Unidad de Valoración y Diagnóstico de Murcia, Cartagena y Lorca."
+      }
+    },
+    "57": {
+      "enunciado": "Cuál de las siguientes afirmaciones es INCORRECTA:",
+      "opciones": {
+        "A": "La enfermedad es cualquier trastorno anormal que provoca malestar o alteración de las funciones normales.",
+        "B": "La enfermedad se manifiesta con la presencia de signos o síntomas.",
+        "C": "Un conjunto de síntomas o signos dan lugar a un síndrome o cuadro.",
+        "D": "La presencia de diferentes signos o síntomas se llama pluripatología."
+      }
+    },
+    "58": {
+      "enunciado": "¿Qué es la ortopraxia?",
+      "opciones": {
+        "A": "Es la ciencia que se encarga de corregir deformidades del nacimiento.",
+        "B": "Es la ciencia que se ocupa del diseño, de la elaboración y de la adaptación de ayudas técnicas ortoprotésicas para las personas con una discapacidad.",
+        "C": "Es la ciencia que se encarga de la programación de las AVD para las personas que han tenido y/o han sufrido una alteración en su cuerpo que le produce una deformación.",
+        "D": "Son las técnicas que nos ayudan a ser autónomos si tenemos un miembro deformado y/o amputado."
+      }
+    },
+    "59": {
+      "enunciado": "Las ayudas para recoger los productos de desecho humano mediante una abertura artificial en los intestinos, son:",
+      "opciones": {
+        "A": "Cuñas, botellas y sillas con orinal.",
+        "B": "Ayudas para la ostomía.",
+        "C": "Las cuñas con cincha y alarmas de incontinencia.",
+        "D": "Son todas falsas."
+      }
+    },
+    "60": {
+      "enunciado": "Cuando tenemos unos patrones de pensamiento, comportamiento y emotividad muy rígidos e inadaptados que suelen perturbar la vida personal, profesional y social de la persona que los padece, estamos hablando de:",
+      "opciones": {
+        "A": "Trastorno de la personalidad.",
+        "B": "Trastorno bipolar.",
+        "C": "Depresión.",
+        "D": "Trastorno degenerativo del desarrollo (se da sobre todo en la tercera edad)."
+      }
+    },
+    "61": {
+      "enunciado": "Dentro de las necesidades de inserción sociolaboral, los programas públicos en los que se combinan formación con trabajo, a los que pueden acceder personas con enfermedad mental grave, se llaman:",
+      "opciones": {
+        "A": "Centros especiales de empleo.",
+        "B": "Empresas sociales.",
+        "C": "Escuelas taller, las casas de oficios y los talleres de ocupación.",
+        "D": "Asociaciones sin ánimo de lucro."
+      }
+    },
+    "62": {
+      "enunciado": "Las dinámicas de grupo son:",
+      "opciones": {
+        "A": "Juegos.",
+        "B": "Técnicas.",
+        "C": "Actividades.",
+        "D": "Talleres."
+      }
+    },
+    "63": {
+      "enunciado": "El grupo cooperativo:",
+      "opciones": {
+        "A": "Se caracteriza por la comunicación fluida entre las personas en base a relaciones de confianza y de soporte mutuo.",
+        "B": "Se caracteriza por ser unos grupos reducidos en los que los alumnos trabajan juntos para maximizar su propio aprendizaje y el de los demás.",
+        "C": "Se caracteriza por el aquí y el ahora del grupo y la activación de los miembros para realizar la tarea encomendada.",
+        "D": "Todas son falsas."
+      }
+    },
+    "64": {
+      "enunciado": "Con respecto a la pintura, el bordado, el modelado y otras técnicas de expresión artística. Señala la INCORRECTA:",
+      "opciones": {
+        "A": "Son medios de creación artística.",
+        "B": "Requieren de un esfuerzo intelectual y creativo.",
+        "C": "Son recursos adecuados para el trabajo del terapeuta.",
+        "D": "No requieren de motivación para la realización de las mismas."
+      }
+    },
+    "65": {
+      "enunciado": "Cuál de las siguientes afirmaciones es INCORRECTA, respecto al trabajo del terapeuta en el desarrollo de las habilidades sociales y de autonomía personal:",
+      "opciones": {
+        "A": "Mostrar actitudes flexibles, empáticas y pacientes, ante el ritmo y logro del usuario en el desarrollo de dichas habilidades.",
+        "B": "Estimular y animar al usuario, para que por sí mismo consiga y realice dichas habilidades.",
+        "C": "Prever las necesidades del individuo, para favorecer el desarrollo de dichas habilidades evitando caer en la sobreprotección.",
+        "D": "No se deben mantener horarios ni pautas e indicaciones constantes en el desarrollo de las habilidades de autonomía personal."
+      }
+    },
+    "66": {
+      "enunciado": "En relación al desarrollo de las ABVD de la persona usuaria podemos afirmar que:",
+      "opciones": {
+        "A": "No es tarea del terapeuta el trabajo de las habilidades relacionadas con las ABVD.",
+        "B": "Es necesario centrarse en el mantenimiento y la adquisición de hábitos y rutinas adecuadas, fomentando la máxima autonomía.",
+        "C": "Debe centrarse en cubrir dichas necesidades por parte de terceras personas.",
+        "D": "Es necesario centrarnos sólo en las limitaciones del usuario."
+      }
+    },
+    "67": {
+      "enunciado": "La intervención grupal pretende abrir canales de comunicación y expresión de emociones a través de la improvisación terapéutica, canto, composición de canciones, o modalidades receptivas y que va dirigida a personas en fases leves de la enfermedad de Alzheimer, se llama:",
+      "opciones": {
+        "A": "Musicoterapia creativa.",
+        "B": "Dinámicas de expresión y comunicación.",
+        "C": "Música grupal.",
+        "D": "Ninguna de las anteriores es correcta."
+      }
+    },
+    "68": {
+      "enunciado": "El modo de proceder adquirido por repetición de actos iguales, a través del aprendizaje, se llama:",
+      "opciones": {
+        "A": "Hábito.",
+        "B": "Rutina.",
+        "C": "ABVD.",
+        "D": "Nivel de dependencia."
+      }
+    },
+    "69": {
+      "enunciado": "El refuerzo intermitente es una técnica de modificación de conducta, que:",
+      "opciones": {
+        "A": "Disminuye la frecuencia de la conducta deseada.",
+        "B": "Permite las relaciones grupales.",
+        "C": "Mantiene la conducta adquirida.",
+        "D": "Elimina la conducta no deseada."
+      }
+    },
+    "70": {
+      "enunciado": "La clasificación de la OMS según el CI, mantiene que se es:",
+      "opciones": {
+        "A": "Profundo: cuando el CI es de 25 a 35.",
+        "B": "Moderado: cuando el CI es de 36 a 51.",
+        "C": "Borderline: cuando el CI oscila entre 52 y 70.",
+        "D": "Grave: cuando el CI oscila entre 70 y 83."
+      }
+    },
+    "71": {
+      "enunciado": "En una dinámica de grupo, cuando la comunicación se establece en forma de «cadena»:",
+      "opciones": {
+        "A": "La cadena se cierra y el primero se junta con el último.",
+        "B": "Todos los miembros se comunican sólo con un miembro central.",
+        "C": "No hay comunicación.",
+        "D": "Cada miembro sólo se comunica con los que tiene a su lado y el primero no se junta con el último."
+      }
+    },
+    "72": {
+      "enunciado": "Antes de desarrollar un programa de habilidades sociales con Arturo:",
+      "opciones": {
+        "A": "Le preguntaremos cuáles son sus habilidades.",
+        "B": "Es necesario realizar una evaluación previa, que permita el diseño de estrategias de intervención.",
+        "C": "Es necesario analizar los medios materiales disponibles.",
+        "D": "No es imprescindible realizar ninguna evaluación."
+      }
+    },
+    "73": {
+      "enunciado": "¿De qué manera podemos desarrollar sus habilidades de comunicación?",
+      "opciones": {
+        "A": "Animándole a que asista al taller sin acompañamiento.",
+        "B": "Activando aspectos como el contacto visual, la postura y el tono de voz.",
+        "C": "Orientando al usuario hacia el recurso más acorde.",
+        "D": "Mediante el visionado de películas."
+      }
+    },
+    "74": {
+      "enunciado": "¿Qué técnica será la más adecuada para realizar un entrenamiento de una habilidad social?:",
+      "opciones": {
+        "A": "Autoconstrucción.",
+        "B": "Relajación.",
+        "C": "Expresión corporal.",
+        "D": "Role playing."
+      }
+    },
+    "75": {
+      "enunciado": "Son habilidades sociales básicas:",
+      "opciones": {
+        "A": "Escuchar, iniciar una conversación, mantener una conversación, formular una pregunta, dar gracias, presentarse, presentar a otras personas y hacer cumplidos.",
+        "B": "Escuchar, pedir ayuda, participar, dar instrucciones y disculparse.",
+        "C": "Escuchar, convencer a los demás, conocer sus sentimientos y pedir permiso.",
+        "D": "Todas son incorrectas."
+      }
+    },
+    "76": {
+      "enunciado": "Un programa completo de entrenamiento en habilidades sociales, debe procurar:",
+      "opciones": {
+        "A": "Reducir la necesidad de supervisión por parte del terapeuta.",
+        "B": "La adquisición de un conjunto de habilidades cognitivas emocionales verbales y no verbales.",
+        "C": "Una posterior integración laboral y social del residente.",
+        "D": "Una adaptación social."
+      }
+    },
+    "77": {
+      "enunciado": "Si en el taller le proponemos una actividad a Arturo y nos damos cuenta que le resulta ansiógena:",
+      "opciones": {
+        "A": "Sólo observará lo que se hace en el taller.",
+        "B": "Le daremos una tarea sencilla.",
+        "C": "Esta debe descomponerse en unidades con un orden de dificultad creciente.",
+        "D": "Lo sacaremos del taller temporalmente."
+      }
+    },
+    "78": {
+      "enunciado": "Respecto a los programas de habilidades de la vida diaria:",
+      "opciones": {
+        "A": "Incluyen conductas de aseo y limpieza, preparación de comidas, ocio y tiempo libre.",
+        "B": "Entrena conductas de desarrollo de relaciones del día a día.",
+        "C": "Incluyen conductas de aseo y limpieza, de vestirse y desvestirse, de limpieza y orden del lugar de residencia y de planificación y preparación de comidas.",
+        "D": "Ninguna es correcta."
+      }
+    },
+    "79": {
+      "enunciado": "El aprendizaje por modelado:",
+      "opciones": {
+        "A": "Se basa en el moldeado.",
+        "B": "Se basa en la observación.",
+        "C": "Se basa en adoptar la estrategia adecuada.",
+        "D": "Se basa en sincronizar las intervenciones."
+      }
+    },
+    "80": {
+      "enunciado": "En el taller de habilidades sociales, el canal no verbal:",
+      "opciones": {
+        "A": "Tiene gran trascendencia.",
+        "B": "Sólo se tendrá en cuenta cuando no exista diálogo.",
+        "C": "No se tendrá en cuenta.",
+        "D": "Ninguna es correcta."
+      }
+    },
+    "81": {
+      "enunciado": "En relación a los requisitos básicos para el entrenamiento de las actividades de la vida diaria: señala la opción INCORRECTA:",
+      "opciones": {
+        "A": "Estar planteado mediante un acuerdo con el residente.",
+        "B": "Proporcionar al residente instrucciones claras y prácticas.",
+        "C": "Apoyar en todo el proceso al terapeuta.",
+        "D": "Solicitar al residente un feedback sobre el entrenamiento."
+      }
+    },
+    "82": {
+      "enunciado": "En el entrenamiento en habilidades sociales, la estructura de las sesiones sería la siguiente:",
+      "opciones": {
+        "A": "Proposición de una meta concreta y selección de la escena. Presentación del tema y de la escena, representación del role playing, feedback grupal.",
+        "B": "Presentación del tema y de la escena, preparación de la escena y feedback grupal.",
+        "C": "Proposición de una meta concreta y selección de la escena, representación del role playing y feedback grupal.",
+        "D": "Presentación del tema y de la escena, proposición de una meta concreta, selección de la escena, preparación de la escena, representación del role playing, feedback grupal y role-playing si se precisa repetir."
+      }
+    },
+    "83": {
+      "enunciado": "La técnica que consiste en ir corrigiendo poco a poco los hábitos enseñados, reforzando las aproximaciones a la conducta objetivo, se llama:",
+      "opciones": {
+        "A": "Modelado.",
+        "B": "Moldeamiento.",
+        "C": "Condicionamiento clásico.",
+        "D": "Refuerzo positivo."
+      }
+    },
+    "84": {
+      "enunciado": "Para desarrollar cualquier actividad de la vida diaria:",
+      "opciones": {
+        "A": "Hay que ser rápidos y efectivos al realizarla.",
+        "B": "No es relevante la postura corporal del usuario.",
+        "C": "Hay que establecer una rutina diaria en el desarrollo de las mismas.",
+        "D": "Todas las anteriores son incorrectas."
+      }
+    },
+    "85": {
+      "enunciado": "En el encadenamiento hacia atrás:",
+      "opciones": {
+        "A": "Se hacen cadenas de conductas sociales para flexibilizar las estereotipias.",
+        "B": "Las ayudas se retiran poco a poco.",
+        "C": "Lo primero que el usuario realiza sin ayuda es el principio.",
+        "D": "Lo primero que el usuario realiza sin ayuda es el final."
+      }
+    },
+    "86": {
+      "enunciado": "¿Qué duración tiene el periodo de adaptación personal de un usuario a las características y funcionamiento propio del centro ocupacional en el que ingresa?",
+      "opciones": {
+        "A": "1 mes.",
+        "B": "2 meses.",
+        "C": "3 meses.",
+        "D": "6 meses."
+      }
+    },
+    "87": {
+      "enunciado": "Señale la respuesta CORRECTA. Dentro de las técnicas de modificación de conducta encontramos:",
+      "opciones": {
+        "A": "Saciación.",
+        "B": "Moldeamiento.",
+        "C": "Tiempo fuera.",
+        "D": "Todas son correctas."
+      }
+    },
+    "88": {
+      "enunciado": "¿En qué consiste la técnica de modificación de conducta llamada refuerzo negativo?",
+      "opciones": {
+        "A": "Retirada de un cierto estímulo aversivo con el objetivo de hacer más probable la conducta deseada.",
+        "B": "Es un castigo.",
+        "C": "Retirada de un estímulo para disminuir la probabilidad de repetir una conducta.",
+        "D": "Añadir estímulos aversivos para disminuir la probabilidad de repetir una conducta."
+      }
+    },
+    "89": {
+      "enunciado": "La Economía de Fichas es una técnica que consiste en:",
+      "opciones": {
+        "A": "Proporcionar un reforzador generalizado cuando se emite una respuesta deseable.",
+        "B": "Disminuir la frecuencia con la que una persona lleva a cabo comportamientos no deseables.",
+        "C": "Potenciar destrezas.",
+        "D": "a y b son ciertas."
+      }
+    },
+    "90": {
+      "enunciado": "Señale la respuesta INCORRECTA. La restricción física ante conductas desafiantes:",
+      "opciones": {
+        "A": "Es una estrategia rutinaria para controlar las conductas altamente desafiantes.",
+        "B": "Debe ser utilizada como último recurso para proteger a la propia persona o a los demás de daños.",
+        "C": "No debe tener como objetivo castigar a las personas que presentan alteraciones conductuales.",
+        "D": "Puede ser utilizada cuando la conducta de la persona interfiera gravemente en la programación terapéutica."
+      }
+    },
+    "91": {
+      "enunciado": "Los trastornos conductuales pueden producirse debido a:",
+      "opciones": {
+        "A": "La necesidad de comunicarse de forma no verbal.",
+        "B": "Los efectos secundarios de algunos fármacos.",
+        "C": "La falta de estimulación satisfactoria.",
+        "D": "Todas son correctas."
+      }
+    },
+    "92": {
+      "enunciado": "Cuando debe aplicarse la restricción de movimientos y/o aislamiento:",
+      "opciones": {
+        "A": "Cuando la situación puede resolverse verbalmente, pero con elevada dificultad.",
+        "B": "Como castigo ante problemas de conducta graves.",
+        "C": "Para prevenir lesiones al propio sujeto o a los demás.",
+        "D": "Todas las anteriores opciones son correctas."
+      }
+    },
+    "93": {
+      "enunciado": "A la hora de relacionarse con personas con discapacidad cognitiva / intelectual hemos de:",
+      "opciones": {
+        "A": "Tratarles de manera condescendiente.",
+        "B": "Utilizar un lenguaje claro y sencillo.",
+        "C": "Hablar de manera infantil para que puedan entendernos.",
+        "D": "No interactuar directamente con estas personas si hay alguien que les acompañe para facilitarles el proceso."
+      }
+    },
+    "94": {
+      "enunciado": "Con respecto al dolor causado por una enfermedad / condición de salud, podemos afirmar:",
+      "opciones": {
+        "A": "Puede provocar la aparición de conductas desafiantes, especialmente en personas con limitaciones comunicativas.",
+        "B": "Es la única causa que provoca conductas desafiantes en personas con limitaciones comunicativas.",
+        "C": "No existe relación alguna entre enfermedad/ condición de salud y el que surjan conductas desafiantes.",
+        "D": "Ninguna de las anteriores afirmaciones es correcta."
+      }
+    },
+    "95": {
+      "enunciado": "¿Qué es la agnosia?",
+      "opciones": {
+        "A": "La incapacidad para identificar un objeto mediante un sentido o varios.",
+        "B": "Dificultad para moverse o caminar y limitación para usar brazos y manos.",
+        "C": "Una enfermedad de la córnea.",
+        "D": "Es la pérdida de la capacidad de hablar, como consecuencia de problemas de los órganos de la fonación o por circunstancias de otro origen."
+      }
+    },
+    "96": {
+      "enunciado": "Cuando una persona emite una conducta previamente reforzada, pero dejan de presentarse el/los reforzador/es contingente/s a la misma, hablamos de:",
+      "opciones": {
+        "A": "Tiempo fuera.",
+        "B": "Aislamiento.",
+        "C": "Extinción.",
+        "D": "Refuerzo negativo."
+      }
+    },
+    "97": {
+      "enunciado": "Señala la opción INCORRECTA. Dentro de los sistemas alternativos y aumentativos de comunicación encontramos:",
+      "opciones": {
+        "A": "Lengua de signos.",
+        "B": "Programa de comunicación total Benson Schaeffer.",
+        "C": "Sistema Makaton.",
+        "D": "Sistema Vigotsky."
+      }
+    },
+    "98": {
+      "enunciado": "Las conductas en las que se interfiere de forma voluntaria en las tareas o actividades de otras personas, perturbando el entorno se denominan:",
+      "opciones": {
+        "A": "Conductas intrusivas.",
+        "B": "Conductas disruptivas.",
+        "C": "Hábitos atípicos.",
+        "D": "Conductas invasivas."
+      }
+    },
+    "99": {
+      "enunciado": "Señale la respuesta correcta. Los refuerzos secundarios:",
+      "opciones": {
+        "A": "Poseen un valor reforzante biológicamente determinado.",
+        "B": "Son aquellos que han adquirido su valor por aprendizaje.",
+        "C": "Potencian la desaparición de conductas consideradas positivas.",
+        "D": "Todas son correctas."
+      }
+    },
+    "100": {
+      "enunciado": "Dentro de los tipos encadenamiento como técnica para enseñar a la persona usuaria a realizar una conducta compleja podemos contemplar:",
+      "opciones": {
+        "A": "El encadenamiento verbal, visual y auditivo.",
+        "B": "El encadenamiento hacia adelante y hacia atrás.",
+        "C": "El encadenamiento total, final y transitorio.",
+        "D": "El encadenamiento primario y secundario."
       }
     }
   }
