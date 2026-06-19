@@ -5,14 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Práctica de Vistas Diédricas · Sistema Europeo (UPCT)</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
+<!-- Three.js como scripts clásicos (global THREE) para máxima compatibilidad -->
+<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <style>
   html,body{height:100%;}
   body{font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0f172a;}
@@ -151,9 +146,10 @@
   </main>
 </div>
 
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+<script>
+"use strict";
+const OrbitControls = (window.THREE && THREE.OrbitControls) ? THREE.OrbitControls : null;
+const HAS_THREE = !!(window.THREE && OrbitControls);
 
 /* =====================================================================
  *  UTILIDADES
@@ -414,34 +410,50 @@ function renderProjection(proj,{scale=26,labels=true,guides=true}={}){
 /* =====================================================================
  *  ESCENA 3D
  * ===================================================================*/
-let renderer,scene,camera,controls,pieceGroup,highlightGroup,arrowGroup;
+let renderer,scene,camera,controls,pieceGroup,highlightGroup,arrowGroup,threeReady=false;
 const viewerEl=document.getElementById('viewer');
 
+function showViewerMessage(msg){
+  viewerEl.innerHTML=`<div class="absolute inset-0 flex items-center justify-center p-6 text-center">
+    <div class="text-slate-300 text-sm max-w-xs bg-slate-900/80 rounded-lg p-4 border border-slate-700">
+      <p class="text-amber-400 font-semibold mb-2">Vista 3D no disponible</p>
+      <p>${msg}</p>
+      <p class="mt-2 text-slate-400 text-xs">Las vistas 2D y la práctica siguen funcionando con normalidad.</p>
+    </div></div>`;
+}
 function initThree(){
-  renderer=new THREE.WebGLRenderer({antialias:true});
-  renderer.setPixelRatio(window.devicePixelRatio);
-  resizeRenderer();
-  viewerEl.appendChild(renderer.domElement);
-  scene=new THREE.Scene();
-  scene.background=new THREE.Color(0x0b1220);
-  camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
-  controls=new OrbitControls(camera,renderer.domElement);
-  controls.enableDamping=true;
-  const amb=new THREE.AmbientLight(0xffffff,0.7); scene.add(amb);
-  const dir=new THREE.DirectionalLight(0xffffff,0.8); dir.position.set(6,10,8); scene.add(dir);
-  const dir2=new THREE.DirectionalLight(0xffffff,0.4); dir2.position.set(-6,4,-8); scene.add(dir2);
-  scene.add(new THREE.GridHelper(40,40,0x1e293b,0x16202f));
-  animate();
-  window.addEventListener('resize',()=>{resizeRenderer();});
+  if(!HAS_THREE){ showViewerMessage('No se ha podido cargar la librería 3D (Three.js) desde el CDN. Comprueba tu conexión o ábrelo en local.'); return; }
+  try{
+    renderer=new THREE.WebGLRenderer({antialias:true});
+    renderer.setPixelRatio(window.devicePixelRatio);
+    resizeRenderer();
+    viewerEl.appendChild(renderer.domElement);
+    scene=new THREE.Scene();
+    scene.background=new THREE.Color(0x0b1220);
+    camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
+    controls=new OrbitControls(camera,renderer.domElement);
+    controls.enableDamping=true;
+    const amb=new THREE.AmbientLight(0xffffff,0.7); scene.add(amb);
+    const dir=new THREE.DirectionalLight(0xffffff,0.8); dir.position.set(6,10,8); scene.add(dir);
+    const dir2=new THREE.DirectionalLight(0xffffff,0.4); dir2.position.set(-6,4,-8); scene.add(dir2);
+    scene.add(new THREE.GridHelper(40,40,0x1e293b,0x16202f));
+    threeReady=true;
+    animate();
+    window.addEventListener('resize',()=>{resizeRenderer();});
+  }catch(err){
+    threeReady=false;
+    showViewerMessage('Tu navegador no pudo iniciar WebGL: '+err.message);
+  }
 }
 function resizeRenderer(){
   const w=viewerEl.clientWidth||600, h=viewerEl.clientHeight||500;
   renderer.setSize(w,h);
   if(camera){camera.aspect=w/h;camera.updateProjectionMatrix();}
 }
-function animate(){ requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera); }
+function animate(){ if(!threeReady) return; requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera); }
 
 function buildPiece(spec){
+  if(!threeReady) return;
   if(pieceGroup) scene.remove(pieceGroup);
   if(highlightGroup) scene.remove(highlightGroup);
   if(arrowGroup) scene.remove(arrowGroup);
@@ -499,6 +511,7 @@ function makeTextSprite(text,x,y,z){
   sp.scale.set(3.2,0.8,1); sp.position.set(x,y,z); return sp;
 }
 function isoView(){
+  if(!threeReady) return;
   const r=(currentSpec? Math.max(currentSpec.W,currentSpec.H,currentSpec.D):8)*1.9+4;
   camera.position.set(r,r*0.8,r);
   controls.target.set(0,0,0); camera.lookAt(0,0,0); controls.update();
@@ -583,8 +596,8 @@ function newPiece(){
   currentSpec=generateSpec(level,rng);
   currentProj=project(currentSpec);
   document.getElementById('pieceName').textContent=currentSpec.name+` · ${currentSpec.W}×${currentSpec.D}×${currentSpec.H}`;
-  buildPiece(currentSpec);
-  highlightFace('none');
+  try{ buildPiece(currentSpec); highlightFace('none'); }
+  catch(err){ console.error('Error 3D:',err); showViewerMessage('No se pudo construir el modelo 3D de esta pieza.'); }
   answered=false;
   feedback.innerHTML='';
   renderMode();
