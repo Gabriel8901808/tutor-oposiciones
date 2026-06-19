@@ -6,7 +6,9 @@ con piezas mecánicas generadas por niveles (Fácil / Medio / Difícil).
 
 ## Cómo ejecutarla
 
-No necesita instalación ni servidor. Basta con abrir el archivo en el navegador:
+No necesita instalación, servidor **ni conexión a Internet**. Es un único
+archivo HTML autocontenido (CSS propio y motor 3D propio en `<canvas>`, sin
+Three.js ni Tailwind ni ningún CDN). Basta con abrirlo:
 
 ```bash
 # desde esta carpeta
@@ -15,8 +17,8 @@ xdg-open index.html      # Linux
 # o haz doble clic en index.html
 ```
 
-> Usa Three.js y Tailwind desde CDN, por lo que la primera carga requiere
-> conexión a Internet. El motor 2D de vistas funciona sin red.
+> Funciona también a través de visores como htmlpreview, precisamente por no
+> depender de scripts externos.
 
 ## Qué incluye
 

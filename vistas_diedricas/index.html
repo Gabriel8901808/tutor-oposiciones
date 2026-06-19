@@ -4,143 +4,197 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Práctica de Vistas Diédricas · Sistema Europeo (UPCT)</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- Three.js como scripts clásicos (global THREE) para máxima compatibilidad -->
-<script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
-<script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <style>
-  html,body{height:100%;}
-  body{font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#0f172a;}
-  #viewer{touch-action:none;}
-  /* SVG line styles for dihedral views */
-  .ln{stroke:#0f172a;fill:none;}
-  .ln.v{stroke-width:2.2;}                         /* arista vista: continua gruesa */
-  .ln.h{stroke-width:1.4;stroke-dasharray:6 4;}    /* arista oculta: discontinua */
-  .ln.a{stroke:#dc2626;stroke-width:1;stroke-dasharray:10 3 2 3;} /* eje: trazo y punto */
-  .ln.guide{stroke:#94a3b8;stroke-width:.6;stroke-dasharray:3 4;opacity:.7;}
-  .circ{stroke:#0f172a;stroke-width:2.2;fill:none;}
-  .vlabel{font-size:11px;fill:#475569;font-weight:600;letter-spacing:.05em;}
-  .node{fill:#cbd5e1;cursor:pointer;}
-  .node:hover{fill:#2563eb;}
-  .node.sel{fill:#16a34a;}
-  .holeMark{fill:none;stroke:#7c3aed;stroke-width:2;}
-  .opt-card{transition:all .15s;}
-  .opt-card:hover{transform:translateY(-2px);}
-  .scrollbar-thin::-webkit-scrollbar{width:8px;height:8px;}
-  .scrollbar-thin::-webkit-scrollbar-thumb{background:#334155;border-radius:4px;}
+:root{
+  --bg:#0f172a; --bg2:#1e293b; --bg3:#334155; --panel:#1a2336;
+  --txt:#e2e8f0; --muted:#94a3b8; --line:#334155;
+  --blue:#3b82f6; --blue2:#2563eb; --green:#10b981; --amber:#f59e0b;
+  --red:#ef4444; --sky:#38bdf8; --violet:#8b5cf6;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{font-family:ui-sans-serif,system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--txt);font-size:14px;}
+.app{display:flex;height:100vh;overflow:hidden;}
+
+/* ---- Sidebar ---- */
+.sidebar{width:280px;flex:0 0 280px;background:#0b1220;border-right:1px solid var(--line);
+  display:flex;flex-direction:column;}
+.sidebar .head{padding:16px;border-bottom:1px solid var(--line);}
+.sidebar h1{font-size:18px;margin:0;color:#fff;}
+.sidebar .sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.tips{padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px;}
+.tips h2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);margin:0 0 2px;}
+.tip{background:#131c30;border:1px solid #243049;border-radius:10px;padding:11px;}
+.tip b{color:#fff;}
+.tip p.t{font-weight:600;color:#fff;margin:0 0 5px;font-size:13px;}
+.tip p{margin:0;font-size:12px;line-height:1.5;color:#cbd5e1;}
+.tip ul{margin:4px 0 0;padding-left:16px;font-size:12px;line-height:1.5;color:#cbd5e1;}
+.swatch{display:inline-block;width:34px;vertical-align:middle;margin-right:4px;}
+.foot{padding:12px;border-top:1px solid var(--line);font-size:10px;color:#64748b;}
+
+/* ---- Main ---- */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.toolbar{background:#0b1220;border-bottom:1px solid var(--line);padding:10px 14px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+.toolbar label{font-size:12px;color:var(--muted);}
+select{background:var(--bg2);color:var(--txt);border:1px solid var(--line);border-radius:8px;
+  padding:7px 9px;font-size:13px;}
+.btn{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:8px;
+  padding:7px 12px;font-size:13px;cursor:pointer;font-weight:500;}
+.btn:hover{background:var(--bg3);}
+.btn-primary{background:var(--blue2);border-color:var(--blue2);color:#fff;font-weight:600;}
+.btn-primary:hover{background:var(--blue);}
+.btn-ok{background:var(--green);border-color:var(--green);color:#fff;font-weight:600;}
+.btn-ok:hover{filter:brightness(1.1);}
+.sep{width:1px;height:24px;background:var(--line);margin:0 2px;}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.seg button{border:0;background:var(--bg2);color:var(--muted);padding:7px 12px;font-size:13px;cursor:pointer;}
+.seg button.on{background:var(--blue2);color:#fff;font-weight:600;}
+.spacer{margin-left:auto;}
+.pieceName{font-size:12px;color:var(--muted);}
+
+.content{flex:1;display:flex;overflow:hidden;min-height:0;}
+.left{width:46%;min-width:340px;display:flex;flex-direction:column;border-right:1px solid var(--line);
+  background:#0a1018;}
+.viewer{flex:1;position:relative;min-height:0;}
+.viewer canvas{display:block;width:100%;height:100%;}
+.hint{position:absolute;top:8px;left:8px;font-size:11px;color:#cbd5e1;background:rgba(11,18,32,.7);
+  padding:4px 8px;border-radius:6px;pointer-events:none;}
+.viewer-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;}
+.viewer-msg div{max-width:300px;background:rgba(15,23,42,.85);border:1px solid var(--line);border-radius:10px;padding:16px;}
+.facebar{padding:11px;border-top:1px solid var(--line);background:#0b1220;}
+.facebar p{margin:0 0 8px;font-size:12px;color:var(--muted);}
+.facebar .row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-size:12px;border-radius:7px;padding:5px 10px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);color:var(--txt);}
+.chip.alz{border-color:#b91c1c;background:rgba(127,29,29,.35);color:#fecaca;}
+.chip.pla{border-color:#047857;background:rgba(6,78,59,.35);color:#a7f3d0;}
+.chip.per{border-color:#0369a1;background:rgba(7,89,133,.35);color:#bae6fd;}
+.chip:hover{filter:brightness(1.15);}
+
+.right{flex:1;overflow-y:auto;background:var(--panel);min-width:0;}
+.pad{padding:16px;}
+h2.title{font-size:16px;color:#fff;margin:0 0 4px;}
+p.lead{font-size:13px;color:var(--muted);margin:0 0 14px;}
+
+/* ---- White sheet for views ---- */
+.sheet{background:#fff;border-radius:10px;padding:8px;display:inline-block;}
+.optgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.optcard{background:#fff;border:3px solid transparent;border-radius:10px;padding:8px;cursor:pointer;text-align:left;transition:transform .12s,border-color .12s;}
+.optcard:hover{transform:translateY(-2px);border-color:#93c5fd;}
+.optletter{font-size:12px;font-weight:700;color:#64748b;margin-bottom:4px;}
+
+/* ---- SVG line styles ---- */
+.ln{stroke:#0f172a;fill:none;}
+.ln.v{stroke-width:2.2;stroke-linecap:round;}
+.ln.h{stroke-width:1.4;stroke-dasharray:6 4;}
+.ln.a{stroke:#dc2626;stroke-width:1;stroke-dasharray:12 3 2 3;}
+.ln.guide{stroke:#cbd5e1;stroke-width:.6;stroke-dasharray:3 4;}
+.circ{stroke:#0f172a;stroke-width:2.2;fill:none;}
+.vlabel{font-size:11px;fill:#475569;font-weight:700;letter-spacing:.04em;}
+.node{fill:#cbd5e1;cursor:pointer;}
+.node:hover{fill:#2563eb;}
+.node.sel{fill:#16a34a;}
+.holeMark{fill:none;stroke:#7c3aed;stroke-width:2;}
+
+/* ---- tools / feedback ---- */
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.toolBtn{font-size:12px;border-radius:7px;padding:7px 10px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);color:var(--txt);}
+.toolBtn.violet{background:#4c1d95;border-color:#6d28d9;}
+.toolBtn.rose{background:#7f1d1d;border-color:#b91c1c;}
+.toolBtn.on{outline:2px solid var(--sky);outline-offset:1px;}
+.gridrow{display:flex;flex-wrap:wrap;gap:14px;}
+.actions{display:flex;gap:8px;margin-top:14px;}
+.fb{border-radius:10px;padding:14px;margin-top:14px;}
+.fb.ok{background:rgba(6,78,59,.4);border:1px solid #047857;color:#a7f3d0;}
+.fb.bad{background:rgba(127,29,29,.4);border:1px solid #b91c1c;color:#fecaca;}
+.fb.info{background:var(--bg2);border:1px solid var(--line);}
+.fb p{margin:0 0 4px;}
+.fb .ttl{font-weight:700;color:#fff;}
+table.score{width:100%;font-size:13px;color:#cbd5e1;border-collapse:collapse;margin-top:8px;}
+table.score th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding-bottom:4px;}
+table.score td{padding:4px 0;border-top:1px solid var(--line);text-transform:capitalize;}
+.solbox{margin-top:14px;background:#fff;border-radius:10px;padding:10px;}
+.solttl{font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;}
+.origin{margin-top:12px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;}
+.origin .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+
+@media(max-width:1100px){.sidebar{display:none;}.left{width:50%;}}
 </style>
 </head>
-<body class="text-slate-100">
-<div class="flex h-screen overflow-hidden">
+<body>
+<div class="app">
 
-  <!-- ============ Panel lateral fijo: Consejos UPCT ============ -->
-  <aside class="w-72 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col">
-    <div class="p-4 border-b border-slate-800">
-      <h1 class="text-lg font-bold text-white leading-tight">Vistas Diédricas</h1>
-      <p class="text-xs text-slate-400 mt-1">Sistema Europeo · 1er diedro</p>
+  <!-- ============ Consejos UPCT ============ -->
+  <aside class="sidebar">
+    <div class="head">
+      <h1>Vistas Diédricas</h1>
+      <div class="sub">Sistema Europeo · 1<sup>er</sup> diedro</div>
     </div>
-    <div class="p-4 overflow-y-auto scrollbar-thin text-sm space-y-4 flex-1">
-      <h2 class="text-amber-400 font-semibold text-xs uppercase tracking-wide">Consejos de Normalización (UPCT)</h2>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">📐 Disposición (1er diedro)</p>
-        <p class="text-slate-300 text-xs leading-relaxed">El objeto se sitúa entre el observador y el plano. Por eso la <b>Planta</b> va <b>debajo</b> del Alzado y el <b>Perfil izquierdo</b> a su <b>derecha</b>.</p>
-      </div>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">↔️ Correspondencia entre vistas</p>
-        <ul class="text-slate-300 text-xs leading-relaxed list-disc pl-4 space-y-1">
-          <li>Alzado y Planta comparten la <b>anchura</b> (alineadas en vertical).</li>
-          <li>Alzado y Perfil comparten la <b>altura</b> (alineadas en horizontal).</li>
-          <li>Planta y Perfil comparten la <b>profundidad</b>.</li>
-        </ul>
-      </div>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">✏️ Tipos de línea</p>
-        <ul class="text-slate-300 text-xs leading-relaxed space-y-1">
-          <li><span class="inline-block w-8 border-t-2 border-slate-100 align-middle"></span> Continua gruesa → arista <b>vista</b>.</li>
-          <li><span class="inline-block w-8 border-t border-dashed border-slate-100 align-middle"></span> Discontinua → arista <b>oculta</b>.</li>
-          <li><span class="inline-block w-8 border-t border-dotted border-red-400 align-middle"></span> Trazo y punto → <b>eje</b> de simetría / centro.</li>
-        </ul>
-      </div>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">⚖️ Prioridad de líneas</p>
-        <p class="text-slate-300 text-xs leading-relaxed">Si coinciden, manda la <b>vista sobre la oculta</b>, y la oculta sobre el eje:</p>
-        <p class="text-slate-400 text-[11px] mt-1">vista &gt; oculta &gt; eje</p>
-      </div>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">🕳️ Taladros y ejes</p>
-        <p class="text-slate-300 text-xs leading-relaxed">Todo taladro lleva su <b>eje</b> (trazo y punto). En la vista frontal al agujero se ve un <b>círculo</b>; en las otras dos, dos <b>líneas ocultas</b> paralelas (el barreno).</p>
-      </div>
-
-      <div class="bg-slate-800/60 rounded-lg p-3">
-        <p class="font-semibold text-white mb-1">📏 Planos inclinados</p>
-        <p class="text-slate-300 text-xs leading-relaxed">Una rampa se ve <b>en verdadera magnitud sólo en una vista</b>; en las otras aparece reducida (como rectángulo o línea), nunca como triángulo en las tres.</p>
-      </div>
+    <div class="tips">
+      <h2>Consejos de Normalización (UPCT)</h2>
+      <div class="tip"><p class="t">📐 Disposición (1er diedro)</p>
+        <p>El objeto se sitúa entre el observador y el plano. Por eso la <b>Planta</b> va <b>debajo</b> del Alzado y el <b>Perfil izquierdo</b> a su <b>derecha</b>.</p></div>
+      <div class="tip"><p class="t">↔️ Correspondencia</p>
+        <ul><li>Alzado y Planta comparten la <b>anchura</b>.</li>
+        <li>Alzado y Perfil comparten la <b>altura</b>.</li>
+        <li>Planta y Perfil comparten la <b>profundidad</b>.</li></ul></div>
+      <div class="tip"><p class="t">✏️ Tipos de línea</p>
+        <ul style="list-style:none;padding-left:0;">
+        <li><span class="swatch" style="border-top:3px solid #e2e8f0;"></span>Continua gruesa → arista <b>vista</b>.</li>
+        <li><span class="swatch" style="border-top:2px dashed #e2e8f0;"></span>Discontinua → arista <b>oculta</b>.</li>
+        <li><span class="swatch" style="border-top:2px dotted #f87171;"></span>Trazo y punto → <b>eje</b>/centro.</li></ul></div>
+      <div class="tip"><p class="t">⚖️ Prioridad de líneas</p>
+        <p>Si coinciden: <b>vista &gt; oculta &gt; eje</b>.</p></div>
+      <div class="tip"><p class="t">🕳️ Taladros y ejes</p>
+        <p>Todo taladro lleva su <b>eje</b>. En la vista del frente se ve un <b>círculo</b>; en las otras dos, dos <b>líneas ocultas</b> paralelas (el barreno).</p></div>
+      <div class="tip"><p class="t">📏 Planos inclinados</p>
+        <p>Una rampa se ve en <b>verdadera magnitud sólo en una vista</b>; en las otras aparece reducida (rectángulo o línea).</p></div>
     </div>
-    <div class="p-3 border-t border-slate-800 text-[10px] text-slate-500">
-      Práctica de Expresión Gráfica · Ingeniería UPCT
-    </div>
+    <div class="foot">Expresión Gráfica · Ingeniería UPCT</div>
   </aside>
 
-  <!-- ============ Zona principal ============ -->
-  <main class="flex-1 flex flex-col overflow-hidden">
-
-    <!-- Barra de controles -->
-    <header class="bg-slate-900/80 border-b border-slate-800 px-4 py-3 flex flex-wrap items-center gap-3">
-      <div class="flex items-center gap-2">
-        <label class="text-xs text-slate-400">Nivel</label>
-        <select id="level" class="bg-slate-800 text-sm rounded-md px-2 py-1.5 border border-slate-700">
-          <option value="facil">Fácil</option>
-          <option value="medio" selected>Medio</option>
-          <option value="dificil">Difícil</option>
-        </select>
+  <!-- ============ Principal ============ -->
+  <main class="main">
+    <header class="toolbar">
+      <label>Nivel</label>
+      <select id="level">
+        <option value="facil">Fácil</option>
+        <option value="medio" selected>Medio</option>
+        <option value="dificil">Difícil</option>
+      </select>
+      <button id="newPiece" class="btn btn-primary">🎲 Nueva pieza</button>
+      <button id="isoBtn" class="btn">🧊 Vista isométrica</button>
+      <div class="sep"></div>
+      <div class="seg">
+        <button data-mode="test" class="on">Test (Opción B)</button>
+        <button data-mode="draw">Dibujar (Opción A)</button>
       </div>
-      <button id="newPiece" class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md px-3 py-1.5">🎲 Nueva pieza</button>
-      <button id="isoBtn" class="bg-slate-800 hover:bg-slate-700 text-sm rounded-md px-3 py-1.5 border border-slate-700">🧊 Vista isométrica</button>
-
-      <div class="h-6 w-px bg-slate-700 mx-1"></div>
-
-      <div class="inline-flex rounded-md overflow-hidden border border-slate-700">
-        <button data-mode="test" class="modeBtn px-3 py-1.5 text-sm bg-blue-600 text-white">Test (Opción B)</button>
-        <button data-mode="draw" class="modeBtn px-3 py-1.5 text-sm bg-slate-800 text-slate-300">Dibujar (Opción A)</button>
-      </div>
-
-      <div class="ml-auto flex items-center gap-2">
-        <span id="pieceName" class="text-xs text-slate-400"></span>
-        <button id="solBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-md px-3 py-1.5">👁️ Ver solución</button>
-      </div>
+      <div class="spacer"></div>
+      <span id="pieceName" class="pieceName"></span>
+      <button id="solBtn" class="btn btn-ok">👁️ Ver solución</button>
     </header>
 
-    <!-- Contenido -->
-    <div class="flex-1 flex overflow-hidden">
-
-      <!-- 3D -->
-      <section class="w-1/2 min-w-[360px] flex flex-col border-r border-slate-800 bg-slate-950">
-        <div id="viewer" class="flex-1 relative">
-          <div class="absolute top-2 left-2 text-[11px] text-slate-400 bg-slate-900/70 rounded px-2 py-1 pointer-events-none">
-            Arrastra para orbitar · rueda para zoom
-          </div>
+    <div class="content">
+      <section class="left">
+        <div class="viewer" id="viewer">
+          <canvas id="c3d"></canvas>
+          <div class="hint">Arrastra para girar · rueda para zoom</div>
         </div>
-        <!-- Botones de explicación del origen de cada vista -->
-        <div class="p-3 border-t border-slate-800 bg-slate-900/60">
-          <p class="text-xs text-slate-400 mb-2">Resaltar en 3D el plano de proyección:</p>
-          <div class="flex gap-2 flex-wrap">
-            <button data-face="none" class="faceBtn bg-slate-800 hover:bg-slate-700 text-xs rounded px-2.5 py-1 border border-slate-700">Sin resaltar</button>
-            <button data-face="alzado" class="faceBtn text-xs rounded px-2.5 py-1 border border-red-700 bg-red-900/40 hover:bg-red-800/50 text-red-200">Cara → Alzado</button>
-            <button data-face="planta" class="faceBtn text-xs rounded px-2.5 py-1 border border-emerald-700 bg-emerald-900/40 hover:bg-emerald-800/50 text-emerald-200">Cara → Planta</button>
-            <button data-face="perfil" class="faceBtn text-xs rounded px-2.5 py-1 border border-sky-700 bg-sky-900/40 hover:bg-sky-800/50 text-sky-200">Cara → Perfil</button>
+        <div class="facebar">
+          <p>Resaltar en 3D la cara que origina cada vista:</p>
+          <div class="row">
+            <button class="chip" data-face="none">Sin resaltar</button>
+            <button class="chip alz" data-face="alzado">Cara → Alzado</button>
+            <button class="chip pla" data-face="planta">Cara → Planta</button>
+            <button class="chip per" data-face="perfil">Cara → Perfil</button>
           </div>
         </div>
       </section>
 
-      <!-- Respuesta / práctica -->
-      <section class="w-1/2 flex flex-col overflow-y-auto scrollbar-thin bg-slate-900">
-        <div id="modeArea" class="p-4"></div>
-        <div id="feedback" class="px-4 pb-6"></div>
+      <section class="right">
+        <div id="modeArea" class="pad"></div>
+        <div id="feedback" class="pad" style="padding-top:0;"></div>
       </section>
     </div>
   </main>
@@ -148,9 +202,6 @@
 
 <script>
 "use strict";
-const OrbitControls = (window.THREE && THREE.OrbitControls) ? THREE.OrbitControls : null;
-const HAS_THREE = !!(window.THREE && OrbitControls);
-
 /* =====================================================================
  *  UTILIDADES
  * ===================================================================*/
@@ -166,115 +217,16 @@ const ri=(rng,a,b)=>a+Math.floor(rng()*(b-a+1));
 const pick=(rng,arr)=>arr[Math.floor(rng()*arr.length)];
 
 /* =====================================================================
- *  GENERADOR DE PIEZAS (spec)
- *  spec = { name, W, D, topPts:[[x,z]...] (izq->dcha), holes:[{x,z,r}] }
- *  - El perfil frontal (Alzado) es el polígono: base z=0 + topPts.
- *  - La pieza es un prisma extruido en profundidad (eje Z mundo).
- *  - Los taladros son cilíndricos según la profundidad (pasantes).
+ *  GENERADOR DE PIEZAS
+ *  spec = { name, W, D, H, topPts:[[x,z]...] izq->dcha, holes:[{x,z,r}] }
  * ===================================================================*/
 function maxTop(topPts){ return Math.max(...topPts.map(p=>p[1])); }
-
-function genStaircase(rng){
-  const n=ri(rng,2,3);
-  let x=0; const W0=[]; let z=ri(rng,4,6);
-  const pts=[[0,z]];
-  for(let i=0;i<n;i++){
-    const w=ri(rng,2,3); x+=w;
-    pts.push([x,z]);
-    if(i<n-1){ const nz=Math.max(1,z-ri(rng,1,2)); pts.push([x,nz]); z=nz; }
-  }
-  return { name:'Escalonado', W:x, D:ri(rng,3,5), topPts:pts, holes:[] };
-}
-function genRamp(rng){
-  const H=ri(rng,4,6), W=ri(rng,5,7), b=ri(rng,1,2);
-  const a=ri(rng,0,2); // tramo plano antes de la rampa
-  const pts=[[0,H]];
-  if(a>0) pts.push([a,H]);
-  pts.push([W,b]);
-  return { name:'Plano inclinado (rampa)', W, D:ri(rng,3,5), topPts:pts, holes:[] };
-}
-function genLshape(rng,withHole){
-  const H=ri(rng,5,7), h=ri(rng,2,3), a=withHole?3:ri(rng,2,3), W=a+ri(rng,3,4);
-  const tallLeft=rng()<0.5;
-  const pts = tallLeft ? [[0,H],[a,H],[a,h],[W,h]] : [[0,h],[W-a,h],[W-a,H],[W,H]];
-  const holes=[];
-  if(withHole){
-    const hx = tallLeft ? 2 : W-2;                 // centrado en el ala alta (ancho 3)
-    const hz = Math.min(H-2,Math.round(H/2));
-    holes.push({x:hx,z:hz,r:1});
-  }
-  return { name: withHole?'Escuadra con taladro':'Escuadra (perfil L)', W, D:ri(rng,3,5), topPts:pts, holes };
-}
-function genChannel(rng,withHoles){
-  const H=ri(rng,5,6), f=ri(rng,1,2), wall=withHoles?4:ri(rng,2,3), gap=ri(rng,2,3);
-  const W=2*wall+gap;
-  const pts=[[0,H],[wall,H],[wall,f],[wall+gap,f],[wall+gap,H],[W,H]];
-  const holes=[];
-  if(withHoles){
-    const z=Math.min(H-2,Math.round(H/2));
-    holes.push({x:2,z,r:1});            // taladros simétricos en las paredes (ancho 4)
-    holes.push({x:W-2,z,r:1});
-  }
-  return { name:'Soporte en U (vaciado)', W, D:ri(rng,3,5), topPts:pts, holes };
-}
-function genPlate(rng,nHoles){
-  const H=ri(rng,4,5), W=ri(rng,6,8), step=nHoles<2 && rng()<0.5;
-  let pts;
-  if(step){ const a=ri(rng,2,3), h=H-ri(rng,1,2); pts=[[0,H],[a,H],[a,h],[W,h]]; }
-  else pts=[[0,H],[W,H]];
-  const holes=[];
-  const positions=[Math.round(W*0.3),Math.round(W*0.7)];
-  for(let i=0;i<nHoles;i++){
-    const x=positions[i]; const z=Math.max(2,Math.min(H-2,Math.round(H/2)));
-    holes.push({x,z,r:1});
-  }
-  return { name:nHoles>1?'Placa con taladros':'Placa con taladro', W, D:ri(rng,3,4), topPts:pts, holes };
-}
-function genCombo(rng){
-  // L + rampa + taladro
-  const H=ri(rng,6,7), h=ri(rng,2,3), a=3, W=a+ri(rng,3,4);
-  const pts=[[0,H],[a,H],[a,h],[W-1,h],[W,Math.max(1,h-1)]]; // rampita final
-  const holes=[{x:Math.round(a/2),z:Math.round(H/2),r:1}];
-  return { name:'Pieza combinada', W, D:ri(rng,3,5), topPts:pts, holes };
-}
-
-function generateSpec(level,rng){
-  let spec;
-  if(level==='facil') spec = pick(rng,[genStaircase,genRamp,()=>genLshape(rng,false)])(rng);
-  else if(level==='medio') spec = pick(rng,[()=>genLshape(rng,true),()=>genChannel(rng,false),()=>genPlate(rng,1),genStaircase])(rng);
-  else spec = pick(rng,[()=>genChannel(rng,true),()=>genPlate(rng,2),genCombo])(rng);
-  validate(spec);
-  return spec;
-}
-// Asegura taladros embebidos; si no, los elimina.
-function validate(spec){
-  const H=maxTop(spec.topPts);
-  spec.H=H;
-  spec.holes=(spec.holes||[]).filter(hh=>{
-    // la altura debe cubrir el taladro en toda su anchura (queda totalmente embebido)
-    let minT=Infinity;
-    for(let xx=hh.x-hh.r; xx<=hh.x+hh.r+1e-9; xx+=0.5) minT=Math.min(minT,heightAt(spec.topPts,xx));
-    return hh.z-hh.r>=0.5 && hh.z+hh.r<=minT-0.5 && hh.x-hh.r>=0.5 && hh.x+hh.r<=spec.W-0.5;
-  });
-  return spec;
-}
-
-/* =====================================================================
- *  PROYECTOR  spec -> { alzado, planta, perfil }
- *  Cada vista: { lines:[{x1,y1,x2,y2,t}], circles?, w, h }
- *  Coordenadas locales (origen abajo-izquierda salvo planta).
- * ===================================================================*/
 function heightAt(topPts,x){
-  let m=0;
   for(let i=0;i<topPts.length-1;i++){
     const [ax,az]=topPts[i],[bx,bz]=topPts[i+1];
     if(bx<=ax) continue;
-    if(x>=ax-1e-9 && x<=bx+1e-9){
-      const t=(x-ax)/(bx-ax);
-      return az+(bz-az)*t;
-    }
+    if(x>=ax-1e-9 && x<=bx+1e-9){ const t=(x-ax)/(bx-ax); return az+(bz-az)*t; }
   }
-  // bordes
   if(x<=topPts[0][0]) return topPts[0][1];
   return topPts[topPts.length-1][1];
 }
@@ -292,67 +244,119 @@ function maxTopInRange(topPts,lo,hi){
   }
   return m;
 }
+function genStaircase(rng){
+  const n=ri(rng,2,3); let x=0, z=ri(rng,4,6);
+  const pts=[[0,z]];
+  for(let i=0;i<n;i++){ const w=ri(rng,2,3); x+=w; pts.push([x,z]);
+    if(i<n-1){ const nz=Math.max(1,z-ri(rng,1,2)); pts.push([x,nz]); z=nz; } }
+  return { name:'Escalonado', W:x, D:ri(rng,3,5), topPts:pts, holes:[] };
+}
+function genRamp(rng){
+  const H=ri(rng,4,6), W=ri(rng,5,7), b=ri(rng,1,2), a=ri(rng,0,2);
+  const pts=[[0,H]]; if(a>0) pts.push([a,H]); pts.push([W,b]);
+  return { name:'Plano inclinado (rampa)', W, D:ri(rng,3,5), topPts:pts, holes:[] };
+}
+function genLshape(rng,withHole){
+  const H=ri(rng,5,7), h=ri(rng,2,3), a=withHole?3:ri(rng,2,3), W=a+ri(rng,3,4);
+  const tallLeft=rng()<0.5;
+  const pts = tallLeft ? [[0,H],[a,H],[a,h],[W,h]] : [[0,h],[W-a,h],[W-a,H],[W,H]];
+  const holes=[];
+  if(withHole){ const hx=tallLeft?2:W-2, hz=Math.min(H-2,Math.round(H/2)); holes.push({x:hx,z:hz,r:1}); }
+  return { name: withHole?'Escuadra con taladro':'Escuadra (perfil L)', W, D:ri(rng,3,5), topPts:pts, holes };
+}
+function genChannel(rng,withHoles){
+  const H=ri(rng,5,6), f=ri(rng,1,2), wall=withHoles?4:ri(rng,2,3), gap=ri(rng,2,3);
+  const W=2*wall+gap;
+  const pts=[[0,H],[wall,H],[wall,f],[wall+gap,f],[wall+gap,H],[W,H]];
+  const holes=[];
+  if(withHoles){ const z=Math.min(H-2,Math.round(H/2)); holes.push({x:2,z,r:1}); holes.push({x:W-2,z,r:1}); }
+  return { name:'Soporte en U (vaciado)', W, D:ri(rng,3,5), topPts:pts, holes };
+}
+function genPlate(rng,nHoles){
+  const H=ri(rng,4,5), W=ri(rng,6,8), step=nHoles<2 && rng()<0.5;
+  let pts;
+  if(step){ const a=ri(rng,2,3), h=H-ri(rng,1,2); pts=[[0,H],[a,H],[a,h],[W,h]]; }
+  else pts=[[0,H],[W,H]];
+  const holes=[]; const positions=[Math.round(W*0.3),Math.round(W*0.7)];
+  for(let i=0;i<nHoles;i++){ const z=Math.max(2,Math.min(H-2,Math.round(H/2))); holes.push({x:positions[i],z,r:1}); }
+  return { name:nHoles>1?'Placa con taladros':'Placa con taladro', W, D:ri(rng,3,4), topPts:pts, holes };
+}
+function genCombo(rng){
+  const H=ri(rng,6,7), h=ri(rng,2,3), a=3, W=a+ri(rng,3,4);
+  const pts=[[0,H],[a,H],[a,h],[W-1,h],[W,Math.max(1,h-1)]];
+  const holes=[{x:Math.round(a/2),z:Math.round(H/2),r:1}];
+  return { name:'Pieza combinada', W, D:ri(rng,3,5), topPts:pts, holes };
+}
+function validate(spec){
+  const H=maxTop(spec.topPts); spec.H=H;
+  spec.holes=(spec.holes||[]).filter(hh=>{
+    let minT=Infinity;
+    for(let xx=hh.x-hh.r; xx<=hh.x+hh.r+1e-9; xx+=0.5) minT=Math.min(minT,heightAt(spec.topPts,xx));
+    return hh.z-hh.r>=0.5 && hh.z+hh.r<=minT-0.5 && hh.x-hh.r>=0.5 && hh.x+hh.r<=spec.W-0.5;
+  });
+  return spec;
+}
+function generateSpec(level,rng){
+  let spec;
+  if(level==='facil') spec = pick(rng,[genStaircase,genRamp,()=>genLshape(rng,false)])(rng);
+  else if(level==='medio') spec = pick(rng,[()=>genLshape(rng,true),()=>genChannel(rng,false),()=>genPlate(rng,1),genStaircase])(rng);
+  else spec = pick(rng,[()=>genChannel(rng,true),()=>genPlate(rng,2),genCombo])(rng);
+  return validate(spec);
+}
+
+/* =====================================================================
+ *  PROYECTOR  spec -> { alzado, planta, perfil }
+ * ===================================================================*/
 function project(spec){
-  const W=spec.W, D=spec.D, H=spec.H||maxTop(spec.topPts);
-  const tp=spec.topPts, ext=0.6;
+  const W=spec.W, D=spec.D, H=spec.H||maxTop(spec.topPts), tp=spec.topPts, ext=0.6;
   const L=(x1,y1,x2,y2,t)=>({x1,y1,x2,y2,t});
 
-  /* ---- ALZADO (x, z) ---- */
+  // ALZADO
   const aL=[]; const circles=[];
-  aL.push(L(0,0,W,0,'v'));                               // base
-  aL.push(L(W,0,W,tp[tp.length-1][1],'v'));              // lado dcho
-  for(let i=0;i<tp.length-1;i++) aL.push(L(tp[i][0],tp[i][1],tp[i+1][0],tp[i+1][1],'v')); // perfil superior
-  aL.push(L(0,tp[0][1],0,0,'v'));                        // lado izq
+  aL.push(L(0,0,W,0,'v'));
+  aL.push(L(W,0,W,tp[tp.length-1][1],'v'));
+  for(let i=0;i<tp.length-1;i++) aL.push(L(tp[i][0],tp[i][1],tp[i+1][0],tp[i+1][1],'v'));
+  aL.push(L(0,tp[0][1],0,0,'v'));
   for(const h of spec.holes){
     circles.push({cx:h.x,cy:h.z,r:h.r});
-    aL.push(L(h.x-h.r-ext,h.z,h.x+h.r+ext,h.z,'a'));     // eje horizontal
-    aL.push(L(h.x,h.z-h.r-ext,h.x,h.z+h.r+ext,'a'));     // eje vertical
+    aL.push(L(h.x-h.r-ext,h.z,h.x+h.r+ext,h.z,'a'));
+    aL.push(L(h.x,h.z-h.r-ext,h.x,h.z+h.r+ext,'a'));
   }
-
-  /* ---- PLANTA (x horiz, dep vertical hacia abajo) ---- */
+  // PLANTA
   const pL=[];
   pL.push(L(0,0,W,0,'v')); pL.push(L(W,0,W,D,'v')); pL.push(L(W,D,0,D,'v')); pL.push(L(0,D,0,0,'v'));
-  // líneas internas en esquinas (cambios de pendiente) del perfil superior
   const corners=new Set();
   for(let i=1;i<tp.length-1;i++){ const x=tp[i][0]; if(x>0.001 && x<W-0.001) corners.add(x); }
   for(const x of corners) pL.push(L(x,0,x,D,'v'));
   for(const h of spec.holes){
-    pL.push(L(h.x-h.r,0,h.x-h.r,D,'h'));
-    pL.push(L(h.x+h.r,0,h.x+h.r,D,'h'));
+    pL.push(L(h.x-h.r,0,h.x-h.r,D,'h')); pL.push(L(h.x+h.r,0,h.x+h.r,D,'h'));
     pL.push(L(h.x,-ext,h.x,D+ext,'a'));
   }
-
-  /* ---- PERFIL IZQUIERDO (dep horiz, z vert) ---- */
+  // PERFIL IZQUIERDO
   const fL=[];
   fL.push(L(0,0,D,0,'v')); fL.push(L(D,0,D,H,'v')); fL.push(L(D,H,0,H,'v')); fL.push(L(0,H,0,0,'v'));
-  // tramos planos del perfil superior -> líneas horizontales (vista u oculta segun oclusión por la izquierda)
   for(let i=0;i<tp.length-1;i++){
     const [ax,az]=tp[i],[bx,bz]=tp[i+1];
-    if(bx>ax && Math.abs(az-bz)<1e-9){           // tramo plano a nivel L
+    if(bx>ax && Math.abs(az-bz)<1e-9){
       const Lz=az;
       if(Lz>0.001 && Lz<H-0.001){
         const occluder=maxTopInRange(tp,0,ax-1e-6);
-        const t = occluder>Lz+1e-6 ? 'h' : 'v';
-        fL.push(L(0,Lz,D,Lz,t));
+        fL.push(L(0,Lz,D,Lz, occluder>Lz+1e-6 ? 'h':'v'));
       }
     }
   }
   for(const h of spec.holes){
-    fL.push(L(0,h.z-h.r,D,h.z-h.r,'h'));
-    fL.push(L(0,h.z+h.r,D,h.z+h.r,'h'));
+    fL.push(L(0,h.z-h.r,D,h.z-h.r,'h')); fL.push(L(0,h.z+h.r,D,h.z+h.r,'h'));
     fL.push(L(-ext,h.z,D+ext,h.z,'a'));
   }
-
-  return {
-    W,D,H,
+  return { W,D,H,
     alzado:{lines:aL, circles, w:W, h:H},
     planta:{lines:pL, circles:[], w:W, h:D},
-    perfil:{lines:fL, circles:[], w:D, h:H},
-  };
+    perfil:{lines:fL, circles:[], w:D, h:H} };
 }
 
 /* =====================================================================
- *  RENDER SVG (disposición europea: planta abajo, perfil dcha)
+ *  RENDER SVG (disposición europea)
  * ===================================================================*/
 function svgEl(tag,attrs){
   const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
@@ -361,224 +365,197 @@ function svgEl(tag,attrs){
 }
 function renderProjection(proj,{scale=26,labels=true,guides=true}={}){
   const s=scale, pad=22, gap=34;
-  const Aw=proj.W*s, Ah=proj.H*s, Pw=proj.W*s, Ph=proj.D*s, Fw=proj.D*s, Fh=proj.H*s;
-  const ox=pad, oyA=pad+ (labels?14:0);
-  const oxF=ox+Aw+gap;
-  const oyP=oyA+Ah+gap;
-  const totalW=oxF+Fw+pad;
-  const totalH=oyP+Ph+pad;
-  const svg=svgEl('svg',{viewBox:`0 0 ${totalW} ${totalH}`,width:'100%',class:'block'});
-  svg.style.maxWidth=totalW+'px';
-
-  // mapeos
+  const Aw=proj.W*s, Ah=proj.H*s, Ph=proj.D*s, Fw=proj.D*s;
+  const ox=pad, oyA=pad+(labels?14:0);
+  const oxF=ox+Aw+gap, oyP=oyA+Ah+gap;
+  const totalW=oxF+Fw+pad, totalH=oyP+Ph+pad;
+  const svg=svgEl('svg',{viewBox:`0 0 ${totalW} ${totalH}`,width:'100%'});
+  svg.style.maxWidth=totalW+'px'; svg.style.display='block';
   const mapA=(x,z)=>[ox+x*s, oyA+(proj.H-z)*s];
   const mapF=(d,z)=>[oxF+d*s, oyA+(proj.H-z)*s];
   const mapP=(x,dep)=>[ox+x*s, oyP+dep*s];
-
-  const addLines=(lines,map)=>{
-    for(const l of lines){
-      const [x1,y1]=map(l.x1,l.y1),[x2,y2]=map(l.x2,l.y2);
-      svg.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+l.t}));
-    }
-  };
-  const addCircles=(circles,map)=>{
-    for(const c of circles){
-      const [cx,cy]=map(c.cx,c.cy);
-      svg.appendChild(svgEl('circle',{cx,cy,r:c.r*s,class:'circ'}));
-    }
-  };
-
-  if(guides){
-    // correspondencia alzado-planta (vertical) y alzado-perfil (horizontal)
-    for(let x=0;x<=proj.W;x++){ const [gx,gy1]=mapA(x,0); const [,gy2]=mapP(x,proj.D);
-      svg.appendChild(svgEl('line',{x1:gx,y1:oyA,x2:gx,y2:oyP+Ph,class:'ln guide'})); }
-  }
-
+  const addLines=(lines,map)=>{ for(const l of lines){ const [x1,y1]=map(l.x1,l.y1),[x2,y2]=map(l.x2,l.y2);
+    svg.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+l.t})); } };
+  const addCircles=(cs,map)=>{ for(const c of cs){ const [cx,cy]=map(c.cx,c.cy);
+    svg.appendChild(svgEl('circle',{cx,cy,r:c.r*s,class:'circ'})); } };
+  if(guides){ for(let x=0;x<=proj.W;x++){ const [gx]=mapA(x,0);
+    svg.appendChild(svgEl('line',{x1:gx,y1:oyA,x2:gx,y2:oyP+Ph,class:'ln guide'})); } }
   addLines(proj.alzado.lines,mapA); addCircles(proj.alzado.circles,mapA);
-  addLines(proj.perfil.lines,mapF);
-  addLines(proj.planta.lines,mapP);
-
-  if(labels){
-    const lab=(x,y,t)=>{const e=svgEl('text',{x,y,class:'vlabel'});e.textContent=t;svg.appendChild(e);};
-    lab(ox, oyA-4,'ALZADO');
-    lab(oxF, oyA-4,'PERFIL IZQ.');
-    lab(ox, oyP-6,'PLANTA');
-  }
+  addLines(proj.perfil.lines,mapF); addLines(proj.planta.lines,mapP);
+  if(labels){ const lab=(x,y,t)=>{const e=svgEl('text',{x,y,class:'vlabel'});e.textContent=t;svg.appendChild(e);};
+    lab(ox,oyA-4,'ALZADO'); lab(oxF,oyA-4,'PERFIL IZQ.'); lab(ox,oyP-6,'PLANTA'); }
   return svg;
 }
 
 /* =====================================================================
- *  ESCENA 3D
+ *  MOTOR 3D PROPIO (canvas 2D, sin dependencias)
  * ===================================================================*/
-let renderer,scene,camera,controls,pieceGroup,highlightGroup,arrowGroup,threeReady=false;
-const viewerEl=document.getElementById('viewer');
+const Engine3D = (function(){
+  const canvas=document.getElementById('c3d');
+  const ctx=canvas.getContext('2d');
+  let geom=null, rotX=0.5, rotY=2.3, zoom=1, highlight='none';
+  let W=1,H=1,D=1, dragging=false, lx=0, ly=0, dpr=1;
 
-function showViewerMessage(msg){
-  viewerEl.innerHTML=`<div class="absolute inset-0 flex items-center justify-center p-6 text-center">
-    <div class="text-slate-300 text-sm max-w-xs bg-slate-900/80 rounded-lg p-4 border border-slate-700">
-      <p class="text-amber-400 font-semibold mb-2">Vista 3D no disponible</p>
-      <p>${msg}</p>
-      <p class="mt-2 text-slate-400 text-xs">Las vistas 2D y la práctica siguen funcionando con normalidad.</p>
-    </div></div>`;
-}
-function initThree(){
-  if(!HAS_THREE){ showViewerMessage('No se ha podido cargar la librería 3D (Three.js) desde el CDN. Comprueba tu conexión o ábrelo en local.'); return; }
-  try{
-    renderer=new THREE.WebGLRenderer({antialias:true});
-    renderer.setPixelRatio(window.devicePixelRatio);
-    resizeRenderer();
-    viewerEl.appendChild(renderer.domElement);
-    scene=new THREE.Scene();
-    scene.background=new THREE.Color(0x0b1220);
-    camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
-    controls=new OrbitControls(camera,renderer.domElement);
-    controls.enableDamping=true;
-    const amb=new THREE.AmbientLight(0xffffff,0.7); scene.add(amb);
-    const dir=new THREE.DirectionalLight(0xffffff,0.8); dir.position.set(6,10,8); scene.add(dir);
-    const dir2=new THREE.DirectionalLight(0xffffff,0.4); dir2.position.set(-6,4,-8); scene.add(dir2);
-    scene.add(new THREE.GridHelper(40,40,0x1e293b,0x16202f));
-    threeReady=true;
-    animate();
-    window.addEventListener('resize',()=>{resizeRenderer();});
-  }catch(err){
-    threeReady=false;
-    showViewerMessage('Tu navegador no pudo iniciar WebGL: '+err.message);
+  function resize(){
+    dpr=window.devicePixelRatio||1;
+    const r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=Math.max(1,r.width*dpr); canvas.height=Math.max(1,r.height*dpr);
   }
-}
-function resizeRenderer(){
-  const w=viewerEl.clientWidth||600, h=viewerEl.clientHeight||500;
-  renderer.setSize(w,h);
-  if(camera){camera.aspect=w/h;camera.updateProjectionMatrix();}
-}
-function animate(){ if(!threeReady) return; requestAnimationFrame(animate); controls.update(); renderer.render(scene,camera); }
-
-function buildPiece(spec){
-  if(!threeReady) return;
-  if(pieceGroup) scene.remove(pieceGroup);
-  if(highlightGroup) scene.remove(highlightGroup);
-  if(arrowGroup) scene.remove(arrowGroup);
-
-  const W=spec.W,D=spec.D,H=spec.H;
-  // Shape en plano (x = ancho, y = altura), extruido en profundidad (eje Z)
-  const shape=new THREE.Shape();
-  const tp=spec.topPts;
-  shape.moveTo(0,0); shape.lineTo(W,0); shape.lineTo(W,tp[tp.length-1][1]);
-  for(let i=tp.length-1;i>=0;i--) shape.lineTo(tp[i][0],tp[i][1]);
-  shape.lineTo(0,0);
-  for(const h of spec.holes){
-    const path=new THREE.Path();
-    path.absarc(h.x,h.z,h.r,0,Math.PI*2,false);
-    shape.holes.push(path);
+  function build(spec){
+    W=spec.W; H=spec.H; D=spec.D;
+    const cx=W/2, cy=H/2, cz=D/2, verts=[];
+    const addV=(x,y,z)=>{ verts.push([x-cx,y-cy,z-cz]); return verts.length-1; };
+    const tp=spec.topPts;
+    const outer=[[0,0],[W,0]];
+    for(let i=tp.length-1;i>=0;i--) outer.push([tp[i][0],tp[i][1]]);
+    const holeLoops=spec.holes.map(h=>{ const a=[]; const N=26;
+      for(let k=0;k<N;k++){ const t=k/N*2*Math.PI; a.push([h.x+h.r*Math.cos(t), h.z+h.r*Math.sin(t)]); }
+      return {pts:a, c:[h.x,h.z]}; });
+    const fO=outer.map(p=>addV(p[0],p[1],0)), bO=outer.map(p=>addV(p[0],p[1],D));
+    const fH=holeLoops.map(hl=>hl.pts.map(p=>addV(p[0],p[1],0)));
+    const bH=holeLoops.map(hl=>hl.pts.map(p=>addV(p[0],p[1],D)));
+    const faces=[];
+    faces.push({loops:[fO,...fH], n:[0,0,-1]});
+    faces.push({loops:[bO,...bH], n:[0,0,1]});
+    for(let i=0;i<outer.length;i++){ const a=i,b=(i+1)%outer.length;
+      const dx=outer[b][0]-outer[a][0], dy=outer[b][1]-outer[a][1];
+      let nx=dy,ny=-dx; const L=Math.hypot(nx,ny)||1;
+      faces.push({loops:[[fO[a],fO[b],bO[b],bO[a]]], n:[nx/L,ny/L,0]}); }
+    holeLoops.forEach((hl,k)=>{ const N=hl.pts.length;
+      for(let j=0;j<N;j++){ const a=j,b=(j+1)%N;
+        const mx=(hl.pts[a][0]+hl.pts[b][0])/2, my=(hl.pts[a][1]+hl.pts[b][1])/2;
+        let nx=hl.c[0]-mx, ny=hl.c[1]-my; const L=Math.hypot(nx,ny)||1;
+        faces.push({loops:[[fH[k][a],fH[k][b],bH[k][b],bH[k][a]]], n:[nx/L,ny/L,0]}); } });
+    geom={verts,faces};
   }
-  const geom=new THREE.ExtrudeGeometry(shape,{depth:D,bevelEnabled:false});
-  geom.translate(-W/2,-H/2,-D/2);   // centrar
-  const mat=new THREE.MeshStandardMaterial({color:0x60a5fa,metalness:0.15,roughness:0.6});
-  const mesh=new THREE.Mesh(geom,mat);
-  const edges=new THREE.LineSegments(new THREE.EdgesGeometry(geom,20),
-                new THREE.LineBasicMaterial({color:0x0b1220}));
-  pieceGroup=new THREE.Group(); pieceGroup.add(mesh); pieceGroup.add(edges);
-  scene.add(pieceGroup);
-
-  // planos de proyección resaltables
-  highlightGroup=new THREE.Group(); highlightGroup.visible=true; scene.add(highlightGroup);
-  const mkPlane=(w,h,color)=>{
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),
-      new THREE.MeshBasicMaterial({color,transparent:true,opacity:0.35,side:THREE.DoubleSide,depthWrite:false}));
-    m.visible=false; return m;
+  function rot(v){
+    const cY=Math.cos(rotY),sY=Math.sin(rotY),cX=Math.cos(rotX),sX=Math.sin(rotX);
+    const x1=v[0]*cY+v[2]*sY, z1=-v[0]*sY+v[2]*cY, y1=v[1];
+    const y2=y1*cX - z1*sX, z2=y1*sX + z1*cX;
+    return [x1,y2,z2];
+  }
+  function classify(n){
+    if(n[2]<-0.5) return 'alzado';
+    if(n[1]>0.5)  return 'planta';
+    if(n[0]<-0.5) return 'perfil';
+    return null;
+  }
+  const HCOL={alzado:[239,68,68],planta:[16,185,129],perfil:[56,189,248]};
+  function frame(){
+    requestAnimationFrame(frame);
+    const wpx=canvas.width, hpx=canvas.height;
+    ctx.clearRect(0,0,wpx,hpx);
+    ctx.fillStyle='#0a1018'; ctx.fillRect(0,0,wpx,hpx);
+    if(!geom) return;
+    const scale=Math.min(wpx,hpx)/(Math.max(W,H,D)*2.3)*zoom;
+    const cx=wpx/2, cy=hpx/2;
+    const P=geom.verts.map(v=>{ const r=rot(v); return [cx+r[0]*scale, cy-r[1]*scale, r[2]]; });
+    const Lt=[-0.35,0.55,0.75];
+    const list=[];
+    for(const f of geom.faces){
+      const nr=rot(f.n);
+      if(nr[2]<=0.02) continue;                 // backface culling
+      const outerLoop=f.loops[0];
+      let z=0; for(const idx of outerLoop) z+=P[idx][2]; z/=outerLoop.length;
+      const lit=Math.max(0, nr[0]*Lt[0]+nr[1]*Lt[1]+nr[2]*Lt[2]);
+      const inten=0.40+0.60*lit;
+      list.push({f,z,inten});
+    }
+    list.sort((a,b)=>a.z-b.z);
+    for(const it of list){
+      const f=it.f;
+      const path=new Path2D();
+      for(const loop of f.loops){
+        loop.forEach((idx,i)=>{ const p=P[idx]; if(i===0) path.moveTo(p[0],p[1]); else path.lineTo(p[0],p[1]); });
+        path.closePath();
+      }
+      let col;
+      const cls=classify(f.n);
+      if(highlight!=='none' && cls===highlight){
+        const hc=HCOL[highlight];
+        col=`rgb(${Math.round(hc[0]*it.inten)},${Math.round(hc[1]*it.inten)},${Math.round(hc[2]*it.inten)})`;
+      } else {
+        col=`rgb(${Math.round(96*it.inten)},${Math.round(150*it.inten)},${Math.round(235*it.inten)})`;
+      }
+      ctx.fillStyle=col; ctx.fill(path,'evenodd');
+      ctx.lineWidth=1*dpr; ctx.strokeStyle='rgba(10,16,24,.55)'; ctx.stroke(path);
+    }
+    drawArrow(scale,cx,cy);
+  }
+  function drawArrow(scale,cx,cy){
+    // flecha hacia la cara frontal (Alzado): centroide en z=-D/2
+    const c=rot([0,0,-D/2]); const n=rot([0,0,-1]);
+    if(n[2]<=0.05) return;                      // sólo si la cara frontal es visible
+    const px=cx+c[0]*scale, py=cy-c[1]*scale;
+    const dirx=n[0], diry=-n[1]; const dl=Math.hypot(dirx,diry)||1;
+    const ux=dirx/dl, uy=diry/dl;
+    const tail=[px+ux*70*dpr, py+uy*70*dpr];
+    const tip=[px+ux*16*dpr, py+uy*16*dpr];
+    ctx.strokeStyle='#f59e0b'; ctx.fillStyle='#f59e0b'; ctx.lineWidth=2.5*dpr;
+    ctx.beginPath(); ctx.moveTo(tail[0],tail[1]); ctx.lineTo(tip[0],tip[1]); ctx.stroke();
+    const ang=Math.atan2(tip[1]-tail[1],tip[0]-tail[0]), ah=9*dpr;
+    ctx.beginPath(); ctx.moveTo(tip[0],tip[1]);
+    ctx.lineTo(tip[0]-ah*Math.cos(ang-0.4),tip[1]-ah*Math.sin(ang-0.4));
+    ctx.lineTo(tip[0]-ah*Math.cos(ang+0.4),tip[1]-ah*Math.sin(ang+0.4));
+    ctx.closePath(); ctx.fill();
+    ctx.font=`bold ${13*dpr}px sans-serif`; ctx.fillStyle='#fbbf24';
+    ctx.textAlign='center'; ctx.fillText('ALZADO', tail[0], tail[1]-8*dpr);
+  }
+  // interacción
+  canvas.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',e=>{ if(!dragging)return;
+    rotY+=(e.clientX-lx)*0.01; rotX+=(e.clientY-ly)*0.01;
+    rotX=Math.max(-1.5,Math.min(1.5,rotX)); lx=e.clientX; ly=e.clientY; });
+  canvas.addEventListener('pointerup',e=>{dragging=false;});
+  canvas.addEventListener('wheel',e=>{e.preventDefault(); zoom*=e.deltaY<0?1.1:0.9; zoom=Math.max(0.3,Math.min(4,zoom));},{passive:false});
+  window.addEventListener('resize',resize);
+  resize(); requestAnimationFrame(frame);
+  return {
+    build:(s)=>{build(s);},
+    iso:()=>{rotX=0.5;rotY=2.3;zoom=1;},
+    setHighlight:(h)=>{highlight=h;},
+    resize
   };
-  const pAlz=mkPlane(W,H,0xef4444); pAlz.position.set(0,0,D/2+0.02);            // cara frontal +Z
-  const pPla=mkPlane(W,D,0x10b981); pPla.rotation.x=-Math.PI/2; pPla.position.set(0,H/2+0.02,0); // cara superior
-  const pPer=mkPlane(D,H,0x38bdf8); pPer.rotation.y=-Math.PI/2; pPer.position.set(-W/2-0.02,0,0); // cara izq -X
-  highlightGroup.add(pAlz,pPla,pPer);
-  highlightGroup.userData={alzado:pAlz,planta:pPla,perfil:pPer};
-
-  // flecha + etiqueta del Alzado
-  arrowGroup=new THREE.Group(); scene.add(arrowGroup);
-  const arrow=new THREE.ArrowHelper(new THREE.Vector3(0,0,-1),
-     new THREE.Vector3(0,0,D/2+Math.max(2.5,D*0.6)),Math.max(2.5,D*0.6),0xfbbf24,1,0.6);
-  arrowGroup.add(arrow);
-  arrowGroup.add(makeTextSprite('ALZADO',0,0,D/2+Math.max(3.4,D*0.9)));
-
-  isoView();
-}
-function makeTextSprite(text,x,y,z){
-  const cv=document.createElement('canvas'); cv.width=256; cv.height=64;
-  const ctx=cv.getContext('2d');
-  ctx.fillStyle='rgba(251,191,36,0.95)'; ctx.font='bold 40px sans-serif';
-  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(text,128,32);
-  const tex=new THREE.CanvasTexture(cv);
-  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
-  sp.scale.set(3.2,0.8,1); sp.position.set(x,y,z); return sp;
-}
-function isoView(){
-  if(!threeReady) return;
-  const r=(currentSpec? Math.max(currentSpec.W,currentSpec.H,currentSpec.D):8)*1.9+4;
-  camera.position.set(r,r*0.8,r);
-  controls.target.set(0,0,0); camera.lookAt(0,0,0); controls.update();
-}
-function highlightFace(which){
-  if(!highlightGroup) return;
-  const u=highlightGroup.userData;
-  u.alzado.visible=which==='alzado';
-  u.planta.visible=which==='planta';
-  u.perfil.visible=which==='perfil';
-}
+})();
 
 /* =====================================================================
- *  DISTRACTORES (Test) — perturbando el spec y proyectando
+ *  DISTRACTORES (Test)
  * ===================================================================*/
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function projKey(p){
   const r=v=>Math.round(v*100)/100;
   const ls=arr=>arr.map(l=>{const a=[r(l.x1),r(l.y1)],b=[r(l.x2),r(l.y2)];
-    const [p1,p2]=(a[0]<b[0]||(a[0]===b[0]&&a[1]<=b[1]))?[a,b]:[b,a];
-    return l.t+p1+p2;}).sort().join('|');
+    const [p1,p2]=(a[0]<b[0]||(a[0]===b[0]&&a[1]<=b[1]))?[a,b]:[b,a]; return l.t+p1+p2;}).sort().join('|');
   return ls(p.alzado.lines)+'#'+ls(p.planta.lines)+'#'+ls(p.perfil.lines)
     +'#'+p.alzado.circles.map(c=>r(c.cx)+','+r(c.cy)+','+r(c.r)).sort().join(';');
 }
-function dropHidden(proj){
-  const p=clone(proj);
+function dropHidden(proj){ const p=clone(proj);
   p.planta.lines=p.planta.lines.filter(l=>l.t!=='h');
-  p.perfil.lines=p.perfil.lines.filter(l=>l.t!=='h');
-  return p;
-}
+  p.perfil.lines=p.perfil.lines.filter(l=>l.t!=='h'); return p; }
 function specMutators(spec,rng){
   const out=[];
-  // mover taladro
   if(spec.holes.length){ const s=clone(spec); const h=s.holes[0];
     h.x=Math.max(2,Math.min(s.W-2,h.x+(rng()<0.5?1:-1))); out.push(s); }
-  // cambiar altura de un nivel
   { const s=clone(spec); for(const p of s.topPts){ if(p[1]>1){ p[1]+=(rng()<0.5?1:-1); break; } } out.push(s); }
-  // reflejar horizontalmente
-  { const s=clone(spec); const W=s.W;
-    s.topPts=s.topPts.map(p=>[W-p[0],p[1]]).reverse();
+  { const s=clone(spec); const W=s.W; s.topPts=s.topPts.map(p=>[W-p[0],p[1]]).reverse();
     s.holes=s.holes.map(h=>({...h,x:W-h.x})); out.push(s); }
-  // ensanchar un escalón
   { const s=clone(spec); for(let i=1;i<s.topPts.length-1;i++){ if(s.topPts[i][0]>1&&s.topPts[i][0]<s.W-1){ s.topPts[i][0]+=1; break; } } out.push(s); }
   return out.map(s=>{validate(s); return s;});
 }
 function buildOptions(spec,rng){
-  const correct=project(spec);
-  const ckey=projKey(correct);
-  const opts=[{proj:correct,correct:true}];
-  const keys=new Set([ckey]);
-  // 1) error clásico: olvidar líneas ocultas
+  const correct=project(spec); const ckey=projKey(correct);
+  const opts=[{proj:correct,correct:true}]; const keys=new Set([ckey]);
   const noHidden=dropHidden(correct);
-  if(projKey(noHidden)!==ckey){ opts.push({proj:noHidden,correct:false,why:'Faltan las aristas ocultas (líneas discontinuas del taladro/escalón).'}); keys.add(projKey(noHidden)); }
-  // 2) specs perturbados
-  for(const s of specMutators(spec,rng)){
-    if(opts.length>=4) break;
+  if(projKey(noHidden)!==ckey){ opts.push({proj:noHidden,correct:false,why:'Faltan aristas ocultas (líneas discontinuas del taladro o del escalón).'}); keys.add(projKey(noHidden)); }
+  for(const s of specMutators(spec,rng)){ if(opts.length>=4) break;
     const pr=project(s); const k=projKey(pr);
-    if(!keys.has(k)){ opts.push({proj:pr,correct:false,why:'Las vistas no se corresponden con las dimensiones/posición reales de la pieza.'}); keys.add(k); }
-  }
-  // rellenar si faltan
+    if(!keys.has(k)){ opts.push({proj:pr,correct:false,why:'Las vistas no se corresponden con las dimensiones o posición reales de la pieza.'}); keys.add(k); } }
   let guard=0;
-  while(opts.length<4 && guard++<20){
-    const s=clone(spec); const idx=ri(rng,1,s.topPts.length-2); s.topPts[idx][1]=Math.max(1,s.topPts[idx][1]+(rng()<0.5?1:-1)); validate(s);
+  while(opts.length<4 && guard++<25){
+    const s=clone(spec); const idx=ri(rng,1,s.topPts.length-2);
+    s.topPts[idx][1]=Math.max(1,s.topPts[idx][1]+(rng()<0.5?1:-1)); validate(s);
     const pr=project(s); const k=projKey(pr);
-    if(!keys.has(k)){ opts.push({proj:pr,correct:false,why:'Algún nivel o arista no coincide con la pieza.'}); keys.add(k); }
-  }
-  // barajar
+    if(!keys.has(k)){ opts.push({proj:pr,correct:false,why:'Algún nivel o arista no coincide con la pieza.'}); keys.add(k); } }
   for(let i=opts.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
   return opts;
 }
@@ -586,7 +563,7 @@ function buildOptions(spec,rng){
 /* =====================================================================
  *  ESTADO + MODOS
  * ===================================================================*/
-let currentSpec=null, currentProj=null, currentMode='test', currentOptions=null, answered=false, rng=mulberry32(Date.now());
+let currentSpec=null, currentProj=null, currentMode='test', currentOptions=null, answered=false, rng=mulberry32(1);
 const modeArea=document.getElementById('modeArea');
 const feedback=document.getElementById('feedback');
 
@@ -596,246 +573,159 @@ function newPiece(){
   currentSpec=generateSpec(level,rng);
   currentProj=project(currentSpec);
   document.getElementById('pieceName').textContent=currentSpec.name+` · ${currentSpec.W}×${currentSpec.D}×${currentSpec.H}`;
-  try{ buildPiece(currentSpec); highlightFace('none'); }
-  catch(err){ console.error('Error 3D:',err); showViewerMessage('No se pudo construir el modelo 3D de esta pieza.'); }
-  answered=false;
-  feedback.innerHTML='';
-  renderMode();
+  try{ Engine3D.build(currentSpec); Engine3D.iso(); Engine3D.setHighlight('none'); }catch(err){ console.error(err); }
+  answered=false; feedback.innerHTML=''; renderMode();
 }
+function renderMode(){ modeArea.innerHTML=''; if(currentMode==='test') renderTest(); else renderDraw(); }
 
-function renderMode(){
-  modeArea.innerHTML='';
-  if(currentMode==='test') renderTest();
-  else renderDraw();
-}
-
-/* ---------- MODO TEST (Opción B) ---------- */
+/* ---------- TEST ---------- */
 function renderTest(){
   currentOptions=buildOptions(currentSpec,rng);
-  const wrap=document.createElement('div');
-  wrap.innerHTML=`<h2 class="text-white font-semibold mb-1">Elige las vistas correctas</h2>
-    <p class="text-sm text-slate-400 mb-3">Observa la pieza 3D (con la flecha del Alzado) y selecciona el conjunto de vistas diédricas correcto.</p>`;
-  const grid=document.createElement('div'); grid.className='grid grid-cols-2 gap-3';
+  const h=document.createElement('div');
+  h.innerHTML='<h2 class="title">Elige las vistas correctas</h2><p class="lead">Observa la pieza 3D (la flecha amarilla marca el Alzado) y selecciona el conjunto de vistas diédricas correcto.</p>';
+  modeArea.appendChild(h);
+  const grid=document.createElement('div'); grid.className='optgrid';
   currentOptions.forEach((opt,i)=>{
-    const card=document.createElement('button');
-    card.className='opt-card bg-white rounded-lg p-2 border-2 border-transparent hover:border-blue-400 text-left';
-    const letter=document.createElement('div');
-    letter.className='text-xs font-bold text-slate-500 mb-1';
-    letter.textContent='Opción '+'ABCD'[i];
-    card.appendChild(letter);
-    card.appendChild(renderProjection(opt.proj,{scale:16,labels:false,guides:false}));
-    card.onclick=()=>chooseOption(i,card);
-    grid.appendChild(card);
+    const card=document.createElement('button'); card.className='optcard';
+    const l=document.createElement('div'); l.className='optletter'; l.textContent='Opción '+'ABCD'[i]; card.appendChild(l);
+    card.appendChild(renderProjection(opt.proj,{scale:15,labels:false,guides:false}));
+    card.onclick=()=>chooseOption(i,card); grid.appendChild(card);
   });
-  wrap.appendChild(grid);
-  modeArea.appendChild(wrap);
+  modeArea.appendChild(grid);
 }
 function chooseOption(i,card){
-  if(answered) return;
-  answered=true;
+  if(answered) return; answered=true;
   const opt=currentOptions[i];
-  document.querySelectorAll('.opt-card').forEach((c,idx)=>{
-    if(currentOptions[idx].correct){ c.classList.add('border-emerald-500'); c.style.borderColor='#10b981'; }
-    if(idx===i && !opt.correct){ c.style.borderColor='#ef4444'; }
+  document.querySelectorAll('.optcard').forEach((c,idx)=>{
+    if(currentOptions[idx].correct) c.style.borderColor='#10b981';
+    if(idx===i && !opt.correct) c.style.borderColor='#ef4444';
     c.onclick=null;
   });
-  if(opt.correct){
-    feedback.innerHTML=`<div class="bg-emerald-900/40 border border-emerald-700 rounded-lg p-4 text-emerald-200">
-      <p class="font-semibold">✅ ¡Correcto!</p>
-      <p class="text-sm mt-1">Has identificado bien el Alzado, la Planta y el Perfil. Usa los botones de la izquierda para ver de qué cara sale cada vista.</p></div>`;
-  }else{
-    feedback.innerHTML=`<div class="bg-red-900/40 border border-red-700 rounded-lg p-4 text-red-200">
-      <p class="font-semibold">❌ No es correcta.</p>
-      <p class="text-sm mt-1">${opt.why||'Revisa la correspondencia entre vistas.'}</p>
-      <p class="text-sm mt-1">La opción correcta está marcada en verde.</p></div>`;
-  }
-  showSolutionExplainer();
+  feedback.innerHTML='';
+  const box=document.createElement('div');
+  if(opt.correct){ box.className='fb ok';
+    box.innerHTML='<p class="ttl">✅ ¡Correcto!</p><p>Has identificado bien Alzado, Planta y Perfil. Usa los botones de abajo a la izquierda para ver de qué cara sale cada vista.</p>'; }
+  else { box.className='fb bad';
+    box.innerHTML=`<p class="ttl">❌ No es correcta.</p><p>${opt.why||'Revisa la correspondencia entre vistas.'}</p><p>La opción correcta está marcada en verde.</p>`; }
+  feedback.appendChild(box);
+  showSolution();
 }
 
-/* ---------- MODO DIBUJAR (Opción A) ---------- */
+/* ---------- DIBUJAR ---------- */
 let drawState=null;
 function renderDraw(){
   drawState={tool:'v', sel:null, segs:{alzado:[],planta:[],perfil:[]}, holes:{alzado:[]}};
-  const wrap=document.createElement('div');
-  wrap.innerHTML=`<h2 class="text-white font-semibold mb-1">Dibuja las tres vistas</h2>
-   <p class="text-sm text-slate-400 mb-3">Selecciona una herramienta y haz clic en dos nodos de la cuadrícula para trazar una arista. En el Alzado, marca el centro de los taladros con la herramienta <b>Taladro</b>.</p>`;
-  // herramientas
-  const tools=document.createElement('div'); tools.className='flex flex-wrap gap-2 mb-3';
-  const toolDefs=[['v','Vista (continua)','bg-slate-800'],['h','Oculta (discontinua)','bg-slate-800'],['a','Eje (trazo-punto)','bg-slate-800'],['hole','Taladro (centro)','bg-purple-800'],['erase','Borrar','bg-rose-800']];
-  toolDefs.forEach(([t,label,bg])=>{
-    const b=document.createElement('button');
-    b.className=`toolBtn text-xs rounded px-2.5 py-1.5 border border-slate-600 ${bg}`;
-    b.textContent=label; b.dataset.tool=t;
-    b.onclick=()=>{drawState.tool=t; drawState.sel=null; updateToolUI();};
-    tools.appendChild(b);
-  });
-  wrap.appendChild(tools);
-
-  const grids=document.createElement('div'); grids.className='space-y-4';
-  grids.appendChild(buildGrid('alzado','ALZADO',currentProj.W,currentProj.H,(x,z)=>[x,z],true));
-  const row=document.createElement('div'); row.className='flex flex-wrap gap-4';
-  row.appendChild(buildGrid('perfil','PERFIL IZQ.',currentProj.D,currentProj.H,(d,z)=>[d,z],false));
-  row.appendChild(buildGrid('planta','PLANTA',currentProj.W,currentProj.D,(x,dep)=>[x,dep],false,true));
-  grids.appendChild(row);
-  wrap.appendChild(grids);
-
-  const actions=document.createElement('div'); actions.className='flex gap-2 mt-4';
-  const check=document.createElement('button'); check.className='bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-md px-3 py-2'; check.textContent='✔️ Comprobar';
-  check.onclick=checkDrawing;
-  const clear=document.createElement('button'); clear.className='bg-slate-700 hover:bg-slate-600 text-sm rounded-md px-3 py-2'; clear.textContent='🧹 Limpiar';
-  clear.onclick=renderDraw;
-  actions.appendChild(check); actions.appendChild(clear);
-  wrap.appendChild(actions);
-  modeArea.appendChild(wrap);
+  const h=document.createElement('div');
+  h.innerHTML='<h2 class="title">Dibuja las tres vistas</h2><p class="lead">Elige una herramienta y haz clic en dos nodos de la cuadrícula para trazar una arista. En el Alzado, marca el centro de los taladros con «Taladro».</p>';
+  modeArea.appendChild(h);
+  const tools=document.createElement('div'); tools.className='tools';
+  [['v','Vista (continua)',''],['h','Oculta (discontinua)',''],['a','Eje (trazo-punto)',''],['hole','Taladro (centro)','violet'],['erase','Borrar','rose']]
+    .forEach(([t,label,cls])=>{ const b=document.createElement('button'); b.className='toolBtn '+cls; b.textContent=label; b.dataset.tool=t;
+      b.onclick=()=>{drawState.tool=t; drawState.sel=null; updateToolUI();}; tools.appendChild(b); });
+  modeArea.appendChild(tools);
+  const wrapA=document.createElement('div'); wrapA.appendChild(buildGrid('alzado','ALZADO',currentProj.W,currentProj.H,true,false)); modeArea.appendChild(wrapA);
+  const row=document.createElement('div'); row.className='gridrow'; row.style.marginTop='14px';
+  row.appendChild(buildGrid('perfil','PERFIL IZQ.',currentProj.D,currentProj.H,false,false));
+  row.appendChild(buildGrid('planta','PLANTA',currentProj.W,currentProj.D,false,true));
+  modeArea.appendChild(row);
+  const actions=document.createElement('div'); actions.className='actions';
+  const check=document.createElement('button'); check.className='btn btn-primary'; check.textContent='✔️ Comprobar'; check.onclick=checkDrawing;
+  const clear=document.createElement('button'); clear.className='btn'; clear.textContent='🧹 Limpiar'; clear.onclick=()=>{feedback.innerHTML='';renderDraw();};
+  actions.appendChild(check); actions.appendChild(clear); modeArea.appendChild(actions);
   updateToolUI();
 }
-function updateToolUI(){
-  document.querySelectorAll('.toolBtn').forEach(b=>{
-    b.style.outline = b.dataset.tool===drawState.tool ? '2px solid #38bdf8':'none';
-  });
-}
-function buildGrid(view,label,gw,gh,map,isAlzado,plantaDown=false){
-  const s=26,pad=18;
-  const W=gw*s+pad*2, H=gh*s+pad*2+16;
-  const cont=document.createElement('div'); cont.className='inline-block bg-white rounded-lg p-1';
-  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,width:W,height:H});
+function updateToolUI(){ document.querySelectorAll('.toolBtn').forEach(b=>b.classList.toggle('on', b.dataset.tool===drawState.tool)); }
+function buildGrid(view,label,gw,gh,isAlzado,plantaDown){
+  const s=26,pad=18, W=gw*s+pad*2, Hh=gh*s+pad*2+16;
+  const cont=document.createElement('div'); cont.className='sheet';
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${Hh}`,width:W,height:Hh});
   const lab=svgEl('text',{x:pad,y:14,class:'vlabel'}); lab.textContent=label; svg.appendChild(lab);
   const oy=20;
   const toPix=(u,v)=> plantaDown ? [pad+u*s, oy+pad+v*s] : [pad+u*s, oy+pad+(gh-v)*s];
-  // capa de segmentos del usuario
   const layer=svgEl('g',{}); svg.appendChild(layer);
-  const redraw=()=>{
-    layer.innerHTML='';
-    for(const seg of drawState.segs[view]){
-      const [x1,y1]=toPix(seg.a[0],seg.a[1]),[x2,y2]=toPix(seg.b[0],seg.b[1]);
-      layer.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+seg.t}));
-    }
-    if(isAlzado) for(const h of drawState.holes.alzado){ const [cx,cy]=toPix(h[0],h[1]);
-      const c=svgEl('circle',{cx,cy,r:6,class:'holeMark'}); layer.appendChild(c);
-      layer.appendChild(svgEl('line',{x1:cx-9,y1:cy,x2:cx+9,y2:cy,class:'ln a'}));
-      layer.appendChild(svgEl('line',{x1:cx,y1:cy-9,x2:cx,y2:cy+9,class:'ln a'}));
-    }
+  const redraw=()=>{ layer.innerHTML='';
+    for(const seg of drawState.segs[view]){ const [x1,y1]=toPix(seg.a[0],seg.a[1]),[x2,y2]=toPix(seg.b[0],seg.b[1]);
+      layer.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+seg.t})); }
+    if(isAlzado) for(const hh of drawState.holes.alzado){ const [cx,cy]=toPix(hh[0],hh[1]);
+      layer.appendChild(svgEl('circle',{cx,cy,r:7,class:'holeMark'}));
+      layer.appendChild(svgEl('line',{x1:cx-10,y1:cy,x2:cx+10,y2:cy,class:'ln a'}));
+      layer.appendChild(svgEl('line',{x1:cx,y1:cy-10,x2:cx,y2:cy+10,class:'ln a'})); }
   };
-  drawState['redraw_'+view]=redraw;
-  // nodos
-  for(let u=0;u<=gw;u++) for(let v=0;v<=gh;v++){
-    const [px,py]=toPix(u,v);
-    const dot=svgEl('circle',{cx:px,cy:py,r:4,class:'node'});
-    dot.onclick=()=>onNodeClick(view,u,v,dot,redraw);
-    svg.appendChild(dot);
-  }
-  redraw();
-  cont.appendChild(svg);
-  return cont;
+  for(let u=0;u<=gw;u++) for(let v=0;v<=gh;v++){ const [px,py]=toPix(u,v);
+    const dot=svgEl('circle',{cx:px,cy:py,r:4,class:'node'}); dot.onclick=()=>onNodeClick(view,u,v,dot,redraw); svg.appendChild(dot); }
+  redraw(); cont.appendChild(svg); return cont;
 }
 function onNodeClick(view,u,v,dot,redraw){
   const t=drawState.tool;
-  if(t==='hole'){ if(view==='alzado'){ const arr=drawState.holes.alzado;
-      const i=arr.findIndex(h=>h[0]===u&&h[1]===v); if(i>=0)arr.splice(i,1); else arr.push([u,v]); redraw(); } return; }
-  if(t==='erase'){ // borra segmento que use este nodo
-    const arr=drawState.segs[view];
+  if(t==='hole'){ if(view==='alzado'){ const arr=drawState.holes.alzado; const i=arr.findIndex(h=>h[0]===u&&h[1]===v);
+    if(i>=0)arr.splice(i,1); else arr.push([u,v]); redraw(); } return; }
+  if(t==='erase'){ const arr=drawState.segs[view];
     const i=arr.findIndex(sg=>(sg.a[0]===u&&sg.a[1]===v)||(sg.b[0]===u&&sg.b[1]===v));
     if(i>=0){arr.splice(i,1);redraw();} return; }
-  // herramientas de línea: clic-clic
   if(!drawState.sel){ drawState.sel={view,u,v,dot}; dot.classList.add('sel'); return; }
   if(drawState.sel.view!==view){ drawState.sel.dot.classList.remove('sel'); drawState.sel={view,u,v,dot}; dot.classList.add('sel'); return; }
   if(drawState.sel.u===u&&drawState.sel.v===v){ drawState.sel.dot.classList.remove('sel'); drawState.sel=null; return; }
   drawState.segs[view].push({a:[drawState.sel.u,drawState.sel.v],b:[u,v],t:drawState.tool});
   drawState.sel.dot.classList.remove('sel'); drawState.sel=null; redraw();
 }
-// segmentos-solución por vista (sólo aristas v y h; los ejes/taladros se comprueban aparte)
-function solutionSegs(view){
-  const lines=currentProj[view].lines.filter(l=>l.t==='v'||l.t==='h');
-  return lines.map(l=>normSeg(l.x1,l.y1,l.x2,l.y2,l.t));
-}
-function normSeg(x1,y1,x2,y2,t){
-  let a=[Math.round(x1),Math.round(y1)],b=[Math.round(x2),Math.round(y2)];
-  if(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1])) [a,b]=[b,a];
-  return {key:t+':'+a+'->'+b,t,a,b};
-}
+function normSeg(x1,y1,x2,y2,t){ let a=[Math.round(x1),Math.round(y1)],b=[Math.round(x2),Math.round(y2)];
+  if(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1])) [a,b]=[b,a]; return {key:t+':'+a+'->'+b}; }
+function solutionSegs(view){ return currentProj[view].lines.filter(l=>l.t==='v'||l.t==='h')
+  .map(l=>normSeg(l.x1,l.y1,l.x2,l.y2,l.t)); }
 function checkDrawing(){
-  let total=0,ok=0,missing=0,extra=0;
-  const report={};
+  let total=0,ok=0; const report={};
   for(const view of ['alzado','planta','perfil']){
-    const sol=solutionSegs(view);
-    const solSet=new Map(sol.map(s=>[s.key,s]));
-    const userSet=new Map(drawState.segs[view].map(sg=>{const n=normSeg(sg.a[0],sg.a[1],sg.b[0],sg.b[1],sg.t);return [n.key,n];}));
-    let vok=0,vmiss=0,vextra=0;
-    for(const k of solSet.keys()){ if(userSet.has(k)) vok++; else vmiss++; }
-    for(const k of userSet.keys()){ if(!solSet.has(k)) vextra++; }
-    report[view]={ok:vok,total:solSet.size,miss:vmiss,extra:vextra};
-    total+=solSet.size; ok+=vok; missing+=vmiss; extra+=vextra;
+    const sol=new Map(solutionSegs(view).map(s=>[s.key,1]));
+    const usr=new Map(drawState.segs[view].map(sg=>{const n=normSeg(sg.a[0],sg.a[1],sg.b[0],sg.b[1],sg.t);return [n.key,1];}));
+    let vok=0,miss=0,extra=0;
+    for(const k of sol.keys()){ if(usr.has(k)) vok++; else miss++; }
+    for(const k of usr.keys()){ if(!sol.has(k)) extra++; }
+    report[view]={ok:vok,total:sol.size,miss,extra}; total+=sol.size; ok+=vok;
   }
-  // taladros (alzado)
   const solHoles=currentProj.alzado.circles.map(c=>c.cx+','+c.cy);
   const usrHoles=drawState.holes.alzado.map(h=>h[0]+','+h[1]);
   const holeOk=solHoles.filter(h=>usrHoles.includes(h)).length;
-  const score = total? Math.round(100*ok/total):100;
-  const rows=['alzado','planta','perfil'].map(v=>{
-    const r=report[v];
-    return `<tr class="border-t border-slate-700"><td class="py-1 pr-3 capitalize">${v}</td>
-      <td class="text-emerald-300">${r.ok}/${r.total}</td>
-      <td class="text-amber-300">${r.miss}</td><td class="text-rose-300">${r.extra}</td></tr>`;
-  }).join('');
-  feedback.innerHTML=`<div class="bg-slate-800 border border-slate-700 rounded-lg p-4">
-    <p class="font-semibold text-white">Resultado: <span class="${score>=80?'text-emerald-300':score>=50?'text-amber-300':'text-rose-300'}">${score}%</span> de aristas correctas</p>
-    <table class="text-sm mt-2 w-full text-slate-300">
-      <thead><tr class="text-xs text-slate-400"><th class="text-left">Vista</th><th class="text-left">Aciertos</th><th class="text-left">Faltan</th><th class="text-left">Sobran</th></tr></thead>
-      <tbody>${rows}</tbody></table>
-    <p class="text-sm mt-2 text-slate-400">Taladros marcados: ${holeOk}/${solHoles.length}.</p>
-    <p class="text-xs mt-2 text-slate-500">Pulsa «Ver solución» para comparar con el trazado correcto y ver el origen de cada vista.</p>
-  </div>`;
-  showSolutionExplainer();
+  const score=total?Math.round(100*ok/total):100;
+  const rows=['alzado','planta','perfil'].map(v=>{const r=report[v];
+    return `<tr><td>${v}</td><td style="color:#34d399">${r.ok}/${r.total}</td><td style="color:#fbbf24">${r.miss}</td><td style="color:#fb7185">${r.extra}</td></tr>`;}).join('');
+  feedback.innerHTML='';
+  const box=document.createElement('div'); box.className='fb info';
+  const col=score>=80?'#34d399':score>=50?'#fbbf24':'#fb7185';
+  box.innerHTML=`<p class="ttl">Resultado: <span style="color:${col}">${score}%</span> de aristas correctas</p>
+    <table class="score"><thead><tr><th>Vista</th><th>Aciertos</th><th>Faltan</th><th>Sobran</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="margin-top:8px;color:#94a3b8">Taladros marcados: ${holeOk}/${solHoles.length}.</p>`;
+  feedback.appendChild(box); showSolution();
 }
 
-/* ---------- SOLUCIÓN + EXPLICACIÓN ---------- */
-function showSolutionExplainer(){
-  // bloque solución con vistas correctas + botones de origen
-  const box=document.createElement('div');
-  box.className='mt-4 bg-white rounded-lg p-3';
-  const title=document.createElement('div'); title.className='text-xs font-bold text-slate-500 mb-1'; title.textContent='SOLUCIÓN · Vistas diédricas correctas';
-  box.appendChild(title);
-  box.appendChild(renderProjection(currentProj,{scale:24,labels:true,guides:true}));
+/* ---------- SOLUCIÓN + ORIGEN ---------- */
+function showSolution(){
+  const box=document.createElement('div'); box.className='solbox';
+  const t=document.createElement('div'); t.className='solttl'; t.textContent='SOLUCIÓN · Vistas diédricas correctas'; box.appendChild(t);
+  box.appendChild(renderProjection(currentProj,{scale:22,labels:true,guides:true}));
   feedback.appendChild(box);
-
-  const exp=document.createElement('div');
-  exp.className='mt-3 text-sm text-slate-300 bg-slate-800/60 rounded-lg p-3';
-  exp.innerHTML=`<p class="font-semibold text-white mb-1">¿De dónde sale cada vista?</p>
-    <p>Pulsa para iluminar en el modelo 3D la cara que se proyecta:</p>`;
-  const bts=document.createElement('div'); bts.className='flex gap-2 mt-2 flex-wrap';
-  [['alzado','Alzado (cara frontal)','text-red-300 border-red-700'],
-   ['planta','Planta (cara superior)','text-emerald-300 border-emerald-700'],
-   ['perfil','Perfil izq. (cara lateral)','text-sky-300 border-sky-700']].forEach(([f,l,cls])=>{
-    const b=document.createElement('button'); b.className=`text-xs rounded px-2 py-1 border bg-slate-900 ${cls}`;
-    b.textContent=l; b.onclick=()=>highlightFace(f); bts.appendChild(b);
-  });
-  exp.appendChild(bts);
-  feedback.appendChild(exp);
+  const exp=document.createElement('div'); exp.className='origin';
+  exp.innerHTML='<p class="ttl" style="font-weight:700;color:#fff;margin:0">¿De dónde sale cada vista?</p><p style="color:#cbd5e1;margin:4px 0 0">Pulsa para iluminar en el modelo 3D la cara que se proyecta:</p>';
+  const row=document.createElement('div'); row.className='row';
+  [['alzado','Alzado (cara frontal)','alz'],['planta','Planta (cara superior)','pla'],['perfil','Perfil izq. (cara lateral)','per']]
+    .forEach(([f,l,cls])=>{ const b=document.createElement('button'); b.className='chip '+cls; b.textContent=l;
+      b.onclick=()=>Engine3D.setHighlight(f); row.appendChild(b); });
+  exp.appendChild(row); feedback.appendChild(exp);
 }
 
 /* =====================================================================
- *  WIRING UI
+ *  WIRING
  * ===================================================================*/
 document.getElementById('newPiece').onclick=newPiece;
-document.getElementById('isoBtn').onclick=isoView;
+document.getElementById('isoBtn').onclick=()=>Engine3D.iso();
 document.getElementById('level').onchange=newPiece;
-document.getElementById('solBtn').onclick=()=>{
-  if(!currentProj) return;
-  if(currentMode==='test') answered=true;
-  feedback.innerHTML=''; showSolutionExplainer();
-};
-document.querySelectorAll('.modeBtn').forEach(b=>{
-  b.onclick=()=>{
-    currentMode=b.dataset.mode;
-    document.querySelectorAll('.modeBtn').forEach(x=>{x.className='modeBtn px-3 py-1.5 text-sm bg-slate-800 text-slate-300';});
-    b.className='modeBtn px-3 py-1.5 text-sm bg-blue-600 text-white';
-    answered=false; feedback.innerHTML=''; renderMode();
-  };
-});
-document.querySelectorAll('.faceBtn').forEach(b=>{ b.onclick=()=>highlightFace(b.dataset.face); });
+document.getElementById('solBtn').onclick=()=>{ if(!currentProj)return; answered=true; feedback.innerHTML=''; showSolution(); };
+document.querySelectorAll('.seg button').forEach(b=>{ b.onclick=()=>{
+  currentMode=b.dataset.mode;
+  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  answered=false; feedback.innerHTML=''; renderMode(); }; });
+document.querySelectorAll('.chip[data-face]').forEach(b=>{ b.onclick=()=>Engine3D.setHighlight(b.dataset.face); });
 
-initThree();
-newPiece();
+setTimeout(()=>{ Engine3D.resize(); newPiece(); },30);
 </script>
 </body>
 </html>
