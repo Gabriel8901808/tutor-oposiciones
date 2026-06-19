@@ -205,12 +205,19 @@ function projectPrism(spec){
 /* =====================================================================
  *  TALADRO EJE Y (profundidad) → líneas analíticas en las 3 vistas
  * ===================================================================*/
-function addHoleY(proj,cx,cz,r){
+function addHoleY(proj,cx,cz,r){           // taladro perpendicular al alzado (profundidad)
   const D=proj.D, e=0.6;
   proj.alzado.circles.push({cx,cy:cz,r});
   proj.alzado.lines.push(L(cx-r-e,cz,cx+r+e,cz,'a'), L(cx,cz-r-e,cx,cz+r+e,'a'));
   proj.planta.lines.push(L(cx-r,0,cx-r,D,'h'), L(cx+r,0,cx+r,D,'h'), L(cx,-e,cx,D+e,'a'));
   proj.perfil.lines.push(L(0,cz-r,D,cz-r,'h'), L(0,cz+r,D,cz+r,'h'), L(-e,cz,D+e,cz,'a'));
+}
+function addHoleZ(proj,cx,cy,r){           // taladro vertical (pasante en altura)
+  const H=proj.H, e=0.6;
+  proj.planta.circles.push({cx,cy,r});
+  proj.planta.lines.push(L(cx-r-e,cy,cx+r+e,cy,'a'), L(cx,cy-r-e,cx,cy+r+e,'a'));
+  proj.alzado.lines.push(L(cx-r,0,cx-r,H,'h'), L(cx+r,0,cx+r,H,'h'), L(cx,-e,cx,H+e,'a'));
+  proj.perfil.lines.push(L(cy-r,0,cy-r,H,'h'), L(cy+r,0,cy+r,H,'h'), L(cy,-e,cy,H+e,'a'));
 }
 
 /* =====================================================================
@@ -251,53 +258,75 @@ function projectVoxel(piece){
   const pL=projGeneric((u,v,k)=>o[u][v][NZ-1-k],NX,NY,NZ);// planta u=x v=y k=z(top)
   const fL=projGeneric((u,v,k)=>o[k][u][v],NY,NZ,NX);     // perfil u=y v=z k=x(left)
   const proj={W:NX,D:NY,H:NZ,alzado:{lines:aL,circles:[]},planta:{lines:pL,circles:[]},perfil:{lines:fL,circles:[]}};
-  for(const h of (piece.holes||[])) addHoleY(proj,h.cx,h.cz,h.r);
+  for(const h of (piece.holes||[])){ if(h.axis==='Z') addHoleZ(proj,h.cx,h.cy,h.r); else addHoleY(proj,h.cx,h.cz,h.r); }
   return proj;
 }
 
-/* ---- generadores de cuerpos vóxel ---- */
+/* ---- taladros: SOLO registran el agujero (la occ sólida se conserva para
+       proyectar; el vaciado del cilindro se hace al construir el 3D) ---- */
+function colFullZ(o,NZ,x,y){ for(let z=0;z<NZ;z++) if(!o[x][y][z]) return false; return true; }
 function tryAddHoleY(piece,rng){
-  const {occ,NX,NY,NZ}=piece;
-  const cand=[];
-  for(let cx=2;cx<=NX-2;cx++) for(let cz=2;cz<=NZ-2;cz++){
-    // las 4 celdas en torno al nodo (cx,cz) llenas en toda la profundidad
-    if(colFullY(occ,NY,cx-1,cz-1)&&colFullY(occ,NY,cx,cz-1)&&colFullY(occ,NY,cx-1,cz)&&colFullY(occ,NY,cx,cz)) cand.push([cx,cz]);
+  const {occ,NX,NY,NZ}=piece, cand=[];
+  for(let cx=2;cx<=NX-2;cx++) for(let cz=2;cz<=NZ-2;cz++)
+    if(colFullY(occ,NY,cx-1,cz-1)&&colFullY(occ,NY,cx,cz-1)&&colFullY(occ,NY,cx-1,cz)&&colFullY(occ,NY,cx,cz)
+       && !holeNear(piece,cx,cz)) cand.push([cx,cz]);
+  if(!cand.length) return false;
+  const [cx,cz]=pick(rng,cand); (piece.holes=piece.holes||[]).push({axis:'Y',cx,cz,r:1}); return true;
+}
+function tryAddHoleZ(piece,rng){
+  const {occ,NX,NY,NZ}=piece, cand=[];
+  for(let cx=2;cx<=NX-2;cx++) for(let cy=2;cy<=NY-2;cy++){
+    let ok=true;
+    for(let dx=-2;dx<=1&&ok;dx++) for(let dy=-2;dy<=1&&ok;dy++) if(!colFullZ(occ,NZ,cx+dx,cy+dy)) ok=false;
+    if(ok) cand.push([cx,cy]);
   }
-  if(!cand.length) return;
-  const [cx,cz]=pick(rng,cand);
-  piece.holes=piece.holes||[]; piece.holes.push({cx,cz,r:1});
-  // vaciar para el 3D (agujero pasante)
-  for(let x=0;x<NX;x++)for(let z=0;z<NZ;z++){ const d=Math.hypot(x+0.5-cx,z+0.5-cz); if(d<1.15) for(let y=0;y<NY;y++) occ[x][y][z]=false; }
+  if(!cand.length) return false;
+  const [cx,cy]=pick(rng,cand); (piece.holes=piece.holes||[]).push({axis:'Z',cx,cy,r:1}); return true;
+}
+function holeNear(piece,cx,cz){ for(const h of (piece.holes||[])) if(h.axis==='Y'&&Math.abs(h.cx-cx)<2&&Math.abs(h.cz-cz)<2) return true; return false; }
+
+/* ---- generadores estructurados (piezas mecánicas realistas) ---- */
+function carveCorner(o,NX,NY,NZ,baseH,rng){
+  const cx=rng()<0.5?[0,ri(rng,1,2)]:[NX-ri(rng,1,2),NX];
+  const cy=rng()<0.5?[0,ri(rng,1,2)]:[NY-ri(rng,1,2),NY];
+  addBox(o,cx[0],cx[1],cy[0],cy[1],ri(rng,baseH+1,NZ-1),NZ,false);
 }
 function genVoxelMedium(rng){
-  const NX=ri(rng,4,5),NY=ri(rng,3,4),NZ=ri(rng,4,5);
-  const o=makeOcc(NX,NY,NZ);
-  addBox(o,0,NX,0,NY,0,1+(rng()<0.5?1:0),true);          // base
-  const n=ri(rng,2,3);
-  for(let i=0;i<n;i++){ const x0=ri(rng,0,NX-2),x1=Math.min(NX,x0+ri(rng,1,3)),
-    y0=ri(rng,0,NY-1),y1=Math.min(NY,y0+ri(rng,1,NY)), z0=ri(rng,0,NZ-2),z1=Math.min(NZ,z0+ri(rng,1,3));
-    addBox(o,x0,x1,y0,y1,z0,z1,true); }
+  const NX=ri(rng,4,6),NY=ri(rng,3,4),NZ=ri(rng,4,6), o=makeOcc(NX,NY,NZ), baseH=ri(rng,1,2);
+  addBox(o,0,NX,0,NY,0,baseH,true);                                   // base sólida
+  const split=ri(rng,2,NX-1);                                          // escalón principal en X
+  addBox(o,0,split,0,NY,baseH,NZ,true);
+  addBox(o,split,NX,0,NY,baseH,NZ-ri(rng,1,2),true);
+  if(rng()<0.6){ const sx=ri(rng,1,NX-2); addBox(o,sx,sx+1,0,NY,ri(rng,baseH+1,NZ-1),NZ,false); } // ranura pasante (Y)
+  if(rng()<0.6) carveCorner(o,NX,NY,NZ,baseH,rng);                     // rebaje de esquina
   const piece={kind:'voxel',name:'Bloque escalonado',occ:o,NX,NY,NZ,holes:[]};
-  if(rng()<0.7) tryAddHoleY(piece,rng);
-  return piece;
+  if(rng()<0.75) tryAddHoleY(piece,rng);
+  return ensureValid(piece,rng,genVoxelMedium);
 }
 function genVoxelHard(rng){
-  const NX=ri(rng,5,6),NY=ri(rng,4,5),NZ=ri(rng,5,6);
-  const o=makeOcc(NX,NY,NZ);
-  addBox(o,0,NX,0,NY,0,ri(rng,1,2),true);                // base
-  const n=ri(rng,3,4);
-  for(let i=0;i<n;i++){ const x0=ri(rng,0,NX-2),x1=Math.min(NX,x0+ri(rng,2,3)),
-    y0=ri(rng,0,NY-1),y1=Math.min(NY,y0+ri(rng,1,NY)), z0=ri(rng,0,NZ-2),z1=Math.min(NZ,z0+ri(rng,2,3));
-    addBox(o,x0,x1,y0,y1,z0,z1,true); }
-  // vaciados (notches) que generan ocultas
-  const nv=ri(rng,1,2);
-  for(let i=0;i<nv;i++){ const x0=ri(rng,1,NX-2),x1=Math.min(NX-1,x0+ri(rng,1,2)),
-    y0=ri(rng,0,NY-1),y1=Math.min(NY,y0+ri(rng,1,2)), z0=ri(rng,1,NZ-1),z1=Math.min(NZ,z0+ri(rng,1,2));
-    addBox(o,x0,x1,y0,y1,z0,z1,false); }
-  if(countOcc(o)<6) return genVoxelHard(rng);
+  const NX=ri(rng,5,7),NY=ri(rng,4,5),NZ=ri(rng,5,7), o=makeOcc(NX,NY,NZ), baseH=ri(rng,1,2);
+  addBox(o,0,NX,0,NY,0,baseH,true);                                   // base sólida
+  // dos masas de distinta altura (escalón principal)
+  const split=ri(rng,2,NX-2);
+  addBox(o,0,split,0,NY,baseH,NZ-ri(rng,0,2),true);
+  addBox(o,split,NX,0,NY,baseH,NZ-ri(rng,1,3),true);
+  // rebaje en profundidad de una de las masas (crea ocultas)
+  if(rng()<0.7){ const ry=rng()<0.5?[0,ri(rng,1,2)]:[NY-ri(rng,1,2),NY];
+    const rx=rng()<0.5?[0,split]:[split,NX]; addBox(o,rx[0],rx[1],ry[0],ry[1],ri(rng,baseH+1,NZ-1),NZ,false); }
+  // ranura pasante superior (Y)
+  if(rng()<0.7){ const sx=ri(rng,1,NX-2); addBox(o,sx,sx+ri(rng,1,2),0,NY,ri(rng,baseH+1,NZ-1),NZ,false); }
+  // rebaje de esquina
+  if(rng()<0.7) carveCorner(o,NX,NY,NZ,baseH,rng);
+  // cajeado superior (pocket que no llega a los bordes → muchas ocultas en planta)
+  if(rng()<0.5){ addBox(o,ri(rng,1,2),NX-ri(rng,1,2),1,NY-1,NZ-1,NZ,false); }
   const piece={kind:'voxel',name:'Pieza prismática con vaciados',occ:o,NX,NY,NZ,holes:[]};
-  tryAddHoleY(piece,rng);
-  if(rng()<0.5) tryAddHoleY(piece,rng);
+  tryAddHoleY(piece,rng); if(rng()<0.6) tryAddHoleY(piece,rng);
+  if(rng()<0.4) tryAddHoleZ(piece,rng);
+  return ensureValid(piece,rng,genVoxelHard);
+}
+function ensureValid(piece,rng,regen,depth){
+  depth=depth||0;
+  if(depth<6 && countOcc(piece.occ) < piece.NX*piece.NY) return regen(rng); // demasiado vacía → reintentar
   return piece;
 }
 
@@ -341,8 +370,8 @@ function renderProjection(proj,opt){
     svg.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+l.t})); } };
   const addCircles=(cs,map)=>{ for(const c of cs){ const [cx,cy]=map(c.cx,c.cy); svg.appendChild(svgEl('circle',{cx,cy,r:c.r*s,class:'circ'})); } };
   if(guides){ for(let x=0;x<=proj.W;x++){ const [gx]=mapA(x,0); svg.appendChild(svgEl('line',{x1:gx,y1:oyA,x2:gx,y2:oyP+Ph,class:'ln guide'})); } }
-  addLines(proj.alzado.lines,mapA); addCircles(proj.alzado.circles,mapA);
-  addLines(proj.perfil.lines,mapF); addLines(proj.planta.lines,mapP);
+  addLines(proj.alzado.lines,mapA); addLines(proj.perfil.lines,mapF); addLines(proj.planta.lines,mapP);
+  addCircles(proj.alzado.circles,mapA); addCircles(proj.planta.circles||[],mapP); addCircles(proj.perfil.circles||[],mapF);
   if(labels){ const lab=(x,y,t)=>{const e=svgEl('text',{x,y,class:'vlabel'});e.textContent=t;svg.appendChild(e);};
     lab(ox,oyA-4,'ALZADO'); lab(oxF,oyA-4,'PERFIL IZQ.'); lab(ox,oyP-6,'PLANTA'); }
   return svg;
@@ -379,7 +408,13 @@ const Engine3D=(function(){
     geom={verts,faces,strokeFaces:true,edges:null}; DD=D; MAXD=Math.max(W,H,D);
   }
   function buildVoxel(piece){
-    const o=piece.occ,NX=piece.NX,NY=piece.NY,NZ=piece.NZ, verts=[], vmap={};
+    const NX=piece.NX,NY=piece.NY,NZ=piece.NZ;
+    const o=piece.occ.map(p=>p.map(q=>q.slice()));    // copia; vaciar taladros sólo para el 3D
+    for(const h of (piece.holes||[])){
+      if(h.axis==='Z'){ for(let x=0;x<NX;x++)for(let y=0;y<NY;y++) if(Math.hypot(x+0.5-h.cx,y+0.5-h.cy)<1.15) for(let z=0;z<NZ;z++) o[x][y][z]=false; }
+      else { for(let x=0;x<NX;x++)for(let z=0;z<NZ;z++) if(Math.hypot(x+0.5-h.cx,z+0.5-h.cz)<1.15) for(let y=0;y<NY;y++) o[x][y][z]=false; }
+    }
+    const verts=[], vmap={};
     const cx=NX/2,cyH=NZ/2,czD=NY/2;
     const corner=(x,yd,zh)=>{ const key=x+','+yd+','+zh; if(key in vmap) return vmap[key];
       verts.push([x-cx, zh-cyH, yd-czD]); return vmap[key]=verts.length-1; };
@@ -462,7 +497,8 @@ function clone(o){ return JSON.parse(JSON.stringify(o)); }
 function projKey(p){ const r=v=>Math.round(v*100)/100;
   const ls=arr=>arr.map(l=>{const a=[r(l.x1),r(l.y1)],b=[r(l.x2),r(l.y2)];
     const [p1,p2]=(a[0]<b[0]||(a[0]===b[0]&&a[1]<=b[1]))?[a,b]:[b,a]; return l.t+p1+p2;}).sort().join('|');
-  return ls(p.alzado.lines)+'#'+ls(p.planta.lines)+'#'+ls(p.perfil.lines)+'#'+p.alzado.circles.map(c=>r(c.cx)+','+r(c.cy)+','+r(c.r)).sort().join(';'); }
+  const cs=v=>(v.circles||[]).map(c=>r(c.cx)+','+r(c.cy)+','+r(c.r)).sort().join(';');
+  return ls(p.alzado.lines)+'#'+ls(p.planta.lines)+'#'+ls(p.perfil.lines)+'#'+cs(p.alzado)+'@'+cs(p.planta)+'@'+cs(p.perfil); }
 function mirrorView(view,w){ view.lines=view.lines.map(l=>L(w-l.x1,l.y1,w-l.x2,l.y2,l.t));
   view.circles=view.circles.map(c=>({cx:w-c.cx,cy:c.cy,r:c.r})); }
 function mutDropHidden(p){ const q=clone(p); q.planta.lines=q.planta.lines.filter(l=>l.t!=='h'); q.perfil.lines=q.perfil.lines.filter(l=>l.t!=='h'); return q; }
