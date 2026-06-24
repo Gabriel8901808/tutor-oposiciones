@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Práctica de Vistas Diédricas · Sistema Europeo (UPCT)</title>
+<style>
+:root{
+  --bg:#0f172a; --bg2:#1e293b; --bg3:#334155; --panel:#1a2336;
+  --txt:#e2e8f0; --muted:#94a3b8; --line:#334155;
+  --blue:#3b82f6; --blue2:#2563eb; --green:#10b981; --amber:#f59e0b;
+  --red:#ef4444; --sky:#38bdf8; --violet:#8b5cf6;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{font-family:ui-sans-serif,system-ui,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--txt);font-size:14px;}
+.app{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:280px;flex:0 0 280px;background:#0b1220;border-right:1px solid var(--line);display:flex;flex-direction:column;}
+.sidebar .head{padding:16px;border-bottom:1px solid var(--line);}
+.sidebar h1{font-size:18px;margin:0;color:#fff;}
+.sidebar .sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.tips{padding:14px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px;}
+.tips h2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);margin:0 0 2px;}
+.tip{background:#131c30;border:1px solid #243049;border-radius:10px;padding:11px;}
+.tip b{color:#fff;}
+.tip p.t{font-weight:600;color:#fff;margin:0 0 5px;font-size:13px;}
+.tip p{margin:0;font-size:12px;line-height:1.5;color:#cbd5e1;}
+.tip ul{margin:4px 0 0;padding-left:16px;font-size:12px;line-height:1.5;color:#cbd5e1;}
+.swatch{display:inline-block;width:34px;vertical-align:middle;margin-right:4px;}
+.foot{padding:12px;border-top:1px solid var(--line);font-size:10px;color:#64748b;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.toolbar{background:#0b1220;border-bottom:1px solid var(--line);padding:10px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+.toolbar label{font-size:12px;color:var(--muted);}
+select{background:var(--bg2);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;}
+.btn{border:1px solid var(--line);background:var(--bg2);color:var(--txt);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;font-weight:500;}
+.btn:hover{background:var(--bg3);}
+.btn-primary{background:var(--blue2);border-color:var(--blue2);color:#fff;font-weight:600;}
+.btn-primary:hover{background:var(--blue);}
+.btn-ok{background:var(--green);border-color:var(--green);color:#fff;font-weight:600;}
+.btn-ok:hover{filter:brightness(1.1);}
+.sep{width:1px;height:24px;background:var(--line);margin:0 2px;}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+.seg button{border:0;background:var(--bg2);color:var(--muted);padding:7px 12px;font-size:13px;cursor:pointer;}
+.seg button.on{background:var(--blue2);color:#fff;font-weight:600;}
+.spacer{margin-left:auto;}
+.pieceName{font-size:12px;color:var(--muted);}
+.content{flex:1;display:flex;overflow:hidden;min-height:0;}
+.left{width:46%;min-width:340px;display:flex;flex-direction:column;border-right:1px solid var(--line);background:#0a1018;}
+.viewer{flex:1;position:relative;min-height:0;}
+.viewer canvas{display:block;width:100%;height:100%;}
+.hint{position:absolute;top:8px;left:8px;font-size:11px;color:#cbd5e1;background:rgba(11,18,32,.7);padding:4px 8px;border-radius:6px;pointer-events:none;}
+.facebar{padding:11px;border-top:1px solid var(--line);background:#0b1220;}
+.facebar p{margin:0 0 8px;font-size:12px;color:var(--muted);}
+.facebar .row{display:flex;gap:8px;flex-wrap:wrap;}
+.chip{font-size:12px;border-radius:7px;padding:5px 10px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);color:var(--txt);}
+.chip.alz{border-color:#b91c1c;background:rgba(127,29,29,.35);color:#fecaca;}
+.chip.pla{border-color:#047857;background:rgba(6,78,59,.35);color:#a7f3d0;}
+.chip.per{border-color:#0369a1;background:rgba(7,89,133,.35);color:#bae6fd;}
+.chip:hover{filter:brightness(1.15);}
+.right{flex:1;overflow-y:auto;background:var(--panel);min-width:0;}
+.pad{padding:16px;}
+h2.title{font-size:16px;color:#fff;margin:0 0 4px;}
+p.lead{font-size:13px;color:var(--muted);margin:0 0 14px;}
+.sheet{background:#fff;border-radius:10px;padding:8px;display:inline-block;}
+.optgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.optcard{background:#fff;border:3px solid transparent;border-radius:10px;padding:8px;cursor:pointer;text-align:left;transition:transform .12s,border-color .12s;}
+.optcard:hover{transform:translateY(-2px);border-color:#93c5fd;}
+.optletter{font-size:12px;font-weight:700;color:#64748b;margin-bottom:4px;}
+.ln{stroke:#0f172a;fill:none;}
+.ln.v{stroke-width:2.2;stroke-linecap:round;}
+.ln.h{stroke-width:1.4;stroke-dasharray:6 4;}
+.ln.a{stroke:#dc2626;stroke-width:1;stroke-dasharray:12 3 2 3;}
+.ln.guide{stroke:#cbd5e1;stroke-width:.6;stroke-dasharray:3 4;}
+.circ{stroke:#0f172a;stroke-width:2.2;fill:none;}
+.vlabel{font-size:11px;fill:#475569;font-weight:700;letter-spacing:.04em;}
+.node{fill:#cbd5e1;cursor:pointer;}
+.node:hover{fill:#2563eb;}
+.node.sel{fill:#16a34a;}
+.holeMark{fill:none;stroke:#7c3aed;stroke-width:2;}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.toolBtn{font-size:12px;border-radius:7px;padding:7px 10px;cursor:pointer;border:1px solid var(--line);background:var(--bg2);color:var(--txt);}
+.toolBtn.violet{background:#4c1d95;border-color:#6d28d9;}
+.toolBtn.rose{background:#7f1d1d;border-color:#b91c1c;}
+.toolBtn.on{outline:2px solid var(--sky);outline-offset:1px;}
+.gridrow{display:flex;flex-wrap:wrap;gap:14px;}
+.actions{display:flex;gap:8px;margin-top:14px;}
+.fb{border-radius:10px;padding:14px;margin-top:14px;}
+.fb.ok{background:rgba(6,78,59,.4);border:1px solid #047857;color:#a7f3d0;}
+.fb.bad{background:rgba(127,29,29,.4);border:1px solid #b91c1c;color:#fecaca;}
+.fb.info{background:var(--bg2);border:1px solid var(--line);}
+.fb p{margin:0 0 4px;}
+.fb .ttl{font-weight:700;color:#fff;}
+table.score{width:100%;font-size:13px;color:#cbd5e1;border-collapse:collapse;margin-top:8px;}
+table.score th{text-align:left;font-size:11px;color:var(--muted);font-weight:600;padding-bottom:4px;}
+table.score td{padding:4px 0;border-top:1px solid var(--line);text-transform:capitalize;}
+.solbox{margin-top:14px;background:#fff;border-radius:10px;padding:10px;}
+.solttl{font-size:12px;font-weight:700;color:#64748b;margin-bottom:6px;}
+.origin{margin-top:12px;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px;}
+.origin .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+@media(max-width:1100px){.sidebar{display:none;}.left{width:50%;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="head"><h1>Vistas Diédricas</h1><div class="sub">Sistema Europeo · 1<sup>er</sup> diedro</div></div>
+    <div class="tips">
+      <h2>Consejos de Normalización (UPCT)</h2>
+      <div class="tip"><p class="t">📐 Disposición (1er diedro)</p><p>El objeto se sitúa entre el observador y el plano. La <b>Planta</b> va <b>debajo</b> del Alzado y el <b>Perfil izquierdo</b> a su <b>derecha</b>.</p></div>
+      <div class="tip"><p class="t">↔️ Correspondencia</p><ul><li>Alzado y Planta comparten la <b>anchura</b>.</li><li>Alzado y Perfil comparten la <b>altura</b>.</li><li>Planta y Perfil comparten la <b>profundidad</b>.</li></ul></div>
+      <div class="tip"><p class="t">✏️ Tipos de línea</p><ul style="list-style:none;padding-left:0;">
+        <li><span class="swatch" style="border-top:3px solid #e2e8f0;"></span>Continua → arista <b>vista</b>.</li>
+        <li><span class="swatch" style="border-top:2px dashed #e2e8f0;"></span>Discontinua → arista <b>oculta</b>.</li>
+        <li><span class="swatch" style="border-top:2px dotted #f87171;"></span>Trazo y punto → <b>eje</b>/centro.</li></ul></div>
+      <div class="tip"><p class="t">⚖️ Prioridad de líneas</p><p><b>vista &gt; oculta &gt; eje</b>.</p></div>
+      <div class="tip"><p class="t">🕳️ Taladros y ejes</p><p>En la vista del frente se ve un <b>círculo</b>; en las otras dos, dos <b>líneas ocultas</b> paralelas (el barreno) y su <b>eje</b>.</p></div>
+      <div class="tip"><p class="t">🧱 Aristas ocultas</p><p>Todo escalón, rebaje o vaciado <b>detrás</b> de otra cara se dibuja con <b>línea discontinua</b>. ¡Son las que más puntúan!</p></div>
+      <div class="tip"><p class="t">📏 Planos inclinados</p><p>Una rampa se ve en <b>verdadera magnitud sólo en una vista</b>; en las otras aparece reducida.</p></div>
+    </div>
+    <div class="foot">Expresión Gráfica · Ingeniería UPCT</div>
+  </aside>
+
+  <main class="main">
+    <header class="toolbar">
+      <label>Nivel</label>
+      <select id="level"><option value="facil">Fácil</option><option value="medio" selected>Medio</option><option value="dificil">Difícil</option></select>
+      <button id="newPiece" class="btn btn-primary">🎲 Nueva pieza</button>
+      <button id="isoBtn" class="btn">🧊 Vista isométrica</button>
+      <div class="sep"></div>
+      <div class="seg"><button data-mode="test" class="on">Test (Opción B)</button><button data-mode="draw">Dibujar (Opción A)</button></div>
+      <div class="spacer"></div>
+      <span id="pieceName" class="pieceName"></span>
+      <button id="solBtn" class="btn btn-ok">👁️ Ver solución</button>
+    </header>
+    <div class="content">
+      <section class="left">
+        <div class="viewer" id="viewer"><canvas id="c3d"></canvas><div class="hint">Arrastra para girar · rueda para zoom</div></div>
+        <div class="facebar"><p>Resaltar en 3D la cara que origina cada vista:</p>
+          <div class="row">
+            <button class="chip" data-face="none">Sin resaltar</button>
+            <button class="chip alz" data-face="alzado">Cara → Alzado</button>
+            <button class="chip pla" data-face="planta">Cara → Planta</button>
+            <button class="chip per" data-face="perfil">Cara → Perfil</button>
+          </div></div>
+      </section>
+      <section class="right"><div id="modeArea" class="pad"></div><div id="feedback" class="pad" style="padding-top:0;"></div></section>
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+/* ============================ UTILIDADES ============================ */
+function mulberry32(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0;
+  let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+const ri=(rng,a,b)=>a+Math.floor(rng()*(b-a+1));
+const pick=(rng,arr)=>arr[Math.floor(rng()*arr.length)];
+const L=(x1,y1,x2,y2,t)=>({x1,y1,x2,y2,t});
+
+/* =====================================================================
+ *  MODELO PRISMA (para rampas / planos inclinados → triángulos)
+ * ===================================================================*/
+function maxTop(tp){ return Math.max(...tp.map(p=>p[1])); }
+function heightAt(tp,x){ for(let i=0;i<tp.length-1;i++){ const [ax,az]=tp[i],[bx,bz]=tp[i+1];
+  if(bx<=ax) continue; if(x>=ax-1e-9&&x<=bx+1e-9){ const t=(x-ax)/(bx-ax); return az+(bz-az)*t; } }
+  return x<=tp[0][0]?tp[0][1]:tp[tp.length-1][1]; }
+function maxTopInRange(tp,lo,hi){ let m=0; for(let i=0;i<tp.length-1;i++){ const [ax,az]=tp[i],[bx,bz]=tp[i+1];
+  if(bx<=ax) continue; const x0=Math.max(lo,ax),x1=Math.min(hi,bx); if(x0<x1-1e-9){
+    const za=az+(bz-az)*((x0-ax)/(bx-ax)), zb=az+(bz-az)*((x1-ax)/(bx-ax)); m=Math.max(m,za,zb); } } return m; }
+function genRamp(rng){ const H=ri(rng,5,7),W=ri(rng,5,7),b=ri(rng,1,2),a=ri(rng,0,2);
+  const pts=[[0,H]]; if(a>0)pts.push([a,H]); pts.push([W,b]);
+  return {name:'Plano inclinado (rampa)',W,D:ri(rng,3,5),topPts:pts,holes:[]}; }
+function genWedgeStep(rng){ // escalón + rampa + taladro
+  const H=ri(rng,6,8),h=ri(rng,2,3),a=3,W=a+ri(rng,3,5);
+  const pts=[[0,H],[a,H],[a,h],[W-2,h],[W,Math.max(1,h-2)]];
+  const holes=[{x:Math.round(a/2),z:Math.round((h+H)/2),r:1}];
+  return {name:'Escalón con rampa y taladro',W,D:ri(rng,3,5),topPts:pts,holes}; }
+function genDoubleRamp(rng){ const H=ri(rng,6,8),b=ri(rng,1,2),W=ri(rng,6,8),m=Math.floor(W/2);
+  const pts=[[0,b],[m,H],[W,b]];
+  return {name:'Cubierta a dos aguas',W,D:ri(rng,3,5),topPts:pts,holes:[]}; }
+function validatePrism(spec){ const H=maxTop(spec.topPts); spec.H=H;
+  spec.holes=(spec.holes||[]).filter(hh=>{ let minT=Infinity;
+    for(let xx=hh.x-hh.r;xx<=hh.x+hh.r+1e-9;xx+=0.5) minT=Math.min(minT,heightAt(spec.topPts,xx));
+    return hh.z-hh.r>=0.5&&hh.z+hh.r<=minT-0.5&&hh.x-hh.r>=0.5&&hh.x+hh.r<=spec.W-0.5; });
+  return spec; }
+function projectPrism(spec){
+  const W=spec.W,D=spec.D,H=spec.H||maxTop(spec.topPts),tp=spec.topPts,ext=0.6;
+  const aL=[],circles=[];
+  aL.push(L(0,0,W,0,'v')); aL.push(L(W,0,W,tp[tp.length-1][1],'v'));
+  for(let i=0;i<tp.length-1;i++) aL.push(L(tp[i][0],tp[i][1],tp[i+1][0],tp[i+1][1],'v'));
+  aL.push(L(0,tp[0][1],0,0,'v'));
+  const pL=[]; pL.push(L(0,0,W,0,'v'),L(W,0,W,D,'v'),L(W,D,0,D,'v'),L(0,D,0,0,'v'));
+  const corners=new Set(); for(let i=1;i<tp.length-1;i++){ const x=tp[i][0]; if(x>0.001&&x<W-0.001)corners.add(x); }
+  for(const x of corners) pL.push(L(x,0,x,D,'v'));
+  const fL=[]; fL.push(L(0,0,D,0,'v'),L(D,0,D,H,'v'),L(D,H,0,H,'v'),L(0,H,0,0,'v'));
+  for(let i=0;i<tp.length-1;i++){ const [ax,az]=tp[i],[bx,bz]=tp[i+1];
+    if(bx>ax&&Math.abs(az-bz)<1e-9){ const Lz=az; if(Lz>0.001&&Lz<H-0.001){
+      const occ=maxTopInRange(tp,0,ax-1e-6); fL.push(L(0,Lz,D,Lz, occ>Lz+1e-6?'h':'v')); } } }
+  const proj={W,D,H,alzado:{lines:aL,circles},planta:{lines:pL,circles:[]},perfil:{lines:fL,circles:[]}};
+  for(const h of spec.holes) addHoleY(proj,h.x,h.z,h.r);
+  return proj;
+}
+
+/* =====================================================================
+ *  TALADRO EJE Y (profundidad) → líneas analíticas en las 3 vistas
+ * ===================================================================*/
+function addHoleY(proj,cx,cz,r){           // taladro perpendicular al alzado (profundidad)
+  const D=proj.D, e=0.6;
+  proj.alzado.circles.push({cx,cy:cz,r});
+  proj.alzado.lines.push(L(cx-r-e,cz,cx+r+e,cz,'a'), L(cx,cz-r-e,cx,cz+r+e,'a'));
+  proj.planta.lines.push(L(cx-r,0,cx-r,D,'h'), L(cx+r,0,cx+r,D,'h'), L(cx,-e,cx,D+e,'a'));
+  proj.perfil.lines.push(L(0,cz-r,D,cz-r,'h'), L(0,cz+r,D,cz+r,'h'), L(-e,cz,D+e,cz,'a'));
+}
+function addHoleZ(proj,cx,cy,r){           // taladro vertical (pasante en altura)
+  const H=proj.H, e=0.6;
+  proj.planta.circles.push({cx,cy,r});
+  proj.planta.lines.push(L(cx-r-e,cy,cx+r+e,cy,'a'), L(cx,cy-r-e,cx,cy+r+e,'a'));
+  proj.alzado.lines.push(L(cx-r,0,cx-r,H,'h'), L(cx+r,0,cx+r,H,'h'), L(cx,-e,cx,H+e,'a'));
+  proj.perfil.lines.push(L(cy-r,0,cy-r,H,'h'), L(cy+r,0,cy+r,H,'h'), L(cy,-e,cy,H+e,'a'));
+}
+
+/* =====================================================================
+ *  MODELO VÓXEL (piezas prismáticas complejas con muchas ocultas)
+ *  occ[x][y][z]  x=ancho(NX) y=profundidad(NY) z=altura(NZ)
+ * ===================================================================*/
+function makeOcc(NX,NY,NZ){ const a=[]; for(let x=0;x<NX;x++){a.push([]);for(let y=0;y<NY;y++)a[x].push(new Array(NZ).fill(false));} return a; }
+function addBox(o,x0,x1,y0,y1,z0,z1,v){ for(let x=x0;x<x1;x++)for(let y=y0;y<y1;y++)for(let z=z0;z<z1;z++) if(o[x]&&o[x][y]) o[x][y][z]=v; }
+function countOcc(o){ let n=0; for(const p of o)for(const q of p)for(const c of q) if(c)n++; return n; }
+function colFullY(o,NY,x,z){ for(let y=0;y<NY;y++) if(!o[x][y][z]) return false; return true; }
+
+// proyector genérico verificado (k=0 frente)
+function projGeneric(get,NU,NV,NK){
+  const segs=[];
+  const colAt=(u,v)=>{ const a=new Array(NK); for(let k=0;k<NK;k++) a[k]=(u<0||u>=NU||v<0||v>=NV)?false:get(u,v,k); return a; };
+  const classify=(A,B)=>{ let present=false,visible=false,blocked=false;
+    for(let k=0;k<NK;k++){ if(A[k]!==B[k]){present=true; if(!blocked)visible=true;} if(A[k]&&B[k])blocked=true; }
+    return present?(visible?'v':'h'):null; };
+  for(let U=0;U<=NU;U++) for(let r=0;r<NV;r++){ const t=classify(colAt(U-1,r),colAt(U,r)); if(t) segs.push({x1:U,y1:r,x2:U,y2:r+1,t}); }
+  for(let V=0;V<=NV;V++) for(let c=0;c<NU;c++){ const t=classify(colAt(c,V-1),colAt(c,V)); if(t) segs.push({x1:c,y1:V,x2:c+1,y2:V,t}); }
+  return mergeSegs(segs);
+}
+function mergeSegs(segs){
+  const vert={},horiz={};
+  for(const s of segs){ if(s.x1===s.x2){ (vert[s.x1+'|'+s.t]=vert[s.x1+'|'+s.t]||[]).push(s.y1<s.y2?[s.y1,s.y2]:[s.y2,s.y1]); }
+    else { (horiz[s.y1+'|'+s.t]=horiz[s.y1+'|'+s.t]||[]).push(s.x1<s.x2?[s.x1,s.x2]:[s.x2,s.x1]); } }
+  const out=[];
+  const flush=(map,vertical)=>{ for(const kk in map){ const parts=kk.split('|'),coord=+parts[0],t=parts[1];
+    const iv=map[kk].sort((a,b)=>a[0]-b[0]); let cur=null;
+    for(const s of iv){ if(cur&&s[0]<=cur[1]) cur[1]=Math.max(cur[1],s[1]); else { if(cur)push(coord,cur,t,vertical); cur=[s[0],s[1]]; } }
+    if(cur)push(coord,cur,t,vertical); } };
+  const push=(coord,cur,t,vertical)=>{ if(vertical) out.push(L(coord,cur[0],coord,cur[1],t)); else out.push(L(cur[0],coord,cur[1],coord,t)); };
+  flush(vert,true); flush(horiz,false); return out;
+}
+function projectVoxel(piece){
+  const o=piece.occ, NX=piece.NX, NY=piece.NY, NZ=piece.NZ;
+  const aL=projGeneric((u,v,k)=>o[u][k][v],NX,NZ,NY);     // alzado u=x v=z k=y(front)
+  const pL=projGeneric((u,v,k)=>o[u][v][NZ-1-k],NX,NY,NZ);// planta u=x v=y k=z(top)
+  const fL=projGeneric((u,v,k)=>o[k][u][v],NY,NZ,NX);     // perfil u=y v=z k=x(left)
+  const proj={W:NX,D:NY,H:NZ,alzado:{lines:aL,circles:[]},planta:{lines:pL,circles:[]},perfil:{lines:fL,circles:[]}};
+  for(const h of (piece.holes||[])){ if(h.axis==='Z') addHoleZ(proj,h.cx,h.cy,h.r); else addHoleY(proj,h.cx,h.cz,h.r); }
+  return proj;
+}
+
+/* ---- taladros: SOLO registran el agujero (la occ sólida se conserva para
+       proyectar; el vaciado del cilindro se hace al construir el 3D) ---- */
+function colFullZ(o,NZ,x,y){ for(let z=0;z<NZ;z++) if(!o[x][y][z]) return false; return true; }
+function tryAddHoleY(piece,rng){
+  const {occ,NX,NY,NZ}=piece, cand=[];
+  for(let cx=2;cx<=NX-2;cx++) for(let cz=2;cz<=NZ-2;cz++)
+    if(colFullY(occ,NY,cx-1,cz-1)&&colFullY(occ,NY,cx,cz-1)&&colFullY(occ,NY,cx-1,cz)&&colFullY(occ,NY,cx,cz)
+       && !holeNear(piece,cx,cz)) cand.push([cx,cz]);
+  if(!cand.length) return false;
+  const [cx,cz]=pick(rng,cand); (piece.holes=piece.holes||[]).push({axis:'Y',cx,cz,r:1}); return true;
+}
+function tryAddHoleZ(piece,rng){
+  const {occ,NX,NY,NZ}=piece, cand=[];
+  for(let cx=2;cx<=NX-2;cx++) for(let cy=2;cy<=NY-2;cy++){
+    let ok=true;
+    for(let dx=-2;dx<=1&&ok;dx++) for(let dy=-2;dy<=1&&ok;dy++) if(!colFullZ(occ,NZ,cx+dx,cy+dy)) ok=false;
+    if(ok) cand.push([cx,cy]);
+  }
+  if(!cand.length) return false;
+  const [cx,cy]=pick(rng,cand); (piece.holes=piece.holes||[]).push({axis:'Z',cx,cy,r:1}); return true;
+}
+function holeNear(piece,cx,cz){ for(const h of (piece.holes||[])) if(h.axis==='Y'&&Math.abs(h.cx-cx)<2&&Math.abs(h.cz-cz)<2) return true; return false; }
+
+/* ---- generadores estructurados (piezas mecánicas realistas) ---- */
+function carveCorner(o,NX,NY,NZ,baseH,rng){
+  const cx=rng()<0.5?[0,ri(rng,1,2)]:[NX-ri(rng,1,2),NX];
+  const cy=rng()<0.5?[0,ri(rng,1,2)]:[NY-ri(rng,1,2),NY];
+  addBox(o,cx[0],cx[1],cy[0],cy[1],ri(rng,baseH+1,NZ-1),NZ,false);
+}
+function genVoxelMedium(rng){
+  const NX=ri(rng,4,6),NY=ri(rng,3,4),NZ=ri(rng,4,6), o=makeOcc(NX,NY,NZ), baseH=ri(rng,1,2);
+  addBox(o,0,NX,0,NY,0,baseH,true);                                   // base sólida
+  const split=ri(rng,2,NX-1);                                          // escalón principal en X
+  addBox(o,0,split,0,NY,baseH,NZ,true);
+  addBox(o,split,NX,0,NY,baseH,NZ-ri(rng,1,2),true);
+  if(rng()<0.6){ const sx=ri(rng,1,NX-2); addBox(o,sx,sx+1,0,NY,ri(rng,baseH+1,NZ-1),NZ,false); } // ranura pasante (Y)
+  if(rng()<0.6) carveCorner(o,NX,NY,NZ,baseH,rng);                     // rebaje de esquina
+  const piece={kind:'voxel',name:'Bloque escalonado',occ:o,NX,NY,NZ,holes:[]};
+  if(rng()<0.75) tryAddHoleY(piece,rng);
+  return ensureValid(piece,rng,genVoxelMedium);
+}
+function genVoxelHard(rng){
+  const NX=ri(rng,5,7),NY=ri(rng,4,5),NZ=ri(rng,5,7), o=makeOcc(NX,NY,NZ), baseH=ri(rng,1,2);
+  addBox(o,0,NX,0,NY,0,baseH,true);                                   // base sólida
+  // dos masas de distinta altura (escalón principal)
+  const split=ri(rng,2,NX-2);
+  addBox(o,0,split,0,NY,baseH,NZ-ri(rng,0,2),true);
+  addBox(o,split,NX,0,NY,baseH,NZ-ri(rng,1,3),true);
+  // rebaje en profundidad de una de las masas (crea ocultas)
+  if(rng()<0.7){ const ry=rng()<0.5?[0,ri(rng,1,2)]:[NY-ri(rng,1,2),NY];
+    const rx=rng()<0.5?[0,split]:[split,NX]; addBox(o,rx[0],rx[1],ry[0],ry[1],ri(rng,baseH+1,NZ-1),NZ,false); }
+  // ranura pasante superior (Y)
+  if(rng()<0.7){ const sx=ri(rng,1,NX-2); addBox(o,sx,sx+ri(rng,1,2),0,NY,ri(rng,baseH+1,NZ-1),NZ,false); }
+  // rebaje de esquina
+  if(rng()<0.7) carveCorner(o,NX,NY,NZ,baseH,rng);
+  // cajeado superior (pocket que no llega a los bordes → muchas ocultas en planta)
+  if(rng()<0.5){ addBox(o,ri(rng,1,2),NX-ri(rng,1,2),1,NY-1,NZ-1,NZ,false); }
+  const piece={kind:'voxel',name:'Pieza prismática con vaciados',occ:o,NX,NY,NZ,holes:[]};
+  tryAddHoleY(piece,rng); if(rng()<0.6) tryAddHoleY(piece,rng);
+  if(rng()<0.4) tryAddHoleZ(piece,rng);
+  return ensureValid(piece,rng,genVoxelHard);
+}
+function ensureValid(piece,rng,regen,depth){
+  depth=depth||0;
+  if(depth<6 && countOcc(piece.occ) < piece.NX*piece.NY) return regen(rng); // demasiado vacía → reintentar
+  return piece;
+}
+
+/* =====================================================================
+ *  PIEZAS: dispatch por nivel
+ * ===================================================================*/
+function makePiece(level,rng){
+  if(level==='facil'){
+    const g=pick(rng,[genRamp,genDoubleRamp,genVoxelMedium])(rng);
+    return g.kind==='voxel' ? g : wrap(validatePrism(g));
+  }
+  if(level==='medio'){
+    const r=rng();
+    if(r<0.55) return genVoxelMedium(rng);
+    return wrap(validatePrism(pick(rng,[genRamp,genWedgeStep])(rng)));
+  }
+  // dificil
+  const r=rng();
+  if(r<0.7) return genVoxelHard(rng);
+  return wrap(validatePrism(genWedgeStep(rng)));
+}
+function wrap(spec){ if(spec.kind==='voxel') return spec; return {kind:'prism',name:spec.name,spec,W:spec.W,D:spec.D,H:spec.H}; }
+function buildProj(piece){
+  if(piece.kind==='voxel'){ const p=projectVoxel(piece); piece.W=p.W;piece.D=p.D;piece.H=p.H; return p; }
+  return projectPrism(piece.spec);
+}
+
+/* =====================================================================
+ *  RENDER SVG (disposición europea)
+ * ===================================================================*/
+function svgEl(tag,attrs){ const e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
+function renderProjection(proj,opt){
+  opt=opt||{}; const s=opt.scale||26, labels=opt.labels!==false, guides=opt.guides!==false, pad=22, gap=34;
+  const Aw=proj.W*s, Ah=proj.H*s, Ph=proj.D*s, Fw=proj.D*s;
+  const ox=pad, oyA=pad+(labels?14:0), oxF=ox+Aw+gap, oyP=oyA+Ah+gap;
+  const totalW=oxF+Fw+pad, totalH=oyP+Ph+pad;
+  const svg=svgEl('svg',{viewBox:`0 0 ${totalW} ${totalH}`,width:'100%'}); svg.style.maxWidth=totalW+'px'; svg.style.display='block';
+  const mapA=(x,z)=>[ox+x*s, oyA+(proj.H-z)*s], mapF=(d,z)=>[oxF+d*s, oyA+(proj.H-z)*s], mapP=(x,dep)=>[ox+x*s, oyP+dep*s];
+  const addLines=(ls,map)=>{ for(const l of ls){ const [x1,y1]=map(l.x1,l.y1),[x2,y2]=map(l.x2,l.y2);
+    svg.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+l.t})); } };
+  const addCircles=(cs,map)=>{ for(const c of cs){ const [cx,cy]=map(c.cx,c.cy); svg.appendChild(svgEl('circle',{cx,cy,r:c.r*s,class:'circ'})); } };
+  if(guides){ for(let x=0;x<=proj.W;x++){ const [gx]=mapA(x,0); svg.appendChild(svgEl('line',{x1:gx,y1:oyA,x2:gx,y2:oyP+Ph,class:'ln guide'})); } }
+  addLines(proj.alzado.lines,mapA); addLines(proj.perfil.lines,mapF); addLines(proj.planta.lines,mapP);
+  addCircles(proj.alzado.circles,mapA); addCircles(proj.planta.circles||[],mapP); addCircles(proj.perfil.circles||[],mapF);
+  if(labels){ const lab=(x,y,t)=>{const e=svgEl('text',{x,y,class:'vlabel'});e.textContent=t;svg.appendChild(e);};
+    lab(ox,oyA-4,'ALZADO'); lab(oxF,oyA-4,'PERFIL IZQ.'); lab(ox,oyP-6,'PLANTA'); }
+  return svg;
+}
+
+/* =====================================================================
+ *  MOTOR 3D PROPIO (canvas, sin dependencias) — prisma y vóxel
+ * ===================================================================*/
+const Engine3D=(function(){
+  const canvas=document.getElementById('c3d'), ctx=canvas.getContext('2d');
+  let geom=null, rotX=0.5, rotY=2.3, zoom=1, highlight='none';
+  let DD=1, MAXD=8, dragging=false, lx=0, ly=0, dpr=1;
+  function resize(){ dpr=window.devicePixelRatio||1; const r=canvas.parentElement.getBoundingClientRect();
+    canvas.width=Math.max(1,r.width*dpr); canvas.height=Math.max(1,r.height*dpr); }
+  function rot(v){ const cY=Math.cos(rotY),sY=Math.sin(rotY),cX=Math.cos(rotX),sX=Math.sin(rotX);
+    const x1=v[0]*cY+v[2]*sY, z1=-v[0]*sY+v[2]*cY, y1=v[1];
+    return [x1, y1*cX-z1*sX, y1*sX+z1*cX]; }
+  function classify(n){ if(n[2]<-0.5)return'alzado'; if(n[1]>0.5)return'planta'; if(n[0]<-0.5)return'perfil'; return null; }
+  const HCOL={alzado:[239,68,68],planta:[16,185,129],perfil:[56,189,248]};
+
+  function buildPrism(spec){
+    const W=spec.W,D=spec.D,H=spec.H,tp=spec.topPts, cx=W/2,cy=H/2,cz=D/2, verts=[];
+    const addV=(x,y,z)=>{verts.push([x-cx,y-cy,z-cz]);return verts.length-1;};
+    const outer=[[0,0],[W,0]]; for(let i=tp.length-1;i>=0;i--) outer.push([tp[i][0],tp[i][1]]);
+    const holeLoops=(spec.holes||[]).map(h=>{const a=[];for(let k=0;k<26;k++){const t=k/26*2*Math.PI;a.push([h.x+h.r*Math.cos(t),h.z+h.r*Math.sin(t)]);}return {pts:a,c:[h.x,h.z]};});
+    const fO=outer.map(p=>addV(p[0],p[1],0)), bO=outer.map(p=>addV(p[0],p[1],D));
+    const fH=holeLoops.map(hl=>hl.pts.map(p=>addV(p[0],p[1],0))), bH=holeLoops.map(hl=>hl.pts.map(p=>addV(p[0],p[1],D)));
+    const faces=[]; faces.push({loops:[fO].concat(fH),n:[0,0,-1]}); faces.push({loops:[bO].concat(bH),n:[0,0,1]});
+    for(let i=0;i<outer.length;i++){ const a=i,b=(i+1)%outer.length, dx=outer[b][0]-outer[a][0],dy=outer[b][1]-outer[a][1],l=Math.hypot(dx,dy)||1;
+      faces.push({loops:[[fO[a],fO[b],bO[b],bO[a]]],n:[dy/l,-dx/l,0]}); }
+    holeLoops.forEach((hl,k)=>{const N=hl.pts.length; for(let j=0;j<N;j++){const a=j,b=(j+1)%N,
+      mx=(hl.pts[a][0]+hl.pts[b][0])/2,my=(hl.pts[a][1]+hl.pts[b][1])/2,nx=hl.c[0]-mx,ny=hl.c[1]-my,l=Math.hypot(nx,ny)||1;
+      faces.push({loops:[[fH[k][a],fH[k][b],bH[k][b],bH[k][a]]],n:[nx/l,ny/l,0]});}});
+    geom={verts,faces,strokeFaces:true,edges:null}; DD=D; MAXD=Math.max(W,H,D);
+  }
+  function buildVoxel(piece){
+    const NX=piece.NX,NY=piece.NY,NZ=piece.NZ;
+    const o=piece.occ.map(p=>p.map(q=>q.slice()));    // copia; vaciar taladros sólo para el 3D
+    for(const h of (piece.holes||[])){
+      if(h.axis==='Z'){ for(let x=0;x<NX;x++)for(let y=0;y<NY;y++) if(Math.hypot(x+0.5-h.cx,y+0.5-h.cy)<1.15) for(let z=0;z<NZ;z++) o[x][y][z]=false; }
+      else { for(let x=0;x<NX;x++)for(let z=0;z<NZ;z++) if(Math.hypot(x+0.5-h.cx,z+0.5-h.cz)<1.15) for(let y=0;y<NY;y++) o[x][y][z]=false; }
+    }
+    const verts=[], vmap={};
+    const cx=NX/2,cyH=NZ/2,czD=NY/2;
+    const corner=(x,yd,zh)=>{ const key=x+','+yd+','+zh; if(key in vmap) return vmap[key];
+      verts.push([x-cx, zh-cyH, yd-czD]); return vmap[key]=verts.length-1; };
+    const faces=[], edgeMap={};
+    const fget=(x,yd,zh)=>(x<0||x>=NX||yd<0||yd>=NY||zh<0||zh>=NZ)?false:o[x][yd][zh];
+    // dir: [dx,dyd,dzh, worldNormal, cornerOffsets(4) en (x,yd,zh)]
+    const DIRS=[
+      [ 1,0,0,[1,0,0], [[1,0,0],[1,1,0],[1,1,1],[1,0,1]]],
+      [-1,0,0,[-1,0,0],[[0,0,0],[0,0,1],[0,1,1],[0,1,0]]],
+      [0, 1,0,[0,0,1], [[0,1,0],[0,1,1],[1,1,1],[1,1,0]]],   // +prof → world +z
+      [0,-1,0,[0,0,-1],[[0,0,0],[1,0,0],[1,0,1],[0,0,1]]],   // -prof → world -z (front)
+      [0,0, 1,[0,1,0], [[0,1,1],[0,0,1],[1,0,1],[1,1,1]]],   // +alto → world +y
+      [0,0,-1,[0,-1,0],[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]],   // -alto → world -y
+    ];
+    for(let x=0;x<NX;x++)for(let yd=0;yd<NY;yd++)for(let zh=0;zh<NZ;zh++){ if(!o[x][yd][zh])continue;
+      for(const d of DIRS){ if(fget(x+d[0],yd+d[1],zh+d[2])) continue;
+        const idx=d[4].map(off=>corner(x+off[0],yd+off[1],zh+off[2]));
+        const n=d[3]; faces.push({loops:[idx],n});
+        for(let i=0;i<4;i++){ const a=idx[i],b=idx[(i+1)%4]; const ek=a<b?a+'_'+b:b+'_'+a;
+          (edgeMap[ek]=edgeMap[ek]||{a:Math.min(a,b),b:Math.max(a,b),ns:[]}).ns.push(n); }
+      } }
+    // feature edges: borde libre o normales distintas
+    const edges=[];
+    for(const k in edgeMap){ const e=edgeMap[k];
+      const distinct=e.ns.length<4 ? true : false;
+      let diff=false; for(let i=1;i<e.ns.length;i++){ if(e.ns[i][0]!==e.ns[0][0]||e.ns[i][1]!==e.ns[0][1]||e.ns[i][2]!==e.ns[0][2]) diff=true; }
+      if(e.ns.length===1 || diff) edges.push({a:e.a,b:e.b,ns:e.ns}); }
+    geom={verts,faces,strokeFaces:false,edges}; DD=NY; MAXD=Math.max(NX,NZ,NY);
+  }
+
+  function frame(){
+    requestAnimationFrame(frame);
+    const wpx=canvas.width,hpx=canvas.height; ctx.clearRect(0,0,wpx,hpx); ctx.fillStyle='#0a1018'; ctx.fillRect(0,0,wpx,hpx);
+    if(!geom)return;
+    const scale=Math.min(wpx,hpx)/(MAXD*2.3)*zoom, cx=wpx/2, cy=hpx/2;
+    const P=geom.verts.map(v=>{const r=rot(v);return [cx+r[0]*scale, cy-r[1]*scale, r[2]];});
+    const Lt=[-0.35,0.55,0.75], list=[];
+    for(const f of geom.faces){ const nr=rot(f.n); if(nr[2]<=0.02) continue;
+      const outer=f.loops[0]; let z=0; for(const i of outer) z+=P[i][2]; z/=outer.length;
+      const lit=Math.max(0,nr[0]*Lt[0]+nr[1]*Lt[1]+nr[2]*Lt[2]); list.push({f,z,inten:0.40+0.60*lit}); }
+    list.sort((a,b)=>a.z-b.z);
+    for(const it of list){ const f=it.f, path=new Path2D();
+      for(const loop of f.loops){ loop.forEach((i,j)=>{const p=P[i]; if(j===0)path.moveTo(p[0],p[1]); else path.lineTo(p[0],p[1]);}); path.closePath(); }
+      const cls=classify(f.n); let col;
+      if(highlight!=='none'&&cls===highlight){ const h=HCOL[highlight]; col=`rgb(${Math.round(h[0]*it.inten)},${Math.round(h[1]*it.inten)},${Math.round(h[2]*it.inten)})`; }
+      else col=`rgb(${Math.round(96*it.inten)},${Math.round(150*it.inten)},${Math.round(235*it.inten)})`;
+      ctx.fillStyle=col; ctx.fill(path,'evenodd');
+      if(geom.strokeFaces){ ctx.lineWidth=1*dpr; ctx.strokeStyle='rgba(10,16,24,.55)'; ctx.stroke(path); }
+    }
+    if(geom.edges){ ctx.lineWidth=1.4*dpr; ctx.strokeStyle='rgba(8,14,22,.85)'; ctx.lineCap='round';
+      for(const e of geom.edges){ let vis=false; for(const n of e.ns){ if(rot(n)[2]>0.02){vis=true;break;} } if(!vis)continue;
+        const a=P[e.a],b=P[e.b]; ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke(); } }
+    drawArrow(scale,cx,cy);
+  }
+  function drawArrow(scale,cx,cy){
+    const c=rot([0,0,-DD/2]), n=rot([0,0,-1]); if(n[2]<=0.05) return;
+    const px=cx+c[0]*scale, py=cy-c[1]*scale, dl=Math.hypot(n[0],-n[1])||1, ux=n[0]/dl, uy=-n[1]/dl;
+    const tail=[px+ux*70*dpr,py+uy*70*dpr], tip=[px+ux*16*dpr,py+uy*16*dpr];
+    ctx.strokeStyle='#f59e0b'; ctx.fillStyle='#f59e0b'; ctx.lineWidth=2.5*dpr;
+    ctx.beginPath(); ctx.moveTo(tail[0],tail[1]); ctx.lineTo(tip[0],tip[1]); ctx.stroke();
+    const ang=Math.atan2(tip[1]-tail[1],tip[0]-tail[0]), ah=9*dpr;
+    ctx.beginPath(); ctx.moveTo(tip[0],tip[1]); ctx.lineTo(tip[0]-ah*Math.cos(ang-0.4),tip[1]-ah*Math.sin(ang-0.4));
+    ctx.lineTo(tip[0]-ah*Math.cos(ang+0.4),tip[1]-ah*Math.sin(ang+0.4)); ctx.closePath(); ctx.fill();
+    ctx.font=`bold ${13*dpr}px sans-serif`; ctx.fillStyle='#fbbf24'; ctx.textAlign='center'; ctx.fillText('ALZADO',tail[0],tail[1]-8*dpr);
+  }
+  canvas.addEventListener('pointerdown',e=>{dragging=true;lx=e.clientX;ly=e.clientY;canvas.setPointerCapture(e.pointerId);});
+  canvas.addEventListener('pointermove',e=>{ if(!dragging)return; rotY+=(e.clientX-lx)*0.01; rotX+=(e.clientY-ly)*0.01;
+    rotX=Math.max(-1.5,Math.min(1.5,rotX)); lx=e.clientX; ly=e.clientY; });
+  canvas.addEventListener('pointerup',()=>{dragging=false;});
+  canvas.addEventListener('wheel',e=>{e.preventDefault(); zoom*=e.deltaY<0?1.1:0.9; zoom=Math.max(0.3,Math.min(4,zoom));},{passive:false});
+  window.addEventListener('resize',resize); resize(); requestAnimationFrame(frame);
+  return { build:(piece)=>{ if(piece.kind==='voxel') buildVoxel(piece); else buildPrism(piece.spec); },
+    iso:()=>{rotX=0.5;rotY=2.3;zoom=1;}, setHighlight:(h)=>{highlight=h;}, resize };
+})();
+
+/* =====================================================================
+ *  DISTRACTORES (a nivel de proyección)
+ * ===================================================================*/
+function clone(o){ return JSON.parse(JSON.stringify(o)); }
+function projKey(p){ const r=v=>Math.round(v*100)/100;
+  const ls=arr=>arr.map(l=>{const a=[r(l.x1),r(l.y1)],b=[r(l.x2),r(l.y2)];
+    const [p1,p2]=(a[0]<b[0]||(a[0]===b[0]&&a[1]<=b[1]))?[a,b]:[b,a]; return l.t+p1+p2;}).sort().join('|');
+  const cs=v=>(v.circles||[]).map(c=>r(c.cx)+','+r(c.cy)+','+r(c.r)).sort().join(';');
+  return ls(p.alzado.lines)+'#'+ls(p.planta.lines)+'#'+ls(p.perfil.lines)+'#'+cs(p.alzado)+'@'+cs(p.planta)+'@'+cs(p.perfil); }
+function mirrorView(view,w){ view.lines=view.lines.map(l=>L(w-l.x1,l.y1,w-l.x2,l.y2,l.t));
+  view.circles=view.circles.map(c=>({cx:w-c.cx,cy:c.cy,r:c.r})); }
+function mutDropHidden(p){ const q=clone(p); q.planta.lines=q.planta.lines.filter(l=>l.t!=='h'); q.perfil.lines=q.perfil.lines.filter(l=>l.t!=='h'); return q; }
+function mutHiddenToVis(p){ const q=clone(p); for(const v of [q.planta,q.perfil]) v.lines.forEach(l=>{if(l.t==='h')l.t='v';}); return q; }
+function mutMirrorPerfil(p){ const q=clone(p); mirrorView(q.perfil,q.D); return q; }
+function mutMirrorPlanta(p){ const q=clone(p); q.planta.lines=q.planta.lines.map(l=>L(l.x1,q.D-l.y1,l.x2,q.D-l.y2,l.t)); return q; }
+function mutSwap(p){ const q=clone(p); const t=q.planta; q.planta=q.perfil; q.perfil=t;
+  const tw=q.D; /*dims se mantienen en render por vista*/ return q; }
+function mutMoveHole(p){ const q=clone(p); if(!q.alzado.circles.length) return null;
+  const c=q.alzado.circles[0]; c.cx=Math.max(1,c.cx+(Math.random()<0.5?1:-1)); return q; }
+function buildOptions(proj,rng){
+  const ck=projKey(proj); const opts=[{proj,correct:true}]; const keys=new Set([ck]);
+  const muts=[ [mutDropHidden,'Faltan aristas ocultas (líneas discontinuas).'],
+    [mutHiddenToVis,'Se han dibujado como vistas aristas que en realidad están ocultas.'],
+    [mutMirrorPerfil,'El perfil está invertido (izquierda/derecha cambiadas).'],
+    [mutMirrorPlanta,'La planta está volteada en profundidad.'],
+    [mutSwap,'Se han intercambiado la planta y el perfil.'],
+    [mutMoveHole,'El taladro está descentrado respecto a la pieza.'] ];
+  // barajar mutadores
+  for(let i=muts.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [muts[i],muts[j]]=[muts[j],muts[i]]; }
+  for(const [fn,why] of muts){ if(opts.length>=4) break; const q=fn(proj); if(!q) continue; const k=projKey(q);
+    if(!keys.has(k)){ opts.push({proj:q,correct:false,why}); keys.add(k); } }
+  // relleno: desplazar una línea
+  let guard=0;
+  while(opts.length<4 && guard++<30){ const q=clone(proj); const view=pick(rng,['alzado','planta','perfil']);
+    if(q[view].lines.length){ const li=ri(rng,0,q[view].lines.length-1); const d=rng()<0.5?1:-1;
+      q[view].lines[li].y1+=d; q[view].lines[li].y2+=d; } const k=projKey(q);
+    if(!keys.has(k)){ opts.push({proj:q,correct:false,why:'Alguna arista no está en su posición correcta.'}); keys.add(k); } }
+  for(let i=opts.length-1;i>0;i--){ const j=Math.floor(rng()*(i+1)); [opts[i],opts[j]]=[opts[j],opts[i]]; }
+  return opts;
+}
+
+/* =====================================================================
+ *  ESTADO + MODOS
+ * ===================================================================*/
+let currentPiece=null, currentProj=null, currentMode='test', currentOptions=null, answered=false, rng=mulberry32(1);
+const modeArea=document.getElementById('modeArea'), feedback=document.getElementById('feedback');
+
+function newPiece(){
+  const level=document.getElementById('level').value;
+  rng=mulberry32((Date.now()^(Math.random()*1e9))>>>0);
+  currentPiece=makePiece(level,rng);
+  currentProj=buildProj(currentPiece);
+  document.getElementById('pieceName').textContent=currentPiece.name+` · ${currentPiece.W}×${currentPiece.D}×${currentPiece.H}`;
+  try{ Engine3D.build(currentPiece); Engine3D.iso(); Engine3D.setHighlight('none'); }catch(err){ console.error(err); }
+  answered=false; feedback.innerHTML=''; renderMode();
+}
+function renderMode(){ modeArea.innerHTML=''; if(currentMode==='test') renderTest(); else renderDraw(); }
+
+function renderTest(){
+  currentOptions=buildOptions(currentProj,rng);
+  const h=document.createElement('div');
+  h.innerHTML='<h2 class="title">Elige las vistas correctas</h2><p class="lead">Observa la pieza 3D (la flecha amarilla marca el Alzado) y selecciona el conjunto de vistas diédricas correcto. Fíjate en las <b>líneas ocultas</b>.</p>';
+  modeArea.appendChild(h);
+  const grid=document.createElement('div'); grid.className='optgrid';
+  currentOptions.forEach((opt,i)=>{ const card=document.createElement('button'); card.className='optcard';
+    const l=document.createElement('div'); l.className='optletter'; l.textContent='Opción '+'ABCD'[i]; card.appendChild(l);
+    card.appendChild(renderProjection(opt.proj,{scale:15,labels:false,guides:false}));
+    card.onclick=()=>chooseOption(i,card); grid.appendChild(card); });
+  modeArea.appendChild(grid);
+}
+function chooseOption(i,card){
+  if(answered)return; answered=true; const opt=currentOptions[i];
+  document.querySelectorAll('.optcard').forEach((c,idx)=>{ if(currentOptions[idx].correct)c.style.borderColor='#10b981';
+    if(idx===i&&!opt.correct)c.style.borderColor='#ef4444'; c.onclick=null; });
+  feedback.innerHTML=''; const box=document.createElement('div');
+  if(opt.correct){ box.className='fb ok'; box.innerHTML='<p class="ttl">✅ ¡Correcto!</p><p>Bien identificadas las tres vistas. Usa los botones de la izquierda para ver de qué cara sale cada una.</p>'; }
+  else { box.className='fb bad'; box.innerHTML=`<p class="ttl">❌ No es correcta.</p><p>${opt.why||''}</p><p>La opción correcta está marcada en verde.</p>`; }
+  feedback.appendChild(box); showSolution();
+}
+
+/* ---- DIBUJAR ---- */
+let drawState=null;
+function renderDraw(){
+  drawState={tool:'v',sel:null,segs:{alzado:[],planta:[],perfil:[]},holes:{alzado:[]}};
+  const h=document.createElement('div');
+  h.innerHTML='<h2 class="title">Dibuja las tres vistas</h2><p class="lead">Elige una herramienta y haz clic en dos nodos para trazar una arista. Marca el centro de los taladros con «Taladro».</p>';
+  modeArea.appendChild(h);
+  const tools=document.createElement('div'); tools.className='tools';
+  [['v','Vista (continua)',''],['h','Oculta (discontinua)',''],['a','Eje (trazo-punto)',''],['hole','Taladro (centro)','violet'],['erase','Borrar','rose']]
+   .forEach(([t,label,cls])=>{ const b=document.createElement('button'); b.className='toolBtn '+cls; b.textContent=label; b.dataset.tool=t;
+     b.onclick=()=>{drawState.tool=t;drawState.sel=null;updateToolUI();}; tools.appendChild(b); });
+  modeArea.appendChild(tools);
+  const wrapA=document.createElement('div'); wrapA.appendChild(buildGrid('alzado','ALZADO',currentProj.W,currentProj.H,true,false)); modeArea.appendChild(wrapA);
+  const row=document.createElement('div'); row.className='gridrow'; row.style.marginTop='14px';
+  row.appendChild(buildGrid('perfil','PERFIL IZQ.',currentProj.D,currentProj.H,false,false));
+  row.appendChild(buildGrid('planta','PLANTA',currentProj.W,currentProj.D,false,true));
+  modeArea.appendChild(row);
+  const actions=document.createElement('div'); actions.className='actions';
+  const check=document.createElement('button'); check.className='btn btn-primary'; check.textContent='✔️ Comprobar'; check.onclick=checkDrawing;
+  const clear=document.createElement('button'); clear.className='btn'; clear.textContent='🧹 Limpiar'; clear.onclick=()=>{feedback.innerHTML='';renderDraw();};
+  actions.appendChild(check); actions.appendChild(clear); modeArea.appendChild(actions); updateToolUI();
+}
+function updateToolUI(){ document.querySelectorAll('.toolBtn').forEach(b=>b.classList.toggle('on',b.dataset.tool===drawState.tool)); }
+function buildGrid(view,label,gw,gh,isAlzado,plantaDown){
+  const s=26,pad=18,W=gw*s+pad*2,Hh=gh*s+pad*2+16;
+  const cont=document.createElement('div'); cont.className='sheet';
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${Hh}`,width:W,height:Hh});
+  const lab=svgEl('text',{x:pad,y:14,class:'vlabel'}); lab.textContent=label; svg.appendChild(lab);
+  const oy=20, toPix=(u,v)=>plantaDown?[pad+u*s,oy+pad+v*s]:[pad+u*s,oy+pad+(gh-v)*s];
+  const layer=svgEl('g',{}); svg.appendChild(layer);
+  const redraw=()=>{ layer.innerHTML='';
+    for(const seg of drawState.segs[view]){ const [x1,y1]=toPix(seg.a[0],seg.a[1]),[x2,y2]=toPix(seg.b[0],seg.b[1]);
+      layer.appendChild(svgEl('line',{x1,y1,x2,y2,class:'ln '+seg.t})); }
+    if(isAlzado) for(const hh of drawState.holes.alzado){ const [cx,cy]=toPix(hh[0],hh[1]);
+      layer.appendChild(svgEl('circle',{cx,cy,r:7,class:'holeMark'}));
+      layer.appendChild(svgEl('line',{x1:cx-10,y1:cy,x2:cx+10,y2:cy,class:'ln a'}));
+      layer.appendChild(svgEl('line',{x1:cx,y1:cy-10,x2:cx,y2:cy+10,class:'ln a'})); } };
+  for(let u=0;u<=gw;u++) for(let v=0;v<=gh;v++){ const [px,py]=toPix(u,v);
+    const dot=svgEl('circle',{cx:px,cy:py,r:4,class:'node'}); dot.onclick=()=>onNodeClick(view,u,v,dot,redraw); svg.appendChild(dot); }
+  redraw(); cont.appendChild(svg); return cont;
+}
+function onNodeClick(view,u,v,dot,redraw){
+  const t=drawState.tool;
+  if(t==='hole'){ if(view==='alzado'){ const arr=drawState.holes.alzado,i=arr.findIndex(h=>h[0]===u&&h[1]===v);
+    if(i>=0)arr.splice(i,1); else arr.push([u,v]); redraw(); } return; }
+  if(t==='erase'){ const arr=drawState.segs[view],i=arr.findIndex(sg=>(sg.a[0]===u&&sg.a[1]===v)||(sg.b[0]===u&&sg.b[1]===v));
+    if(i>=0){arr.splice(i,1);redraw();} return; }
+  if(!drawState.sel){ drawState.sel={view,u,v,dot}; dot.classList.add('sel'); return; }
+  if(drawState.sel.view!==view){ drawState.sel.dot.classList.remove('sel'); drawState.sel={view,u,v,dot}; dot.classList.add('sel'); return; }
+  if(drawState.sel.u===u&&drawState.sel.v===v){ drawState.sel.dot.classList.remove('sel'); drawState.sel=null; return; }
+  drawState.segs[view].push({a:[drawState.sel.u,drawState.sel.v],b:[u,v],t:drawState.tool});
+  drawState.sel.dot.classList.remove('sel'); drawState.sel=null; redraw();
+}
+function normSeg(x1,y1,x2,y2,t){ let a=[Math.round(x1),Math.round(y1)],b=[Math.round(x2),Math.round(y2)];
+  if(a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1]))[a,b]=[b,a]; return t+':'+a+'->'+b; }
+function explode(l){ // descompone una línea en segmentos unidad (para comparar con el dibujo)
+  const out=[]; if(l.x1===l.x2){ const x=l.x1, a=Math.min(l.y1,l.y2),b=Math.max(l.y1,l.y2);
+    for(let y=Math.round(a);y<Math.round(b);y++) out.push(normSeg(x,y,x,y+1,l.t)); }
+  else if(l.y1===l.y2){ const y=l.y1,a=Math.min(l.x1,l.x2),b=Math.max(l.x1,l.x2);
+    for(let x=Math.round(a);x<Math.round(b);x++) out.push(normSeg(x,y,x+1,y,l.t)); }
+  else out.push(normSeg(l.x1,l.y1,l.x2,l.y2,l.t)); // diagonal (rampa)
+  return out; }
+function solutionUnit(view){ const set=new Set();
+  for(const l of currentProj[view].lines){ if(l.t==='v'||l.t==='h') for(const k of explode(l)) set.add(k); } return set; }
+function checkDrawing(){
+  let total=0,ok=0; const report={};
+  for(const view of ['alzado','planta','perfil']){ const sol=solutionUnit(view);
+    const usr=new Set(); for(const sg of drawState.segs[view]) for(const k of explode({x1:sg.a[0],y1:sg.a[1],x2:sg.b[0],y2:sg.b[1],t:sg.t})) usr.add(k);
+    let vok=0,miss=0,extra=0; for(const k of sol) if(usr.has(k))vok++; else miss++; for(const k of usr) if(!sol.has(k))extra++;
+    report[view]={ok:vok,total:sol.size,miss,extra}; total+=sol.size; ok+=vok; }
+  const solHoles=currentProj.alzado.circles.map(c=>c.cx+','+c.cy), usrHoles=drawState.holes.alzado.map(h=>h[0]+','+h[1]);
+  const holeOk=solHoles.filter(h=>usrHoles.includes(h)).length;
+  const score=total?Math.round(100*ok/total):100;
+  const rows=['alzado','planta','perfil'].map(v=>{const r=report[v];
+    return `<tr><td>${v}</td><td style="color:#34d399">${r.ok}/${r.total}</td><td style="color:#fbbf24">${r.miss}</td><td style="color:#fb7185">${r.extra}</td></tr>`;}).join('');
+  feedback.innerHTML=''; const box=document.createElement('div'); box.className='fb info';
+  const col=score>=80?'#34d399':score>=50?'#fbbf24':'#fb7185';
+  box.innerHTML=`<p class="ttl">Resultado: <span style="color:${col}">${score}%</span> de aristas correctas</p>
+    <table class="score"><thead><tr><th>Vista</th><th>Aciertos</th><th>Faltan</th><th>Sobran</th></tr></thead><tbody>${rows}</tbody></table>
+    <p style="margin-top:8px;color:#94a3b8">Taladros marcados: ${holeOk}/${solHoles.length}.</p>`;
+  feedback.appendChild(box); showSolution();
+}
+
+function showSolution(){
+  const box=document.createElement('div'); box.className='solbox';
+  const t=document.createElement('div'); t.className='solttl'; t.textContent='SOLUCIÓN · Vistas diédricas correctas'; box.appendChild(t);
+  box.appendChild(renderProjection(currentProj,{scale:22,labels:true,guides:true})); feedback.appendChild(box);
+  const exp=document.createElement('div'); exp.className='origin';
+  exp.innerHTML='<p class="ttl" style="font-weight:700;color:#fff;margin:0">¿De dónde sale cada vista?</p><p style="color:#cbd5e1;margin:4px 0 0">Pulsa para iluminar en el modelo 3D la cara que se proyecta:</p>';
+  const row=document.createElement('div'); row.className='row';
+  [['alzado','Alzado (cara frontal)','alz'],['planta','Planta (cara superior)','pla'],['perfil','Perfil izq. (cara lateral)','per']]
+   .forEach(([f,l,cls])=>{ const b=document.createElement('button'); b.className='chip '+cls; b.textContent=l; b.onclick=()=>Engine3D.setHighlight(f); row.appendChild(b); });
+  exp.appendChild(row); feedback.appendChild(exp);
+}
+
+/* ============================ WIRING ============================ */
+document.getElementById('newPiece').onclick=newPiece;
+document.getElementById('isoBtn').onclick=()=>Engine3D.iso();
+document.getElementById('level').onchange=newPiece;
+document.getElementById('solBtn').onclick=()=>{ if(!currentProj)return; answered=true; feedback.innerHTML=''; showSolution(); };
+document.querySelectorAll('.seg button').forEach(b=>{ b.onclick=()=>{ currentMode=b.dataset.mode;
+  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  answered=false; feedback.innerHTML=''; renderMode(); }; });
+document.querySelectorAll('.chip[data-face]').forEach(b=>{ b.onclick=()=>Engine3D.setHighlight(b.dataset.face); });
+setTimeout(()=>{ Engine3D.resize(); newPiece(); },30);
+</script>
+</body>
+</html>
